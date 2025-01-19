@@ -1,0 +1,1130 @@
+package com.amazon.aeeqa.ui.pagemodels.search;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Defines key components of Search in AIS.
+ *
+ * @author othogat
+ */
+@PageName("search_results")
+public class SearchResultsPage extends BasePageModel {
+
+    // Class level variable Declarations below.
+    public static final String SORT_BY_PRICE_ASC_VALUE = "price-asc-rank";
+    public static final String SORT_BY_PRICE_DESC_VALUE = "price-desc-rank";
+    public static final String SORT_BY_CUSTOMER_REVIEWS_VALUE = "review-rank";
+    public static final String SORT_BY_NEWEST_ARRIVAL_VALUE = "date-desc-rank";
+    public static final String SORT_BY_RELEVANCE_VALUE = "relevanceblender";
+    public static final String SEARCH_REFINEMENT_PRIME_ID = "primeRefinements";
+    public static final String SEARCH_REFINEMENT_BRAND_ID = "brandsRefinements";
+    public static final String SEARCH_REFINEMENT_PRICE_ID = "priceRefinements";
+    public static final String SEARCH_REFINEMENT_AVAILABILITY_ID = "p_n_availability-title";
+    public static final String SEARCH_REFINEMENT_REVIEWS_ID = "reviewsRefinements";
+    public static final String SEARCH_REFINEMENT_SELLER_ID = "p_6-title";
+    public static final String SEARCH_REFINEMENT_FILTERS_ID = "filters";
+    public static final String SEARCH_REFINEMENT_DELIVERY_ID = "deliveryRefinements";
+    public static final String SEARCH_REFINEMENT_DELIVERY_DAY_ID = "p_90-title";
+    public static final String SEARCH_REFINEMENT_DEPARTMENTS_ID = "departments";
+    public static final String SEARCH_REFINEMENT_FREE_SHIPPING_ID = "p_n_free_shipping_eligible-title";
+    public static final String SEARCH_REFINEMENT_JUMPIN_FREE_SHIPPING_ID = "p_n_is_free_shipping-title";
+    public static final String SEARCH_REFINEMENT_DOMESTIC_US_FREE_SHIPPING_ID = "p_76-title";
+
+    // Locator Variable Declarations below, with "g2s2_variable_name" in quotes.
+    @Locator("SEARCH_RESULTS_WITH_KEYWORD")
+    private static BasePageElement searchResultsWithKeyword;
+
+    @Locator("SEARCH_RESULTS_CONTEXTUAL_ELIGIBLE_TEXT")
+    private static BasePageElement searchResultsContextualEligibleText;
+
+    @Locator("PRIME_FILTER")
+    private static BasePageElement primeFilter;
+
+    @Locator("PRIME_BADGE")
+    private static BasePageElement primeBadge;
+
+    @Locator("PANTRY_FILTER")
+    private static BasePageElement pantryFilter;
+
+    @Locator("FRESH_FILTER")
+    private static BasePageElement freshFilter;
+
+    @Locator("FREE_SHIPPING_FILTER")
+    private static BasePageElement freeShippingFilter;
+
+    @Locator("AMAZON_GLOBAL_STORE_FILTER")
+    private static BasePageElement amazonGlobalStoreFilter;
+
+    @Locator("PRIME_BADGE_ON_LEFT_NAV")
+    private static BasePageElement primeBadgeOnLeftNav;
+
+    @Locator("LEFT_NAV_LOCALIZED_SHOW_RESULTS_TEXT")
+    private static BasePageElement leftNavLocalizedShowResultsText;
+
+    @Locator("LEFT_NAV_LOCALIZED_DEPARTMENTS_TEXT")
+    private static BasePageElement leftNavLocalizedDepartmentsText;
+
+    @Locator("SEARCH_RESULT_PRICE_SYMBOL")
+    private static BasePageElement searchResultPriceSymbol;
+
+    @Locator("LEFT_NAV_DEPARTMENT_TEXT")
+    private static BasePageElement leftNavDepartmentText;
+
+    @Locator("FIRST_RESULT_PRICE_TEXT")
+    private static BasePageElement firstResultPriceText;
+
+    @Locator("SEARCH_RESULT_PRIME_BADGE")
+    private static BasePageElement searchResultPrimeBadge;
+
+    @Locator("FIRST_RESULT_PRIME_PROMISE_MESSAGE")
+    private static BasePageElement firstResultPrimePromiseMessage;
+
+    @Locator("FIRST_RESULT_PRIME_INTERNATIONAL_DELIVERY_MESSAGE")
+    private static BasePageElement firstResultPrimeInternationalDeliveryMessage;
+
+    @Locator("FIRST_RESULT_DETAIL_PAGE_LINK")
+    private static BasePageElement firstResultDetailPageLink;
+
+    @Locator("SECOND_RESULT_DETAIL_PAGE_LINK")
+    private static BasePageElement secondResultDetailPageLink;
+
+    @Locator("DETAIL_PAGE_LINK_OF_SPECIFIC_SEARCH_RESULT")
+    private static BasePageElement detailPageLinkOfSpecificSearchResult;
+
+    @Locator("SHIPS_LOCALLY")
+    private static BasePageElement shipsLocally;
+
+    @Locator("SKALA_INLINE_FEATURED_WIDGET")
+    private static BasePageElement skalaInlineFeaturedWidget;
+
+    @Locator("SHIPS_FAST_FROM_TEXT")
+    private static BasePageElement shipsFastFromText;
+
+    @Locator("SEARCH_RESULT_GLOBAL_STORE_BADGE")
+    private static BasePageElement searchResultGlobalStoreBadge;
+
+    @Locator("DELIVERY_MESSAGE")
+    private static BasePageElement deliveryMessage;
+
+    @Locator("SEARCH_INFO_BAR_RESULTS_SUMMARY_TEXT")
+    private static BasePageElement searchInfoBarResultsSummaryText;
+
+    @Locator("SEARCH_PAGINATION_CONTAINER")
+    private static BasePageElement searchPaginationContainer;
+
+    @Locator("SEARCH_RESULTS_SORT_BY_DROPDOWN_LIST")
+    private static BasePageElement searchResultsSortByDropDownList;
+
+    @Locator("SEARCH_REFINEMENTS_CONTAINER")
+    private static BasePageElement searchRefinementsContainer;
+
+    @Locator("SEARCH_REFINEMENTS_BRANDS_CONTAINER")
+    private static BasePageElement searchRefinementsBrandsContainer;
+
+    @Locator("SEARCH_RESULTS_ASINS")
+    private static BasePageElement searchResultsAsins;
+
+    @Locator("SEARCH_RESULTS_PRODUCT_TITLE")
+    private static BasePageElement searchResultsProductTitle;
+
+    @Locator("SEARCH_RESULTS_PRODUCT_IMAGE")
+    private static BasePageElement searchResultsProductImage;
+
+    @Locator("SEARCH_RESULTS_PRICE_PER_UNIT_TEXT")
+    private static BasePageElement searchResultsPricePerUnitText;
+
+    @Locator("SORT_BY_LIST_SELECT")
+    private static BasePageElement sortByListSelect;
+
+    @Locator("SORT_BY_LIST_OPTIONS")
+    private static BasePageElement sortByListOptions;
+
+    @Locator("FAST_TRACK_MESSAGE")
+    private static BasePageElement fastTrackMessage;
+
+    @Locator("IN_STOCK_MESSAGE")
+    private static BasePageElement inStockMessage;
+
+    @Locator("MORE_BUYING_CHOICES_LINK")
+    private static BasePageElement moreBuyingChoicesLink;
+
+    @Locator("LEFT_NAV_AVAILABLE_DEPARTMENTS_LINK")
+    private static BasePageElement leftNavAvailableDepartmentsLink;
+
+    @Locator("SEARCH_REFINEMENTS_BY_REFINEMENT_ID")
+    private static BasePageElement searchRefinementsByRefinementID;
+
+    @Locator("BROWSE_PAGE_SEARCH_REFINEMENTS_BY_REFINEMENT_NAME")
+    private static BasePageElement browsePageSearchRefinementsByRefinementName;
+
+    @Locator("SEARCH_PAGINATION_CONTAINER_BUTTON_LINK")
+    private static BasePageElement searchPaginationContainerButtonLink;
+
+    @Locator("MERCHANDISE_CONTENT_CARD_TITLE")
+    private static BasePageElement merchandiseContentCardTitle;
+
+    @Locator("SEARCH_RESULTS_CUSTOMER_REVIEWS")
+    private static BasePageElement searchResultsCustomerReviews;
+
+    @Locator("SEARCH_RESULTS_BEST_SELLER_BADGE")
+    private static BasePageElement searchResultsBestSellerBadge;
+
+    @Locator("NO_SEARCH_RESULTS_FOUND_TEXT")
+    private static BasePageElement noSearchResultsFoundText;
+
+    @Locator("CATEGORY_IN_LEFT_NAV_SELECTED_IN_BOLD_TEXT")
+    private static BasePageElement categoryInLeftNavSelectedInBold;
+
+    @Locator("SEARCH_RESULTS_COUNT_ROW_TEXT")
+    private static BasePageElement searchResultsCountRow;
+
+    @Locator(value = "LEFT_NAV_DEPARTMENT_SEE_MORE_LINK", stringId = "sx-most-relevant-refinement-see-more")
+    private static BasePageElement leftNavSeeMoreLink;
+
+    @Locator("SEARCH_RESULTS_MEDIA_FORMAT_LINK")
+    private static BasePageElement searchResultsMediaFormatLink;
+
+    @Locator("SEARCH_REFINEMENT_SELECT_LIST_BY_REFINEMENT_ID")
+    private static BasePageElement searchRefinementSelectListByRefinementID;
+
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    @Locator("SEARCH_RESULTS_AVAILABILITY_MESSAGE")
+    private static BasePageElement searchResultsAvailabilityMessage;
+
+    @Locator(value = "FREE_SHIPPING_MESSAGE", stringId = "sx-non-prime-free-shipping-by-amazon")
+    private static BasePageElement freeShippingMessage;
+
+    @Locator("SHIPPING_BENEFIT_MESSAGE_IN_SEARCH")
+    private static BasePageElement shippingBenefitMessageInSearch;
+
+    @Locator("SEARCH_REFINEMENT_FILTER_CLEAR_BUTTON")
+    private static BasePageElement searchRefinementFilterClearButton;
+
+    @Locator("FREE_SHIPPING_SEARCH_REFINEMENT_DEPARTMENTS")
+    private static BasePageElement fsSearchRefinementFilterInDepartments;
+
+    @Locator("PRIME_BADGE_INTERNATIONAL_ON_LEFT_NAV")
+    private static BasePageElement primeBadgeInternationalOnLeftNav;
+
+    @Locator("AGS_DEEP_CHECK_PROMISE_IN_SEARCH")
+    private static BasePageElement deepCheckPromiseInSearch;
+
+    @Locator("AGS_DEEP_CHECK_PROMISE_IN_SEARCH_FOR_KEYWORDS")
+    private static BasePageElement agsDeepCheckPromiseInSearchForKeywords;
+
+    @Locator("DELIVERY_PRICE_IN_SEARCH_FOR_GS_OFFER")
+    private static  BasePageElement deliveryPriceInSearchForGSOffer;
+
+    @Locator ("EXPAND_ALL_BUTTON")
+    private static BasePageElement expandAllButton;
+
+    @Locator ("DISBALED_EXPAND_ALL_BUTTON")
+    private static BasePageElement disabledExpandAllButton;
+
+    @Locator ("SEARCH_REFINEMENT_DROPDOWN")
+    private static BasePageElement serachRefinementDropdown;
+
+    @Locator("AGS_FREE_SHIPPING_MESSAGE_IN_SEARCHPAGE")
+    private static BasePageElement agsFreeShippingMessageInSearch;
+
+    @Locator(value = "FREE_SHIPPING_FOR_GLOBAL_STORE_THRESHOLD",
+            stringId = "gs-prime-free-shipping-import-order-non-prime-customer")
+    private static BasePageElement agsFreeShippingWithThresholdMessage;
+
+    @Locator("SELLER_REFINEMENTS")
+    private static BasePageElement sellerRefinements;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public SearchResultsPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        // status.addIsDisplayed(searchResultWithAsin);
+        status.processStatus();
+    }
+
+    /**
+     * Get the country eligible text.
+     * @return country eligible text
+     */
+    public String getCountryEligibleText() {
+        return searchResultsWithKeyword.getText();
+    }
+
+     /**
+     * Verify left nav see more link is present.
+     */
+    public void verifyLeftNavSeemoreLinkPresent() {
+        status.addIsDisplayed(leftNavSeeMoreLink);
+        status.processStatus();
+    }
+
+    /**
+     * Help to get the country eligible text when the left nav is Department,
+     * Get the country eligible text when left nav has Department.
+     *
+     * @return country eligible text
+     */
+    public String getCountryEligibleTextDepartments() {
+        return searchResultsContextualEligibleText.getText();
+    }
+
+     /**
+     * Get's the country eligible text when lef nav has Department.
+     * @return country eligible text
+     */
+    public String getDepartmentCountryEligibleText() {
+        return searchResultsContextualEligibleText.getText();
+    }
+
+    /**
+    * Verify Prime filter absent.
+    */
+    public void verifyPrimeFilterAbsent() {
+        status.addIsHiddenOrMissing(primeFilter);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Prime badge absent.
+     */
+    public void verifyPrimeBadgeAbsent() {
+        //Checking for prime badge in all search results asins
+        for (int i = 0; i < getSearchResults().size(); i++) {
+            status.addIsHiddenOrMissing(primeBadge);
+            status.processStatus();
+        }
+    }
+
+    /**
+     * Verify Pantry filter absent.
+     */
+    public void verifyPantryFilterAbsent() {
+        status.addIsHiddenOrMissing(pantryFilter);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Fresh filter absent.
+     */
+    public void verifyFreshFilterAbsent() {
+        status.addIsHiddenOrMissing(freshFilter);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Free Shipping filter absent.
+     */
+    public void verifyFreeShippingFilterAbsent() {
+        status.addIsHiddenOrMissing(freeShippingFilter);
+        status.processStatus();
+    }
+
+    /**
+     * Filter out search result for Amazon Global Store filter.
+     * @param sourceCountryCheckboxLabelName the source country's filter checkbox label name.
+     */
+    public void verifyAmazonGlobalStoreFilterPresent(String sourceCountryCheckboxLabelName) {
+
+        if (amazonGlobalStoreFilter.isPresent()) {
+            status.addIsDisplayed(amazonGlobalStoreFilter);
+        } else {
+            BasePageElement sellerElement = new BasePageElement(driver, amazonGlobalStoreFilter.getName() + "_"
+                    + sourceCountryCheckboxLabelName,
+                    String.format(amazonGlobalStoreFilter.getXPath(), sourceCountryCheckboxLabelName));
+
+            status.addIsHidden(sellerElement);
+        }
+
+        status.processStatus();
+    }
+
+    /**
+     * Verify Amazon Global Store filter is not present.
+     */
+    public void verifyAmazonGlobalStoreFilterHiddenOrMissing() {
+        status.addIsDisabled(amazonGlobalStoreFilter);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Amazon Prime filter on left nav present.
+     */
+    public void verifyAmazonPrimeFilterOnLeftNavPresent() {
+        waitForPageToLoad();
+        status.addIsDisplayed(primeBadgeOnLeftNav);
+        status.processStatus();
+    }
+
+    /**
+     * Verify first search result's price detail present.
+     */
+    public void verifyFirstResultPricePresent() {
+        firstResultPriceText.waitIsPresent();
+        status.addIsDisplayed(firstResultPriceText);
+        status.processStatus();
+    }
+
+    /**
+     * Verify first search result's prime badge present.
+     *     https://issues.amazon.com/AEECX-2165 - Because of this issue,
+     *     Checking the Prime Badge in the Search results not checking for first search result
+     */
+    public void verifySearchResultPrimeBadgePresent() {
+        searchResultPrimeBadge.waitIsPresent();
+        status.addIsDisplayed(searchResultPrimeBadge);
+        status.processStatus();
+    }
+
+    /**
+     * Verify first search result's prime promise message present.
+     */
+    public void verifyFirstResultPrimePromiseMessagePresent() {
+        status.addIsDisplayed(firstResultPrimePromiseMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify first search result's prime international delivery message present.
+     * @param freeInternationalShipMessage specific to a global store.
+     * @return boolean representing presence of prime shipping message in search page.
+     */
+    public boolean verifyFirstResultPrimeInternationalDeliveryMessagePresent(String freeInternationalShipMessage) {
+        firstResultPrimeInternationalDeliveryMessage.waitForElementToBeEnabled();
+        return new BasePageElement(driver, firstResultPrimeInternationalDeliveryMessage.getName(),
+                String.format(firstResultPrimeInternationalDeliveryMessage.getXPath(), freeInternationalShipMessage))
+                .isPresent();
+    }
+
+    /**
+     * Helps identify localized 'show results text' on left nav is present.
+     * @return presence of localized 'show results text' on left nav
+     */
+    public boolean isLeftNavLocalizedShowResultsTextPresent() {
+        return leftNavLocalizedShowResultsText.isPresent();
+    }
+
+    /**
+     * Helps identify the 'Eligible for shipping' present when left nav shows 'show results'.
+     * @return presence of 'Eligible for shipping text' when the lef nav shows 'show results text'.
+     */
+    public boolean isSearchShowResultsContextualEligibleTextPresent() {
+        return searchResultsWithKeyword.isPresent(5);
+    }
+
+    /**
+     * Helps identify localized 'departments' text on left nav is present.
+     * @param localizedLanguageDepartmentsText localized language departments text
+     * @return presence of localized 'Departments' on left nav
+     */
+    public boolean isLeftNavLocalizedDepartmentsTextPresent(String localizedLanguageDepartmentsText) {
+        return new BasePageElement(driver, leftNavLocalizedDepartmentsText.getName(),
+                String.format(leftNavLocalizedDepartmentsText.getXPath(), localizedLanguageDepartmentsText))
+                        .isPresent();
+        }
+
+    /**
+     * Verify Department Text is Present on the Lef Navigation after searching an item.
+     * @return presence of Department on left nav
+     */
+    public boolean isLeftDepartmentTextPresent() {
+        return leftNavDepartmentText.isPresent();
+    }
+
+     /**
+     * Helps to identify the 'Eligible for shipping' present when left nav shows 'Department'.
+     * @return presence of 'Eligible for shipping' when left nav shows 'Department'
+     */
+    public boolean isSearchResultsDepartmentContextualEligibleTextPresent() {
+        return searchResultsContextualEligibleText.isPresent();
+    }
+
+    /**
+     * Method to Get the localized 'show results' text on left nav.
+     * @return localized text of 'show results'
+     */
+    public String getLeftNavLocalizedShowResultsText() {
+        return leftNavLocalizedShowResultsText.getText();
+    }
+
+    /**
+     * Get's the localized 'departments' text on left nav.
+     * @param localizedLanguageDepartmentsText localized language departments text
+     * @return localized text of departments
+     */
+    public String getLeftNavLocalizedDepartmentsText(String localizedLanguageDepartmentsText) {
+        return new BasePageElement(driver, leftNavLocalizedDepartmentsText.getName(),
+                String.format(leftNavLocalizedDepartmentsText.getXPath(), localizedLanguageDepartmentsText)).getText();
+
+    }
+
+    /**
+     * Method to Get price symbol for the all Products displayed in Search results page.
+     * @return Price symbol string list
+     */
+    public List<String> getPriceSymbolListFromSearchPageResults() {
+        List<String> searchResultsPriceSymbolList = new ArrayList<String>();
+        List<PageElement> priceSymbolList = searchResultPriceSymbol.getElements();
+        for (int i = 0; i < priceSymbolList.size(); i++) {
+            searchResultsPriceSymbolList.add(i, priceSymbolList.get(i).getText());
+        }
+        return searchResultsPriceSymbolList;
+    }
+
+    /**
+     * Filter out search results by Amazon Global Store filter.
+     * @param sourceCountryCheckboxLabelName the source country's filter checkbox label name.
+     */
+    public void filterAmazonGlobalStoreOffers(String sourceCountryCheckboxLabelName) {
+        amazonGlobalStoreFilter.waitForElementToBeEnabled();
+        new BasePageElement(driver, amazonGlobalStoreFilter.getName() + "_" + sourceCountryCheckboxLabelName,
+                String.format(amazonGlobalStoreFilter.getXPath(), sourceCountryCheckboxLabelName)).click();
+    }
+
+    /**
+     * Filter out search results by Amazon Prime filter.
+     */
+    public void filterAmazonPrimeOffers() {
+        primeBadgeOnLeftNav.clickAndWait(searchResultsAsins);
+    }
+
+    /**
+     * Get first search result's price text, caller should be responsible to parse it.
+     * @return price text.
+     */
+    public String getFirstResultPriceText() {
+        verifyFirstResultPricePresent();
+        return firstResultPriceText.getText();
+    }
+
+    /**
+     * Help click on the first search result's price text.
+     */
+    public void clickOnFirstSearchResult() {
+        firstResultPriceText.click();
+    }
+
+    /**
+     * Get first search result's detail page link url.
+     * @return detail page url.
+     */
+    public String getFirstResultDetailPageUrl() {
+        return firstResultDetailPageLink.getElement().getAttribute("href");
+    }
+
+    /**
+     * Get second search result's detail page link url.
+     * @return detail page url.
+     */
+    public String getSecondResultDetailPageUrl() {
+        return secondResultDetailPageLink.getElement().getAttribute("href");
+    }
+
+    /**
+     * Get detail page url of a specific ASIN's search result
+     * @param asin asin value
+     * @return detail page url.
+     */
+    public String getDetailPageUrlOfSpecificASINSearchResult(String asin) {
+        return new BasePageElement(driver, detailPageLinkOfSpecificSearchResult.getName() + asin,
+                String.format(detailPageLinkOfSpecificSearchResult.getXPath(), asin)).getElement().getAttribute("href");
+    }
+
+    /**
+     * Check if free shipping message is present in search results page
+     * @return the presence
+     */
+    public boolean isFreeShippingMessagePresent() {
+        return freeShippingMessage.isPresent();
+    }
+
+    /**
+     * Method helps to get all lines of shipping benefit message in search results.
+     * @param eligibilityText eligibility text in Search.
+     * @return the shipping benefit message in search results
+     */
+    public String getShippingBenefitMessage(String eligibilityText) {
+        return new BasePageElement(driver, shippingBenefitMessageInSearch.getName(),
+        String.format(shippingBenefitMessageInSearch.getXPath(), eligibilityText)).getText();
+    }
+
+    /**
+     * Check if ShipsLocally filter present.
+     * @return boolean presence
+     */
+    public boolean isShipsLocallyCheckboxPresent() {
+        return shipsLocally.isPresent(3);
+    }
+
+    /**
+     * Verify SKALA inline featured(Ships Locally) widget is present or not.
+     * @return boolean 'true' if ShipsLocally widget present in search results page.
+     */
+    public boolean verifySkalaInlineFeaturedWidgetPresent() {
+        skalaInlineFeaturedWidget.waitIsPresent();
+        return skalaInlineFeaturedWidget.isPresent();
+    }
+
+    /**
+     * Method to click on the Ships Locally Checkbox.
+     */
+    public void clickOnShipsLocallyCheckbox() {
+        shipsLocally.clickAndWait(shipsFastFromText);
+    }
+
+    /**
+     * Verify Ships Fast From Text present in the Search Results.
+     */
+    public void verifyShipsFastFromTextPresent() {
+        status.addIsDisplayed(shipsFastFromText);
+        status.processStatus();
+    }
+
+    /**
+     * Get the Ships Fast From Text in the Search Results
+     * @return "Ships fast" message.
+     */
+    public String getShipsFastFromText() {
+        return shipsFastFromText.getText();
+    }
+
+
+    /**
+     * Verify global store badge is present in Search Results.
+     */
+    public void verifyGlobalStoreBadgePresent() {
+        searchResultGlobalStoreBadge.waitIsPresent();
+        status.addIsDisplayed(searchResultGlobalStoreBadge);
+        status.processStatus();
+    }
+
+    /**
+     * Get all message lines for a given asin in search result.
+     * @param asin by given asin.
+     * @return delivery message.
+     */
+    public List<String> getMessageLinesForItemInSearchResults(final String asin) {
+        return new BasePageElement(driver, String.format("%s-%s", deliveryMessage.getName(), asin),
+                String.format(deliveryMessage.getXPath(), asin)).getElements().stream()
+                .map(PageElement::getText).map(String::trim).collect(Collectors.toList());
+    }
+
+    /**
+     * Verify Search Pagination Container is Present .
+     */
+    public void verifySearchPaginationContainerPresent() {
+        status.addIsDisplayed(searchPaginationContainer);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Search Results Info Bar Present.
+     */
+    public void verifySearchInfoBarResultsSummaryPresent() {
+        status.addIsDisplayed(searchInfoBarResultsSummaryText);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Sort By DropDown List Present.
+     */
+    public void verifySearchSortByDropDownListPresent() {
+        status.addIsDisplayed(searchResultsSortByDropDownList);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Search Refinements Container is Present.
+     */
+    public void verifySearchRefinementsContainerPresent() {
+        waitForPageToLoad();
+        status.addIsDisplayed(searchRefinementsContainer);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Brand filter present.
+     */
+    public void verifyBrandFilterPresent() {
+        status.addIsDisplayed(searchRefinementsBrandsContainer);
+        status.processStatus();
+    }
+
+    /**
+     * Method to get Search Results elements.
+     * @return search results Elements.
+     */
+    public List<PageElement> getSearchResults() {
+        List<PageElement> searchResultsElements = new ArrayList<>();
+        if (searchResultsAsins.isPresent()) {
+            searchResultsElements = searchResultsAsins.getElements();
+        }
+        return searchResultsElements;
+        }
+
+    /**
+     * Fetch the Category marked in Bold in the left-Nav.
+     * @return the category which is Bold in left-nav
+     */
+    public String  getCategoryInTheLeftNavInBold() {
+        categoryInLeftNavSelectedInBold.waitForTextNotBlank(5);
+        return categoryInLeftNavSelectedInBold.getText();
+    }
+
+    /**
+     * Get price per unit text.
+     * @return price per unit block text.
+     */
+    public String getPricePerUnitText() {
+        return searchResultsPricePerUnitText.getText();
+    }
+
+    /**
+     * Method to get Sort By Option Selected By Default.
+     * @return Sort By Option Selected
+     */
+    public String getSortByOptionSelectedByDefault() {
+        return sortByListSelect.getSelectedOption();
+    }
+
+    /**
+     * Method to get Visible Text under Sort by List drop down list based on the value.
+     * @param sortByValue sortByValue to pass.
+     * @return Sort by Value Visible Text
+     */
+    public String getSortByListVisibleTextByValue(String sortByValue) {
+        return new BasePageElement(driver, sortByListOptions.getName() + "_" + sortByValue,
+                String.format(sortByListOptions.getXPath(),
+                        sortByValue)).getText();
+    }
+
+    /**
+     * Method to Sort the Search Results Page Based on the Available Sort By Option Value.
+     * @param sortByValue sortByValue to pass.
+     */
+    public void sortSearchResultsPageByValue(String sortByValue) {
+        new BasePageElement(driver, sortByListOptions.getName() + "_" + sortByValue,
+                String.format(sortByListOptions.getXPath(),
+                        sortByValue)).clickAndWait(searchResultsAsins);
+        waitForPageToLoad();
+        loadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to Get Product Image Title & click Product Image in Search Results Page.
+     * @return search results page first product title
+     */
+    public String clickAndGetFirstSearchResultsProductImage() {
+        PageElement searchResultsFirstItem = searchResultsProductImage.getElements().stream().findFirst().get();
+        String firstSearchResultsProductTitle = searchResultsFirstItem.getValue("alt");
+        searchResultsFirstItem.click();
+        return firstSearchResultsProductTitle;
+    }
+
+    /**
+     * Get the Fast Track message.
+     * @param asin by given asin.
+     * @return Fast Track message.
+     */
+    public String getFastTrackMessage(final String asin) {
+        return new BasePageElement(driver, String.format("%s-%s", fastTrackMessage.getName(), asin),
+                String.format(fastTrackMessage.getXPath(), asin)).getText();
+    }
+
+    /**
+     * Method to Get & click Product Title in Search Resuts Page.
+     * @return search results page firt product title
+     */
+    public String clickAndGetFirstSearchResultsProductTitle() {
+        searchResultsProductTitle.waitForElementToBeEnabled();
+        PageElement searchResultsFirstItem = searchResultsProductTitle.getElements().stream().findFirst().get();
+        String firstSearchResultsProductTitle = searchResultsFirstItem.getText();
+        searchResultsFirstItem.click();
+        return firstSearchResultsProductTitle;
+    }
+
+    /**
+     * Get the In-Stock message.
+     * @return return true if the instock message presents.
+     */
+    public boolean verifyInStockMessagePresent() {
+        inStockMessage.waitForTextNotBlank(5);
+        PageElement firstSearchResultsInStockMessage = inStockMessage.getElements().stream().findFirst().get();
+        return firstSearchResultsInStockMessage.isPresent();
+    }
+
+    /**
+     * Method to click first department link on left nav in Search Resuts Page.
+     */
+    public void clickFirstDepartmentLinkOnLeftNav() {
+        PageElement leftNavFirstAvailableDepartmentLink = leftNavAvailableDepartmentsLink.getElements().
+                stream().findFirst().get();
+        leftNavFirstAvailableDepartmentLink.click();
+    }
+
+    /**
+     * Method to Verify Search Refinements Present By Refinement id.
+     * @param refinmentID refinementID to pass.
+     */
+    public void verifySearchRefinementsByIdPresent(String refinmentID) {
+        status.addIsEnabled(new BasePageElement(driver, searchRefinementsByRefinementID.getName()
+                + "_" + refinmentID, String.format(searchRefinementsByRefinementID.getXPath(),
+                        refinmentID)));
+        status.processStatus();
+    }
+
+    /**
+     * Method to check if Search Refinement By Refinement id is not Present
+     * @param refinmentID refinementID to pass.
+     */
+    public void verifySearchRefinementsByIdNotPresent(String refinmentID) {
+        status.addIsHiddenOrMissing(new BasePageElement(driver, searchRefinementsByRefinementID.getName()
+                + "_" + refinmentID, String.format(searchRefinementsByRefinementID.getXPath(),
+                refinmentID)));
+        status.processStatus();
+    }
+
+    /**
+     * Method to check if Search Refinements is present By Refinement Name in Browse / Departments page.
+     * @param refinementName refinementName could be 'Prime' or 'Free Shipping' etc.
+     * @return presence
+     */
+    public boolean isBrowsePageSearchRefinementsByNamePresent(String refinementName) {
+        waitForPageToLoad();
+        return (new BasePageElement(driver, browsePageSearchRefinementsByRefinementName.getName()
+                + "_" + refinementName, String.format(browsePageSearchRefinementsByRefinementName.getXPath(),
+                refinementName))).isPresent();
+    }
+
+    /**
+     * Method to Click 'Clear' button in search refinement filter
+     */
+    public void clickSearchRefinementFilterClearButton() {
+        searchRefinementFilterClearButton.clickAndWait(searchResultsAsins);
+    }
+
+    /**
+     * Method to verify the Jumpin Free shipping refinement in Departments search results refinement is present
+     */
+    public void verifyFSSearchRefinementFilterInDepartmentsPresent() {
+        status.addIsEnabled(fsSearchRefinementFilterInDepartments);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Click the Jumpin Free shipping refinement in Departments search results refinement
+     */
+    public void clickFSSearchRefinementFilterInDepartments() {
+        fsSearchRefinementFilterInDepartments.clickAndWait(searchResultsAsins);
+    }
+
+    /**
+     * Verify more buying choices link Present.
+     */
+    public void verifyMoreBuyingChoicesLinkPresent() {
+        status.addIsEnabled(moreBuyingChoicesLink);
+        status.processStatus();
+    }
+
+    /**
+     * Method to click the Pagination in the search results page.
+     * @param buttonPosition to click. Here the button position can be like last for the Next button,
+     * and normal for the button 1
+     */
+    public void clickPaginationByButtonPosition(String buttonPosition) {
+        new BasePageElement(driver, searchPaginationContainerButtonLink.getName() + "_" + buttonPosition,
+                String.format(searchPaginationContainerButtonLink.getXPath(), buttonPosition)).
+        clickAndWait(searchPaginationContainer);
+        scrollToElement(searchPaginationContainer);
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method to click the Pagination in the search results page by page number.
+     * @param pageNum pageNum to navigate
+     */
+    public void clickPaginationByPageNum(int pageNum) {
+        new BasePageElement(driver, searchPaginationContainer.getName() + "_" + pageNum,
+                String.format(searchPaginationContainer.getXPath() + "[contains(., '%d')]", pageNum))
+                .clickAndWait(searchPaginationContainer);
+        scrollToElement(searchPaginationContainer);
+        waitForPageToLoad();
+    }
+
+    /**
+     * Verify Merchandise Content Card present.
+     */
+    public void verifyMerchandiseContentCardPresent() {
+        status.addIsDisplayed(merchandiseContentCardTitle);
+        status.processStatus();
+    }
+
+    /**
+     * Method to fetch Merchandise Content title from search page.
+     * @return Title text of Merchandised content.
+     */
+    public String getMerchandiseContentTitle() {
+        return merchandiseContentCardTitle.getText();
+    }
+
+    /**
+     * Verify Customer Reviews present.
+     */
+    public void verifyCustomerReviewsPresent() {
+        status.addIsDisplayed(searchResultsCustomerReviews);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Best Seller Badge Present.
+     */
+    public void verifyBestSellerBadgePresent() {
+        status.addIsDisplayed(searchResultsBestSellerBadge);
+        status.processStatus();
+    }
+
+    /**
+    * Method to Get 'No Search Results Found' Text.
+    * @param localizedText localized Text to pass
+    * @return 'No Search Results found' text
+    */
+   public String getNoSearchResultsFoundText(String localizedText) {
+       return new BasePageElement(driver, noSearchResultsFoundText.getName() + "_" + localizedText,
+               String.format(noSearchResultsFoundText.getXPath(), localizedText)).getText();
+   }
+
+    /**
+     * Verify Search Pagination Container is Present.
+     * @return Pagination status either disabled or selected
+     */
+    public List<String> getSearchResultsPaginationStatus() {
+        List<PageElement> totalPaginationSize = searchPaginationContainer.getElements();
+        List<String> paginationStatus = new ArrayList<String>();
+        for (int i = 0; i < totalPaginationSize.size(); i++) {
+            paginationStatus.add(totalPaginationSize.get(i).getValue("class"));
+        }
+        return paginationStatus;
+    }
+
+     /**
+     * Fetch the category and search keyword in the search results count row.
+     * @return the category and search keyword in the search results count row
+     */
+    public String getSearchResultsCountRowText() {
+        searchResultsCountRow.waitForTextNotBlank(5);
+        return searchResultsCountRow.getText();
+    }
+
+    /**
+     * Get the In-Stock message.
+     * @return instock message.
+     */
+    public String getInStockMessage() {
+        inStockMessage.waitForTextNotBlank(5);
+        PageElement firstSearchResultsInStockMessage = inStockMessage.getElements().stream().findFirst().get();
+        return firstSearchResultsInStockMessage.getText();
+    }
+
+    /**
+     * Method to select Search Refinements Present By Refinement id.
+     * @param refinementID refinementID to pass.
+     */
+    public void clickSearchRefinementByRefinementID(String refinementID) {
+        BasePageElement searchRefinementFilter = new BasePageElement(driver,
+                searchRefinementSelectListByRefinementID.getName() + "_" + refinementID,
+                String.format(searchRefinementSelectListByRefinementID.getXPath(), refinementID, refinementID));
+        searchRefinementFilter.click();
+        loadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to get Format Text(Blue-Ray, DVD, etc)for Media Search results.
+     * @param formatText FormatText to pass.
+     * @return format Text
+     */
+    public String getSearchResultsMediaFormatText(String formatText) {
+        return new BasePageElement(driver, searchResultsMediaFormatLink.getName()
+                + "_" + formatText, String.format(searchResultsMediaFormatLink.getXPath(),
+                        formatText)).getText();
+    }
+
+    /**
+     * Verify Availability Present on the search results page.
+     * @param placeholder currentlyUnavailable localized value
+     * @return presence of currently not available
+     */
+    public boolean isAvailabilityMessagePresent(String placeholder) {
+        return new BasePageElement(driver, searchResultsAvailabilityMessage.getName() + "_" + placeholder,
+                String.format(searchResultsAvailabilityMessage.getXPath(), placeholder)).isPresent();
+    }
+
+    /**
+     * Filter out search results by Amazon Prime International filter on left nav.
+     * @return true
+     */
+    public boolean filterAmazonPrimeInternationalOffers() {
+        primeBadgeInternationalOnLeftNav.clickAndWait(searchResultsAsins);
+        return true;
+   }
+
+    /**
+     * Verify Prime Badge present in search result page
+     * @return prime badge is present
+     */
+    public boolean isSearchPrimeBadgePresent() {
+        searchResultPrimeBadge.waitForElementToBeEnabled();
+        return searchResultPrimeBadge.isPresent();
+    }
+
+    /**
+     * Method to get IFD Inclusive price with country specific decimal separator
+     * @param currencyDecimalSeparator - country specific decimal separator in item price
+     * @return IFD inclusive price text
+     */
+    public String getIFDInclusivePrice(String currencyDecimalSeparator) {
+      return new BasePageElement(driver, firstResultPriceText.getName(),
+      String.format(firstResultPriceText.getXPath(), currencyDecimalSeparator)).getText().
+      replaceAll("[\\r\\n]+", currencyDecimalSeparator);
+   }
+
+    /**
+     * Verify deep check promise present in search result page
+     * @param asin to Parameterized for xpath
+     * @return deep check promise
+     */
+    public boolean isAGSDeepCheckPromisePresent(String asin) {
+        return new BasePageElement(driver, deepCheckPromiseInSearch.getName(),
+                deepCheckPromiseInSearch.getXPath().replaceAll("%s", asin)).isPresent();
+    }
+
+    /**
+     * Method to get Deep Check Promise count in search results page
+     * @param asin to Parameterized for xpath
+     * @return Duplicate deep check promise count
+     */
+    public int getDeepCheckPromiseCountInSearch(String asin) {
+        return new BasePageElement(driver, deepCheckPromiseInSearch.getName(),
+                deepCheckPromiseInSearch.getXPath().replaceAll("%s", asin)).getElements().size();
+    }
+
+    /**
+     * Method to get ASIN count
+     * @return ASIN count in search results page
+     */
+    public int getASINCountInSearch() {
+        return searchResultsProductTitle.getElements().size();
+    }
+
+    /**
+     * Method to get Deep check promise in search
+     * @return deep check promise text
+     */
+    public String getDeepCheckPromiseInSearch() {
+        agsDeepCheckPromiseInSearchForKeywords.waitForElementToBeEnabled();
+        return agsDeepCheckPromiseInSearchForKeywords.getText();
+    }
+
+    /**
+     * Method to click AOD Link in search results page.
+     */
+    public void clickAODLinkInSearchResultsPage() {
+        moreBuyingChoicesLink.waitIsPresent();
+        moreBuyingChoicesLink.click();
+    }
+
+    /**
+     * Method to get product title from Search results page.
+     * @return product title of the ASIN.
+     */
+    public String getSearchResultsProductTitle() {
+        return searchResultsProductTitle.getText();
+    }
+
+    /**
+     * Verify deep check promise present in search result page
+     * @return deep check promise
+     */
+    public boolean isAGSDeepCheckPromisePresentInSearchForKeywordSearch() {
+        agsDeepCheckPromiseInSearchForKeywords.waitForElementToBeEnabled();
+        return agsDeepCheckPromiseInSearchForKeywords.isPresent();
+    }
+
+    /**
+     * Method to verify delivery price is present in search page
+     * @return delivery price
+     */
+    public boolean isdeliverypricePresentInSearchPage() {
+        deliveryPriceInSearchForGSOffer.waitForElementToBeEnabled();
+        return deliveryPriceInSearchForGSOffer.isPresent();
+    }
+
+    /**
+     * Method to click expand all button in search results page
+     */
+    public void clickExpandAllButton() {
+        serachRefinementDropdown.waitForElementToBeEnabled();
+        if (serachRefinementDropdown.isPresent()) {
+            if (!disabledExpandAllButton.isPresent()) {
+                expandAllButton.waitForElementToBeEnabled();
+                expandAllButton.click();
+            }
+        }
+    }
+
+    /**
+     * Method to verify free shipping message in search page.
+     * @param freeShippingMessage to Parameterized for Xpath.
+     * @return Free Shipping Message text.
+     */
+    public Boolean isAgsFreeShippingMessageIsPresentInSearch(String freeShippingMessage) {
+        return new BasePageElement(driver, agsFreeShippingMessageInSearch.getName(),
+               agsFreeShippingMessageInSearch.getXPath().replaceAll("%s", freeShippingMessage)).isPresent();
+    }
+
+    /**
+     * Verify Free Shipping Message with Threshold present in the Search Results.
+     *  @return Free Shipping Message with Threshold present as String.
+     */
+    public String getAgsFreeShippingMessageWithThresholdText() {
+        String capFSTThresholdText = agsFreeShippingWithThresholdMessage.getText();
+        return capFSTThresholdText;
+    }
+
+    /**
+     * Method to get Deep Check Promise text in search results page.
+     * @param asin to Parameterized for xpath.
+     * @return deep check promise text.
+     */
+    public String getDeepCheckPromiseTextInSearch(String asin) {
+        return new BasePageElement(driver, deepCheckPromiseInSearch.getName(),
+                deepCheckPromiseInSearch.getXPath().replaceAll("%s", asin)).getText();
+    }
+
+    /**
+     * Method to get Seller refinement text in search page
+     * @return Seller refinement text
+     */
+    public String getSellerNameTextInRefinement() {
+        sellerRefinements.waitForElementToBeEnabled();
+        return sellerRefinements.getText();
+    }
+}
