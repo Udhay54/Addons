@@ -1,0 +1,366 @@
+package com.amazon.aeeqa.ui.pagemodels.youraddress;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Your Address Page Model.
+ *
+ * @author vllaks
+ */
+@PageName("your_address")
+public class YourAddressPage extends BasePageModel {
+
+    @Locator("ADDRESS_BLOCK")
+    private static BasePageElement addressBlock;
+
+    @Locator("ADDRESS_BLOCK_FULL_NAME_BY_INDEX")
+    private static BasePageElement addressBlockFullNameByIndex;
+
+    @Locator("ADD_NEW_ADDRESS_LINK")
+    private static BasePageElement addNewAddressLink;
+
+    @Locator("DELETE_ADDRESS_LINK")
+    private static BasePageElement deleteAddressLink;
+
+    @Locator("DELETE_ADDRESS_CONFIRM_BUTTON")
+    private static BasePageElement deleteAddressConfirmButton;
+
+    @Locator(value = "ADDRESS_ALERT_DELETE_HEADING_MESSAGE", stringId = "yaab-delete-address-success-title")
+    private static BasePageElement deleteAddressSuccessTitle;
+
+    @Locator(value = "ADDRESS_ALERT_ADD_HEADING_MESSAGE", stringId = "yaab-enter-address-success-title")
+    private static BasePageElement addNewAddressSuccessTitle;
+
+    @Locator("EDIT_ADDRESS_LINK")
+    private static BasePageElement editAddressLink;
+
+    @Locator("ADD_STORE_ADDRESS_BUTTON")
+    private static BasePageElement addStoreAddressButton;
+
+    @Locator("STORE_ADDRESS_AVAILABLE_LIST")
+    private static BasePageElement storeAddressAvailableList;
+
+    @Locator("STORE_SEARCH_BUTTON")
+    private static BasePageElement storeSearchButton;
+
+    @Locator("PICK_UP_POINT_LINK")
+    private static BasePageElement pickUpPointLink;
+
+    @Locator("SEARCH_VIA_ADDRESS_TEXT_BOX")
+    private static BasePageElement searchViaAddressTextBox;
+
+    @Locator("AMAZON_PICK_UP_POINT_HEADING_TEXT")
+    private static BasePageElement amazonPickUpPointHeadingText;
+
+    @Locator("SET_AS_DEFAULT_ADDRESS_LINK")
+    private static BasePageElement setAsDefaultAddressLink;
+
+    @Locator("SET_AS_DEFAULT_ADDRESS_LINK_BY_ADDRESS_NAME")
+    private static BasePageElement setAsDefaultAddressLinkByAddressName;
+
+    @Locator(value = "SET_AS_DEFAULT_ADDRESS_SUCCESS_MESSAGE", stringId = "yaab-set-default-address-success-title")
+    private static BasePageElement setAsDefaultAddressSuccessMessage;
+
+    @Locator("DEFAULT_SHIPPING_ADDRESS_ICON_BY_ADDRESS_NAME")
+    private static BasePageElement defaultShippingAddressIconByAddressName;
+
+    @Locator("OPEN_ORDERS_CHANGE_ADDRESS_LINK")
+    private static BasePageElement openOrdersChangeAddressLink;
+
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    @Locator("AMAZON_PICK_UP_ADDRESS_NAME")
+    private static BasePageElement amazonPickUpPointAddressName;
+
+    @Locator("YOUR_ADDRESS_TEXT_IN_BREADCRUMB")
+    private static BasePageElement yourAddressTextInBreadcrumb;
+
+    @Locator("YOUR_ACCOUNT_TEXT_IN_BREADCRUMB")
+    private static BasePageElement yourAccountTextInBreadcrumb;
+
+    @Locator("BREADCRUMB_DIVIDER")
+    private static BasePageElement breadcrumbDivider;
+
+    @Locator("YOUR_ADDRESS_PAGE_HEADER")
+    private static BasePageElement yourAddressPageHeader;
+
+    private AddEditAddressWidget addressWidget;
+
+    private AddPickUpPointWidget addPickPointWidget;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public YourAddressPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(addNewAddressLink);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Click New Address Link.
+     */
+    public void clickNewAddressLink() {
+        addNewAddressLink.click();
+        addNewAddressLink.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to Click Edit Address Link.
+     * @param index should start from 1
+     * @param addressNameToEdit address name to update
+     */
+    public void editExistingAddress(int index, String addressNameToEdit) {
+        BasePageElement editAddress = new BasePageElement(driver,
+                editAddressLink.getName() + "_" + index,
+                String.format(editAddressLink.getXPath(), index));
+        editAddress.click();
+        getAddressWidget().setAddressFullName(addressNameToEdit);
+        getAddressWidget().clickAddAddressButton();
+    }
+
+    /**
+     * Method to delete Address link by Index Number.
+     *
+     * @param index should start from 1
+     */
+    public void deleteExistingAddress(int index) {
+        BasePageElement deleteAddress = new BasePageElement(driver,
+                deleteAddressLink.getName() + "_" + index,
+                String.format(deleteAddressLink.getXPath(), index));
+        deleteAddress.clickAndWaitWithRetries(deleteAddressConfirmButton);
+        deleteAddressConfirmButton.clickAndWaitForDisappear(deleteAddressConfirmButton);
+    }
+
+    /**
+     * Get full name of Address by given index.
+     *
+     * @param index should start from 0
+     * @return full name
+     */
+    public String getAddressFullNameByIndex(int index) {
+        waitForPageToLoad();
+        BasePageElement addressFullName = new BasePageElement(driver,
+                addressBlockFullNameByIndex.getName() + "_" + index,
+                String.format(addressBlockFullNameByIndex.getXPath(), index));
+        return addressFullName.getText();
+    }
+
+    /**
+     * Verify Delete Address Success Message present.
+     * @return returns Message after deleting address
+     */
+    public boolean isDeleteAddressSuccessMessagePresent() {
+        return deleteAddressSuccessTitle.isPresent();
+    }
+
+    /**
+     * Verify Add New Address Success Message present.
+     * @return returns Message after adding new address
+     */
+    public boolean isNewAddressSuccessMessagePresent() {
+        return addNewAddressSuccessTitle.isPresent();
+    }
+
+    /**
+     * Verify Set As Default Address Success Message present.
+     */
+    public void verifySetAsDefaultSuccessMessage() {
+        status.addIsDisplayed(setAsDefaultAddressSuccessMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Method to click Set as default address link and wait for success message.
+     * @param addressName address Name to pass to check the link present
+     */
+    public void clickSetAsDefaultAddressLink(String addressName) {
+        BasePageElement defaultAddressLink = new BasePageElement(driver,
+                setAsDefaultAddressLinkByAddressName.getName() + "_" + addressName,
+                String.format(setAsDefaultAddressLinkByAddressName.getXPath(), addressName));
+        defaultAddressLink.clickAndWait(setAsDefaultAddressSuccessMessage);
+    }
+
+    /**
+     * Verify Set As Default Address Link Present.
+     * @param addressName address Name to pass to check the link present
+     * @return returns true if the link present for mentioned address
+     */
+    public boolean isSetAsDefaultAddressLinkPresent(String addressName) {
+        BasePageElement defaultAddressLink = new BasePageElement(driver,
+                setAsDefaultAddressLinkByAddressName.getName() + "_" + addressName,
+                String.format(setAsDefaultAddressLinkByAddressName.getXPath(), addressName));
+        return defaultAddressLink.isPresent();
+    }
+
+    /**
+     * Verify default Shipping Address icon present.
+     * @param addressName address Name to pass to check the Icon present
+     * @return returns true if the default Shipping Address Icon Present
+     */
+    public boolean isDefaultShippingAddressIconPresent(String addressName) {
+        BasePageElement defaultShippingAddressIcon = new BasePageElement(driver,
+                defaultShippingAddressIconByAddressName.getName() + "_" + addressName,
+                String.format(defaultShippingAddressIconByAddressName.getXPath(), addressName));
+        return defaultShippingAddressIcon.isPresent();
+    }
+
+    /**
+     * Verify change orders for open orders link present and click.
+     */
+    public void verifyChangeAddressOpenOrdersLinkPresentAndClick() {
+        status.addIsDisplayed(openOrdersChangeAddressLink);
+        status.processStatus();
+        openOrdersChangeAddressLink.click();
+    }
+
+    /**
+     * Method to Click Pick Up Point Link.
+     */
+    public void clickPickUpPointLink() {
+        pickUpPointLink.clickAndWait(searchViaAddressTextBox);
+    }
+
+    /**
+     * Method to Search Pick up Point by ZipCode/Address Name.
+     * @param searchText zip code/AddressName to search PUP
+     */
+    public void searchPUPByZipCodeOrAddressName(String searchText) {
+        searchViaAddressTextBox.setText(searchText);
+        storeAddressAvailableList.isPresent(5);
+        storeAddressAvailableList.clickAndWaitForDisappear(loadingSpinner);
+        addStoreAddressButton.isPresent(5);
+        status.addIsDisplayed(addStoreAddressButton);
+        status.processStatus();
+    }
+
+    /**
+     * Method to input Pick up Point by ZipCode/Address.
+     * @param searchText zip code/AddressName to search PUP
+     */
+    public void inputZipCodeOrAddressName(String searchText) {
+        searchViaAddressTextBox.setText(searchText);
+    }
+
+    /**
+     * Verify Search Via Address Text Box Present.
+     */
+    public void verifySearchViaAddressTextBoxPresent() {
+        status.addIsDisplayed(searchViaAddressTextBox);
+        status.processStatus();
+    }
+
+    /**
+     * Counting the existing address.
+     * @return returns no of existing address
+     */
+    public int getExistingAddressCount() {
+        waitForPageToLoad();
+        return addressBlock.countElements();
+    }
+
+    /**
+     * Counting the set as default address link.
+     * @return returns no of set as default address link
+     */
+    public int getSetAsDefaultAddressLinkCount() {
+        return setAsDefaultAddressLink.countElements();
+    }
+
+    /**
+     * Method to Click Add Pick Up Store Address Button.
+     */
+    public void clickAddPickUpStoreAddressButton() {
+        addStoreAddressButton.clickAndWait(addNewAddressSuccessTitle);
+    }
+
+    /**
+     * Verify Amazon Pick Up Point Heading Text Present on Adding New Address.
+     *
+     * @param headingText Localized String Value
+     */
+    public void verifyAmazonPickUpPointHeadingTextPresent(String headingText) {
+        BasePageElement pickUpPointHeadingText = new BasePageElement(driver,
+                amazonPickUpPointHeadingText.getName() + "_" + headingText,
+                String.format(amazonPickUpPointHeadingText.getXPath(), headingText));
+         status.addIsDisplayed(pickUpPointHeadingText);
+         status.processStatus();
+    }
+
+    /**
+     * Get full name of Address by given index.
+     * @return full name
+     */
+    public String getAmazonPickUpPointAddressFullName() {
+        waitForPageToLoad();
+        return amazonPickUpPointAddressName.getText();
+    }
+
+    /**
+     * Get AddEditAddressWidget instance.
+     * @return AddEditAddressWidget instance.
+     */
+    public AddEditAddressWidget getAddressWidget() {
+        if (addressWidget == null) {
+            addressWidget = new AddEditAddressWidget(driver);
+        }
+        return addressWidget;
+    }
+
+    /**
+     * Get AddPickPointWidget instance.
+     * @return AddPickUpPointWidget instance.
+     */
+    public AddPickUpPointWidget getPickUpPointWidget() {
+        if (addPickPointWidget == null) {
+            addPickPointWidget = new AddPickUpPointWidget(driver);
+        }
+        return addPickPointWidget;
+    }
+
+    /**
+     * Get your address page breadcrumb in your address page
+     * @return your address breadcrumb text
+     */
+    public String getYourAddressTextInBreadcrumb() {
+        return yourAddressTextInBreadcrumb.getText();
+    }
+
+    /**
+     * Get your account page breadcrumb in your address page
+     * @return your account breadcrumb text
+     */
+    public String getYourAccountTextInBreadcrumb() {
+        return yourAccountTextInBreadcrumb.getText();
+    }
+
+    /**
+     * Method helps to verify Breadcrumb divider in your address page
+     */
+    public void verifyBreadcrumbDividerIsDisplayed() {
+        status.addIsDisplayed(breadcrumbDivider);
+        status.processStatus();
+    }
+
+    /**
+     * Get your address page header
+     * @return your address page header text
+     */
+    public String getYourAddressHeading() {
+        return yourAddressPageHeader.getText();
+    }
+}
