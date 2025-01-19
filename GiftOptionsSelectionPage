@@ -1,0 +1,141 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Checkout - Gift Options Selection Page
+ *
+ * @author shrumand
+ */
+@PageName("checkout.gosp")
+public class GiftOptionsSelectionPage extends BasePageModel {
+
+    @Locator("GIFT_OPTIONS_GIFT_BAG_CHECKBOX")
+    private static BasePageElement giftOptionsGiftBagCheckbox;
+
+    @Locator("SAVE_GIFT_OPTIONS_BUTTON")
+    private static BasePageElement saveGiftOptionsButton;
+
+    @Locator("CONTINUE_TO_ORDER_SUMMARY_PAGE_BUTTON")
+    private static BasePageElement continueToOrderSummaryPageButton;
+
+    @Locator("PRODUCT_TITLE_BY_INDEX_NUMBER")
+    private static BasePageElement productTitleByIndexNumber;
+
+    @Locator("PRODUCT_IMAGE_BY_INDEX_NUMBER")
+    private static BasePageElement productImageByIndexNumber;
+
+    @Locator("GIFT_WRAP_PRICE_BY_INDEX_NUMBER")
+    private static BasePageElement giftWrapPriceByIndexNumber;
+
+    @Locator("GIFT_MESSAGE_LENGTH_WARNING_ALERT_TEXT_BY_INDEX_NUMBER")
+    private static BasePageElement giftMessageLengthWarningAlertTextByIndexNumber;
+
+    @Locator("GIFT_MESSAGE_REMAINING_CHAR_AND_LINES_MESSAGE_TEXT")
+    private static BasePageElement giftMessageRemainingCharAndLinesMsgText;
+
+    @Locator("GIFT_MESSAGE_CHARACTER_AND_LINES_MAX_COUNT_TEXT")
+    private static BasePageElement giftMessageCharAndLinesMaxCountText;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public GiftOptionsSelectionPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Click gift bag checkox in gift options selection
+     */
+    public void clickGiftOptionGiftBagSelection() {
+        giftOptionsGiftBagCheckbox.waitForElementToBeEnabled();
+        giftOptionsGiftBagCheckbox.clickAndWait(saveGiftOptionsButton);
+    }
+
+    /**
+     * Click save gift options
+     */
+    public void clickSaveGiftOptions() {
+        saveGiftOptionsButton.click();
+    }
+
+    /**
+     * Method to get the no of continue button
+     * @return no of continue button
+     */
+    public int getContinueToOrderSummaryPageButtonCount() {
+        return continueToOrderSummaryPageButton.getElements().size();
+    }
+
+    /**
+     * Is Product Image Present by Index Number
+     * @param itemIndexNumber item index number starts with 0
+     * @return true if the product image present
+     */
+    public boolean isPresentProductImageByItemIndexNumber(int itemIndexNumber) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", productImageByIndexNumber.getName(), itemIndexNumber),
+                String.format(productImageByIndexNumber.getXPath(), itemIndexNumber, itemIndexNumber)).isPresent();
+    }
+
+    /**
+     * Get Gift Wrap Price  by Index Number
+     * @param itemIndexNumber item index number starts with 0
+     * @return Gift Wrap Price
+     */
+    public String getGiftWrapPrice(int itemIndexNumber) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", giftWrapPriceByIndexNumber.getName(), itemIndexNumber),
+                String.format(giftWrapPriceByIndexNumber.getXPath(), itemIndexNumber, itemIndexNumber)).getText();
+    }
+
+    /**
+     * Is Message Length Warning Present by Index Number
+     * @param itemIndexNumber item index number starts with 0
+     * @return true if the product title present
+     */
+    public boolean isPresentMessageLengthWarningTextByItemIndexNumber(int itemIndexNumber) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", giftMessageLengthWarningAlertTextByIndexNumber.getName(), itemIndexNumber),
+                String.format(giftMessageLengthWarningAlertTextByIndexNumber.getXPath(), itemIndexNumber,
+                        itemIndexNumber)).isPresent();
+    }
+
+    /**
+     * Is Product Title Present by Index Number
+     * @param itemIndexNumber item index number starts with 0
+     * @return true if the product title present
+     */
+    public boolean isPresentProductTitleByItemIndexNumber(int itemIndexNumber) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", productTitleByIndexNumber.getName(), itemIndexNumber),
+                String.format(productTitleByIndexNumber.getXPath(), itemIndexNumber, itemIndexNumber)).isPresent();
+    }
+
+    /**
+     * Get Gift Message Character or Lines Message (E.g. Remaining character or Remaining lines) by counter type
+     * @param counterType here the counter type be either chars or lines
+     * @return count text
+     */
+    public String getGiftMessageCharacterOrLinesMessageText(String counterType) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", giftMessageRemainingCharAndLinesMsgText.getName(), counterType),
+                String.format(giftMessageRemainingCharAndLinesMsgText.getXPath(), counterType, counterType)).getText();
+    }
+
+    /**
+     * Get Gift Message Character or Lines count by counter type
+     * @param counterType here the counter type be either chars or lines
+     * @return count text
+     */
+    public String getGiftMessageCharacterOrLinesCountText(String counterType) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", giftMessageCharAndLinesMaxCountText.getName(), counterType),
+                String.format(giftMessageCharAndLinesMaxCountText.getXPath(), counterType, counterType)).getText();
+    }
+}
