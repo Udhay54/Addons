@@ -1,0 +1,1235 @@
+package com.amazon.aeeqa.ui.pagemodels.yourorders;
+
+import com.amazon.aeeqa.ui.helper.StringDebuggerHelper;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.util.RetrySteps;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Your Orders Page Model.
+ *
+ * @author vllaks
+ */
+@PageName("your_orders")
+public class YourOrdersPage extends BasePageModel {
+
+    @Locator("ORDERS_TAB")
+    private static BasePageElement ordersTab;
+
+    // By text
+    @Locator("ORDER_TAB_BY_TITLE")
+    private static BasePageElement orderTabByTitle;
+
+    // Order Search Block - UI Elements
+    @Locator("SEARCH_ORDERS_BOX")
+    private static BasePageElement searchOrdersBox;
+
+    @Locator("SEARCH_ORDERS_BUTTON")
+    private static BasePageElement searchOrdersButton;
+
+    @Locator(value = "SEARCH_ORDERS_BOX_INLINE_TEXT", stringId = "yo-search-placeholder")
+    private static BasePageElement searchOrdersBoxInlineText;
+
+    @Locator("ORDER_FILTER_DROPDOWN")
+    private static BasePageElement orderFilterDropdown;
+
+    @Locator(value = "ORDER_BLOCK_YOUR_ORDERS_PAGE")
+    private static BasePageElement orderBlockYourOrdersPage;
+
+    @Locator(value = "CANCELLED_ORDER_BLOCK_YOUR_ORDERS_PAGE", stringId = "yo-cancelled-order-status")
+    private static BasePageElement cancelledOrderBlockYourOrdersPage;
+
+    // Order Search Results Page - UI Elements
+    @Locator(value = "TITLE_ON_ORDER_SEARCH_RESULTS", stringId = "yo-search-results")
+    private static BasePageElement titleOnOrderSearchResults;
+
+    @Locator("SUB_HEADER_LABEL_ON_ORDER_SEARCH_RESULTS")
+    private static BasePageElement subHeaderLabelOnOrderSearchResults;
+
+    @Locator("SEARCH_RESULTS_ORDER_BLOCK")
+    private static BasePageElement searchResultsOrderBlock;
+
+    @Locator(value = "NO_RESULTS_FOUND_MESSAGE_ORDER_SEARCH_RESULTS", stringId = "yo-no-search-results")
+    private static BasePageElement noResultsFoundMessageOnOrderSearchResults;
+
+    @Locator(value = "SEARCH_SUGGESTION_ON_ORDER_SEARCH_RESULTS", stringId = "yo-can-search-by-attributes")
+    private static BasePageElement searchSuggestionOnOrderSearchResults;
+
+    @Locator(value = "NO_ORDERS_IN_PAST_THREE_MONTHS_LABEL",
+            stringId = {"ya-css-past-3-months", "yo-no-orders-placed-in"})
+    private static BasePageElement noOrdersInPastThreeMonthsLabel;
+
+    // Top Banner - Orders Block YO Page  - UI Elements
+    @Locator(value = "ORDER_DETAILS_LINK", stringId = "yo-view-order-details")
+    private static BasePageElement orderDetailsLink;
+
+    @Locator(value = "ORDER_PLACED_LABEL", stringId = "yo-order-date")
+    private static BasePageElement orderPlacedLabel;
+
+    @Locator("ORDER_DATE")
+    private static BasePageElement orderDate;
+
+    @Locator(value = "TOTAL_LABEL", stringId = "yo-order-total")
+    private static BasePageElement totalLabel;
+
+    @Locator("TOTAL_ORDER_VALUE")
+    private static BasePageElement totalOrderValue;
+
+    @Locator(value = "SHIP_TO_LABEL", stringId = "yo-ship-to")
+    private static BasePageElement shipToLabel;
+
+    @Locator("SHIP_TO_NAME")
+    private static BasePageElement shipToName;
+
+    @Locator(value = "ORDER_NUMBER_LABEL", stringId = "yo-order-number")
+    private static BasePageElement orderNumberLabel;
+
+    @Locator("ORDER_ID_VALUE")
+    private static BasePageElement orderIdValue;
+
+    // Orders Block - lower section - UI Elements
+    @Locator("ITEM_IMAGE")
+    private static BasePageElement itemImage;
+
+    @Locator("ITEM_IMAGE_LINK")
+    private static BasePageElement itemImageLink;
+
+    @Locator("ITEM_LINK")
+    private static BasePageElement itemLink;
+
+    @Locator(value = "SOLD_BY_TEXT", stringId = "yo_sold_by")
+    private static BasePageElement soldByText;
+
+    // Order details page, Invoice - UI Elements
+    @Locator("ORDER_SUMARY_SUB_TOTALS")
+    private static BasePageElement orderSummarySubTotals;
+
+    @Locator(value = "TRACK_PACKAGE_BUTTON", stringId = "track-package")
+    private static BasePageElement trackPackageButton;
+
+    @Locator(value = "INVOICE_LINK", stringId = "yo-od-invoice-heading")
+    private static BasePageElement invoiceLink;
+
+    @Locator("INVOICE_LINK_INSIDE_INVOICE_POPOVER")
+    private static BasePageElement invoiceLinkInsideInvoicePopover;
+
+    @Locator("ORDER_SUMMARY_LINK_INSIDE_INVOICE_POPOVER")
+    private static BasePageElement orderSummaryLinkInsideInvoicePopover;
+
+    @Locator(value = "INVOICE_LINK_IN_ORDER_DETAILS", stringId = "yo-od-invoice-heading")
+    private static BasePageElement invoiceLinkInOrderDetails;
+
+    @Locator(value = "PRINTABLE_ORDER_SUMMARY_LINK_IN_ORDER_DETAILS")
+    private static BasePageElement printableOrderSummaryLinkInOrderDetails;
+
+    // In YO page
+    @Locator(value = "ORDER_TOTAL_TEXT", stringId = "yo-order-total")
+    private static BasePageElement orderTotalText;
+
+    @Locator(value = "ORDER_TOTAL_TEXT_IN_PRINTABLE_ORDER_SUMMARY", stringId = "ss-order-status-total_10772")
+    private static BasePageElement orderTotalTextInPrintableOrderSummary;
+
+    @Locator("PAYMENT_INFO_LINE_ITEMS_IN_PRINTABLE_ORDER_SUMMARY")
+    private static BasePageElement paymentInfoLineItemsInPrintableOrderSummaryByItemName;
+
+    @Locator("CANCEL_SELECTED_ITEM_CONFIRM_BUTTON")
+    private static BasePageElement cancelSelectedItemConfirmButton;
+
+    @Locator("CANCEL_ITEMS_BUTTON")
+    private static BasePageElement cancelItemsButton;
+
+    @Locator("CANCEL_ITEM_CHECKBOX")
+    private static BasePageElement cancelItemCheckbox;
+
+    @Locator("WRITE_A_REVIEW_BUTTON")
+    private static BasePageElement writeAReviewButton;
+
+    @Locator(value = "ARCHIVE_ORDER_BUTTON", stringId = "cstech_wcs_archive-order")
+    private static BasePageElement archiveOrderButton;
+
+    @Locator("YOUR_ORDERS_HEADING_TEXT")
+    private static BasePageElement yourOrdersHeadingText;
+
+    @Locator(value = "PROBLEM_WITH_ORDER_BUTTON", stringId = "mfn-yo-problem-with-order")
+    private static BasePageElement problemWithOrderButton;
+
+    @Locator("ORDER_STATUS")
+    private static BasePageElement orderStatus;
+
+    @Locator("ORDER_DETAILS_LINK_BY_STATUS")
+    private static BasePageElement orderDetailsLinkByStatus;
+
+    @Locator("ORDER_DETAILS_LINK_BY_ORDER_NUMBER")
+    private static BasePageElement orderDetailsLinkByOrderNumber;
+
+    @Locator("NEXT_PAGE_BUTTON")
+    private static BasePageElement nextPageButton;
+
+    @Locator("ORDER_STATUS_BY_STRING_ID")
+    private static BasePageElement orderStatusByStringId;
+
+    @Locator("TRACK_PACKAGE_BUTTON_BY_STATUS")
+    private static BasePageElement trackPackageButtonByStatus;
+
+    @Locator("ORDER_STATUS_IN_TRACK_PACKAGE_PAGE")
+    private static BasePageElement orderStatusInTrackPackagePage;
+
+    @Locator("ORDER_DATE_IN_ORDER_DETAILS_PAGE")
+    private static BasePageElement orderDateInOrderDetailsPage;
+
+    @Locator(value = "ORDER_NUMBER_LABEL_IN_ORDER_DETAILS_PAGE", stringId = "yo-od-order-number")
+    private static BasePageElement orderNumberLabelInOrderDetailsPage;
+
+    @Locator(value = "SHIPPING_ADDRESS_LABEL_IN_ORDER_DETAILS_PAGE", stringId = "ya-od-shipping-address")
+    private static BasePageElement shippingAddressLabelInOrderDetailsPage;
+
+    @Locator(value = "SHIPPING_ADDRESS_IN_ORDER_DETAILS_PAGE")
+    private static BasePageElement shippingAddressInOrderDetailsPage;
+
+    @Locator("PAYMENT_METHOD_LABEL_IN_ORDER_DETAILS_PAGE")
+    private static BasePageElement paymentMethodLabelInOrderDetailsPage;
+
+    @Locator(value = "ITEM_TITLE")
+    private static BasePageElement itemTitle;
+
+    @Locator(value = "ITEM_PRICE_IN_ORDER_DETAILS_PAGE")
+    private static BasePageElement itemPriceInOrderDetailsPage;
+
+    @Locator(value = "SOLD_BY_SELLER_NAME_IN_ORDER_DETAILS_PAGE", stringId = "yo_sold_by")
+    private static BasePageElement soldBySellerNameInOrderDetailsPage;
+
+    @Locator(value = "ITEM_CONDITION_IN_ORDER_DETAILS_PAGE", stringId = "item-display-condition_17913")
+    private static BasePageElement itemConditionInOrderDetailsPage;
+
+    @Locator(value = "AMAZON_LOGO_IN_PRINT_ORDER_SUMMARY_PAGE")
+    private static BasePageElement amazonLogoInPrintOrderSummaryPage;
+
+    @Locator("BUY_IT_AGAIN_BUTTON_COLOR")
+    private static BasePageElement buyItAgainButtonColor;
+
+    @Locator("BUY_IT_AGAIN_BUTTON")
+    private static BasePageElement buyItAgainButton;
+
+    @Locator("GRID_ELEMENT")
+    private static BasePageElement gridElement;
+
+    @Locator("BUY_AGAIN_DETAIL_ASIN_TITLE")
+    private static BasePageElement buyAgainDetailAsinTitle;
+
+    @Locator("BUY_AGAIN_DETAIL_IMAGE_LINK")
+    private static BasePageElement buyAgainDetailImageLink;
+
+    @Locator("BUY_AGAIN_POPUP_MERCHANT_INFO")
+    private static BasePageElement buyAgainPopUpMerchantInfo;
+
+    @Locator("CITY_NAME_IN_SHIPPING_ADDRESS")
+    private static BasePageElement cityNameInShippingAddress;
+
+    @Locator("GIFT_CARD_PAYMENT_METHOD_IN_ORDER_DETAILS_PAGE")
+    private static BasePageElement giftCardPaymentMethodInOrderDetailsPage;
+
+    @Locator("CREDIT_CARD_PAYMENT_METHOD_IN_ORDER_DETAILS_PAGE")
+    private static BasePageElement creditCardPaymentMethodInOrderDetailsPage;
+
+    @Locator("SHIP_TO_NAME_DOWN_ARROW")
+    private static BasePageElement shipToNameDownArrow;
+
+    @Locator(value = "PAYMENT_METHOD_IN_PRINTABLE_ORDER_SUMMARY")
+    private static BasePageElement paymentMethodInPrintableOrderSummary;
+
+    @Locator("PRIME_BADGE_FOR_GLOBAL_STORE_OFFER")
+    private static BasePageElement primeBadgeForGlobalStoreOffer;
+
+    @Locator(value = "SHIPPING_CHARGES_LABEL")
+    private static BasePageElement shippingChargesText;
+    @Locator(value = "GLOBAL_STORE_ORDER_DETAIL_PAGE_PROMISE")
+    private static BasePageElement globalStoreOrderDetailPagePromise;
+
+    @Locator(value = "GLOBAL_STORE_YOUR_ORDER_PAGE_PROMISE")
+    private static BasePageElement globalStoreYourOrderPagePromise;
+
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public YourOrdersPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Is tab by text present or not.
+     * @param text tab text.
+     * @return tab present or not.
+     */
+    public boolean isTabPresent(final String text) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", orderTabByTitle.getName(), text),
+                String.format(orderTabByTitle.getXPath(), text)).isPresent();
+    }
+
+    /**
+     * Click Your Orders tab by its name/text.
+     * @param text tab text.
+     */
+    public void clickTab(final String text) {
+        new BasePageElement(driver,
+                String.format("%s-%s", orderTabByTitle.getName(), text),
+                String.format(orderTabByTitle.getXPath(), text)).click();
+    }
+
+    /**
+     * Get count of orders tab in Your Orders page.
+     * @return count value of number of orders tab.
+     */
+    public int getOrdersTabCount() {
+        return ordersTab.countElements();
+    }
+
+    /**
+     * Click Your Orders tab by its name/text.
+     * @param tabIndex tab text.
+     */
+    public void clickTabByIndex(final int tabIndex) {
+        ordersTab.getElements().get(tabIndex).click();
+    }
+
+    /**
+     * Verify orders search box and button present.
+     */
+    public void verifySearchBoxAndButtonPresent() {
+        status.addIsDisplayed(searchOrdersBox);
+        status.addIsDisplayed(searchOrdersButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify orders search box and button present.
+     */
+    public void verifySearchBoxInlineTextPresent() {
+        status.addIsDisplayed(searchOrdersBoxInlineText);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Search orders for a given String.
+     * @param text : string to search on "Your Order" page.
+     */
+    public void searchOrdersOnYourOrdersPage(String text) {
+        searchOrdersBox.setText(text);
+        searchOrdersButton.click();
+    }
+
+    /**
+     * Get the order count in Sub Header String Label in order search results page.
+     * @return int - number of matches as per sub header label
+     */
+    public int getCountOfOrderSearchResultsFromSubHeaderLabel() {
+     // Getting the sub header string from Order search results. e.g. 1 order matching "keyword"
+     String subHeaderLabelOnOrderSearchResultsPage = subHeaderLabelOnOrderSearchResults.getText();
+
+     // Split "1" and "order matching "keyword"" from Sub Header String in order search results page.
+     // and return as Integer type.
+     return Integer.parseInt(subHeaderLabelOnOrderSearchResultsPage.split(" ", 2)[0]);
+    }
+
+    /**
+     * Get the number of order blocks displayed in order search results.
+     * @return int
+     */
+    public int getCountOfOrderBlockInOrderSearchResults() {
+        return searchResultsOrderBlock.countElements();
+    }
+
+    /**
+     * Get number of order blocks in selected tab of YO Page
+     * @return int
+     */
+    public int getCountOfOrderBlocksOnSelectedTabYourOrdersPage() {
+        return orderBlockYourOrdersPage.countElements();
+    }
+
+    /**
+     * Get number of Cancelled order blocks in selected tab of YO Page
+     * @return int
+     */
+    public int getCountOfCancelledOrdersOnSelectedTabYourOrdersPage() {
+        return cancelledOrderBlockYourOrdersPage.countElements();
+    }
+
+
+    /**
+     * Validate Page Title Visible on Order Search Results Page.
+     * @return true if element found, else false.
+     */
+    public boolean isTitleDisplayedOnOrderSearchResultsPage() {
+        return titleOnOrderSearchResults.isPresent();
+    }
+
+    /**
+     * Validate Message / Suggestion for Order Search, is shown on Order Search Results page.
+     * @return true if element found, else false.
+     */
+    public boolean isSearchSuggestionDisplayedOnOrderSearchResultsPage() {
+        return searchSuggestionOnOrderSearchResults.isPresent();
+    }
+
+    /**
+     * Verify if Message displayed when no orders found in last three months.
+     * @return true if element found, else false
+     */
+    public boolean isMessageDisplayedForNoOrdersInThreeMonths() {
+        return noOrdersInPastThreeMonthsLabel.isPresent();
+    }
+
+    /**
+     * Verify if Error Message is Displayed For Zero Search Results on Order Search Results page.
+     * @return true if element found, else false.
+     */
+    public boolean isMessageDisplayedForZeroOrderSearchResults() {
+        return noResultsFoundMessageOnOrderSearchResults.isPresent();
+    }
+
+    /**
+     * Verify if OrderPlacedLabel is Visible an Order Block.
+     * @return boolean true if element Present
+     */
+    public boolean isOrderPlacedLabelVisibleOnOrderBlock() {
+        return orderPlacedLabel.isPresent();
+    }
+
+    /**
+     * Get OrderDate Value from Order Block on YO page.
+     * @return String: OrderId Value.
+     */
+    public String getOrderDate() {
+        return orderDate.getText();
+    }
+
+    /**
+     *  Get OrderDate Value by Index from Order Block on YO page.
+     * @param index starting with 1. (1 -> points to Order Placed date for top most order block on YO Page)
+     * @return String "Date Value" as shown on Top Banner Order block in Your Orders Page
+     */
+    public String getOrderDateByIndex(int index) {
+        return new BasePageElement(driver, "orderDateByIndex",
+                String.format("((//*[contains(@class,'offset-background order')])[%d]//span)[2]", index)).getText();
+    }
+
+    /**
+     * Verify if totalLabel is Visible an Order Block.
+     * @return boolean true if element Present
+     */
+    public boolean isTotalLabelVisibleOnOrderBlock() {
+        return totalLabel.isPresent();
+    }
+
+    /**
+     * Get Total Order Value from Order Block on YO page.
+     * @return String: Total Order Value with Currency Symbol
+     */
+    public String getTotalOrderValue() {
+        return totalOrderValue.getText();
+    }
+
+    /**
+     * Verify if shipToLabel is Visible an Order Block.
+     * @return boolean true if element Present
+     */
+    public boolean isShipToLabelVisibleOnOrderBlock() {
+        return shipToLabel.isPresent();
+    }
+
+    /**
+     * Get ShipTo Name Value from Order Block on YO page.
+     * @return String: Ship To Name (as per Order Delivery Address)
+     */
+    public String getShipToName() {
+        return shipToName.getText();
+    }
+
+    /**
+     * Method to hover on ShipToName Link on Orders block of YO page
+     */
+    public void hoverOnShipToNameLink() {
+        shipToName.mouseOver();
+    }
+
+    /**
+     * Method to get the link value from Ship To Name link.
+     * @return String: value of href attribute in Ship To Name (Present in TopBanner of an Order block on YO Page).
+     */
+    public String getLinkFromShipToName() {
+        return new BasePageElement(driver,
+                String.format(shipToName.getName(), "/parent::a"),
+                String.format("%s%s", shipToName.getXPath(), "/parent::a")).getValue("href");
+    }
+
+    /**
+     * Verify if order# Label is Visible an Order Block.
+     * @return boolean true if element Present
+     */
+    public boolean isOrderNumberLabelVisibleOnOrderBlock() {
+        return orderNumberLabel.isPresent();
+    }
+
+
+    /**
+     * Get OrderId Value or OrderNumber Value from Order Block on YO page.
+     * @return String e.g. '405-8652980-7859554'
+     */
+    public String getOrderIdValueVisibleOnOrderBlock() {
+        return orderIdValue.getText();
+    }
+
+    /**
+     * Get orderDetails Link Label shown on OrderBlock YO Page.
+     * @return true if present 'Order Details' link element.
+     */
+    public boolean orderDetailsLinkPresentOnOrderBlock() {
+        return orderDetailsLink.isPresent();
+    }
+
+    /**
+     * Verify "Order Details" link present and click it.
+     * @return Order Details page title.
+     */
+    public String verifyOrderDetailsLinkPresentAndClick() {
+        status.addIsEnabled(orderDetailsLink);
+        status.processStatus();
+        orderDetailsLink.click();
+        return driver.getTitle();
+    }
+
+    /**
+     * Verify 'Track Package' button present and click it.
+     * @return Track Package page title.
+     */
+    public String verifyTrackPackageButtonPresentAndClick() {
+        status.addIsEnabled(trackPackageButton);
+        status.processStatus();
+        trackPackageButton.click();
+        return driver.getTitle();
+    }
+
+    /**
+     * Get item title / display name.
+     * @return The item's display name.
+     */
+    public String getItemName() {
+        status.addIsEnabled(itemLink);
+        status.processStatus();
+        return itemLink.getText();
+    }
+
+    /**
+     * Click item link.
+     * @return The item's detail page title.
+     */
+    public String clickItemLink() {
+        itemLink.click();
+        return driver.getTitle();
+    }
+
+    /**
+     * Verify if ItemImage is displayed for recent order on YourOrders Page.
+     */
+    public void verifyItemImageIsDisplayed() {
+        status.addIsDisplayed(itemImage);
+        status.processStatus();
+    }
+
+    /**
+     * Click on ItemImage for an order on YourOrders Page.
+     */
+    public void clickItemImage() {
+        itemImage.click();
+    }
+
+    /**
+     * GetLinkPresent in ItemImage, for the most recent order in YourOrders Page.
+     * @return Detail Page URL (excluding domain)
+     */
+    public String getItemImageLink() {
+        return itemImageLink.getValue("href");
+    }
+
+    /**
+     * Get sold by text.
+     * @return sold by text.
+     */
+    public String getSoldByText() {
+        return soldByText.getText();
+    }
+
+    /**
+     * Click the 'Invoice' link and verify an invoice option link inside the popover.
+     */
+    public void verifyInvoiceLinkInsideInvoicePopover() {
+        invoiceLink.clickAndWait(invoiceLinkInsideInvoicePopover);
+    }
+
+    /**
+     * Click the 'Invoice' link and verify an order summary link inside the popover.
+     */
+    public void verifyOrderSummaryLinkInsideInvoicePopover() {
+        invoiceLink.clickAndWait(orderSummaryLinkInsideInvoicePopover);
+    }
+
+    /**
+     * Verification order cancellation action.
+     */
+    public void verifyCancellationConfirmButtonPresent() {
+        cancelItemsButton.clickAndWait(cancelSelectedItemConfirmButton);
+        status.addIsEnabled(cancelSelectedItemConfirmButton);
+        status.processStatus();
+    }
+
+    /**
+     * Is the cancel item button present or not.
+     * @return the cancel item button present or not.
+     */
+    public boolean isCancelItemsButtonPresent() {
+        return cancelItemsButton.isPresent();
+    }
+
+    /**
+     * Method to click order item button when in order details page.
+     */
+    public void clickCancelItemButton() {
+        cancelItemsButton.clickAndWait(cancelSelectedItemConfirmButton);
+    }
+
+    /**
+     * Is the archive order button present or not.
+     * @return the archive order button present or not.
+     */
+    public boolean isArchiveOrderButtonPresent() {
+        return archiveOrderButton.isPresent();
+    }
+
+    /**
+     * Click Order Details link.
+     */
+    public void clickOrderDetailsLink() {
+        orderDetailsLink.click();
+    }
+
+    /**
+     * Get order summary sub totals breakdown texts.
+     * Like:
+     * Item(s) Subtotal: xxx
+     * Postage & Packing: xxx
+     * ...
+     * @return a list of text of sub totals breakdown.
+     */
+    public List<String> getOrderSummarySubTotals() {
+        return orderSummarySubTotals.getElements().stream()
+                .map(element -> element.getText()).collect(Collectors.toList());
+    }
+
+    /**
+     * Get payment info in order details page by the item name
+     * @param itemName refers to the line item
+     * @return payment info text
+     */
+    public String getPaymentInfoTextInOrderDetailsByItemName(String itemName) {
+        return new BasePageElement(driver, String.format("%s-%s",
+                orderSummarySubTotals.getName(), itemName),
+                String.format(orderSummarySubTotals.getXPath(), itemName)).getText();
+    }
+
+    /**
+     * Is Invoice link in YO page present or not.
+     * @return true if The 'Invoice' link is present, else return false.
+     */
+    public boolean isInvoiceLinkPresent() {
+        return invoiceLink.isEnabled();
+    }
+
+    /**
+     * Is the Invoice link in Order Details page present or not.
+     * @return Is the Invoice link in Order Details page present or not.
+     */
+    public boolean isInvoiceLinkInOrderDetailsPresent() {
+        return invoiceLinkInOrderDetails.isEnabled();
+    }
+
+    /**
+     * Get order total text in YO page.
+     * @return order total text (like 'EUR xxx') in YO page.
+     */
+    public String getOrderTotalText() {
+        return orderTotalText.getText();
+    }
+
+    /**
+     * Get order total text in printable order summary page.
+     * @return order total text (like 'Order Total: EUR 9,99') in printable order summary page.
+     */
+    public String getOrderTotalTextInPrintableOrderSummary() {
+        return orderTotalTextInPrintableOrderSummary.getText();
+    }
+
+    /**
+     * Get payment info in printable order summary page by the item name
+     * @param itemName refers to the line item
+     * @return payment info text
+     */
+    public String getPaymentInfoTextInPrintableOrderSummaryByItemName(String itemName) {
+        return new BasePageElement(driver, String.format("%s-%s",
+                paymentInfoLineItemsInPrintableOrderSummaryByItemName.getName(), itemName),
+                String.format(paymentInfoLineItemsInPrintableOrderSummaryByItemName.getXPath(), itemName)).getText();
+    }
+
+    /**
+     * Get the presence of payment info in printable order summary page by the item name
+     * @param itemName refers to the line item
+     * @return presence
+     */
+    public boolean isPaymentInfoTextInPrintableOrderSummaryByItemNamePresent(String itemName) {
+        return new BasePageElement(driver, String.format("%s-%s",
+                paymentInfoLineItemsInPrintableOrderSummaryByItemName.getName(), itemName),
+                String.format(paymentInfoLineItemsInPrintableOrderSummaryByItemName.getXPath(), itemName)).isPresent();
+    }
+
+    /**
+     * Go to printable order summary page.
+     */
+    public void goToPrintableOrderSummary() {
+        invoiceLink.clickAndWait(orderSummaryLinkInsideInvoicePopover);
+        orderSummaryLinkInsideInvoicePopover.click();
+    }
+
+    /**
+     * Go to printable order summary page from Order Details page
+     */
+    public void goToPrintableOrderSummaryFromOrderDetails() {
+        if (printableOrderSummaryLinkInOrderDetails.isPresent()) {
+            printableOrderSummaryLinkInOrderDetails.click();
+        } else {
+            invoiceLinkInOrderDetails.clickAndWait(orderSummaryLinkInsideInvoicePopover);
+            orderSummaryLinkInsideInvoicePopover.click();
+        }
+    }
+
+    /**
+     * Is 'Write a product review' button present or not.
+     * @return writeAReviewButton present or not.
+     */
+    public boolean isWriteAReviewButtonPresent() {
+        return writeAReviewButton.isPresent();
+    }
+
+    /**
+     * Click 'Write a product review' button and return the redirected page's title.
+     * @return review your purchase page's title.
+     */
+    public String clickWriteAReviewButton() {
+        writeAReviewButton.click();
+        return driver.getTitle();
+    }
+
+    /**
+     * Get Your Orders Heading text.
+     * @return Your Orders Heading text.
+     */
+    public String getYourOrdersHeadingText() {
+        return yourOrdersHeadingText.getText();
+    }
+
+    /**
+     * Click the 'Problem with order' button.
+     */
+    public void clickProblemWithOrderButton() {
+        problemWithOrderButton.click();
+    }
+
+    /**
+     * Method to Cancel all the Orders in the YO Page.
+     * @param yourOrdersPageUrl YO Page url
+     */
+    public void cancelOpenOrders(final String yourOrdersPageUrl) {
+        RetrySteps.runWithRetry("CancelOrders", 3, 50,
+                () -> {
+                    List<PageElement> orderDetailsLinks = orderDetailsLink.getElements();
+                    for (int i = 0; i < orderDetailsLinks.size(); i++) {
+                        clickOrderDetailsLink();
+                        cancelItemsButton.clickAndWaitWithRetries(cancelSelectedItemConfirmButton);
+                        List<PageElement> cancelItemCheckboxs = cancelItemCheckbox.getElements();
+                        for (PageElement cancelItemCheckbox : cancelItemCheckboxs) {
+                            if (!cancelItemCheckbox.isSelected()) {
+                                cancelItemCheckbox.click(true);
+                            }
+                        }
+                        cancelSelectedItemConfirmButton.clickAndWaitForDisappear(cancelSelectedItemConfirmButton);
+                        setPageurl(yourOrdersPageUrl);
+                        navigateToPage();
+                        waitForPageToLoad();
+                    }
+                    return true;
+                }, false, null, Exception.class);
+    }
+
+    /**
+     * Method to orders when in cancel Page.
+     */
+    public void cancelOrder() {
+        cancelSelectedItemConfirmButton.clickAndWaitForDisappear(cancelSelectedItemConfirmButton);
+    }
+
+    /**
+     * Verify if OrderFilterDropdown is Present on Your Orders page.
+     * @return true if DropDown Present, else returns false.
+     */
+    public boolean isOrderFilterDropdownPresent() {
+        return orderFilterDropdown.isPresent();
+    }
+
+    /**
+     * Get Value of Dropdown Filter list item in Orders Tab of YO page.
+     * @param index is n'th list element in dropdown, starting 0.
+     * @return String value of Xpath-being-built for nth element.
+     */
+    public String getValueFromOrderFilterDropdownByIndex(int index) {
+        Select select  = new Select(orderFilterDropdown.getElement());
+        return select.getOptions().get(index).getText();
+    }
+
+    /**
+     * Get the Selected Value in Order Filter Dropdown.
+     * @return String: dropdown value
+     */
+    public String getSelectedValueInOrderFilter() {
+     // Not creating a new webElement as orderFilterDropdown could give us the Selected option.
+        return orderFilterDropdown.getSelectedOption();
+    }
+
+    /**
+     * Get count of options present in Dropdown Filter in Orders Tab of YO page.
+     * @return integer count value of options in order filter dropdown.
+     */
+    public int getOptionsCountInOrderFilterDropdown() {
+        Select orderFilter  = new Select(orderFilterDropdown.getElement());
+        return orderFilter.getOptions().size();
+    }
+
+    /**
+     * Select option in Order Filter Dropdown by index.
+     * @param filterIndex is the index of the element in dropdown. starting from 0.
+     */
+    public void selectOptionFromOrderFilterDropdownByIndex(int filterIndex) {
+        Select orderFilter  = new Select(orderFilterDropdown.getElement());
+        orderFilter.selectByVisibleText(getValueFromOrderFilterDropdownByIndex(filterIndex));
+    }
+
+    /**
+     * Get order status in Orders Tab of YO page and Order details page.
+     * @return order status text.
+     */
+    public String getOrderStatus() {
+        return orderStatus.getText();
+    }
+
+    /**
+     * Get order status.
+     * @param statusStringId stringID of the order status.
+     * @return order status text.
+     */
+    public String getOrderStatusByStringId(String statusStringId) {
+        return new BasePageElement(driver, String.format("%s-%s", orderStatusByStringId.getName(), statusStringId),
+                String.format(orderStatusByStringId.getXPath(), statusStringId)).getText();
+    }
+
+    /**
+     * Click Order Details link for the given order status.
+     * @param statusStringId stringID of the order status.
+     */
+    public void clickOrderDetailsLinkByStatus(String statusStringId) {
+        new BasePageElement(driver, String.format("%s-%s", orderDetailsLinkByStatus.getName(), statusStringId),
+                String.format(orderDetailsLinkByStatus.getXPath(), statusStringId, "yo-view-order-details")).click();
+    }
+
+    /**
+     * Click Order Details link for the given order ordernumber.
+     * @param orderNumber order number
+     * @param orderDetailsString order details string
+     */
+    public void clickOrderDetailsLinkByOrderNumber(String orderNumber, String orderDetailsString) {
+        new BasePageElement(driver, String.format("%s-%s-%s", orderDetailsLinkByOrderNumber.getName(), orderNumber,
+                orderDetailsString),
+                String.format(orderDetailsLinkByOrderNumber.getXPath(), orderNumber, orderDetailsString)).click();
+    }
+
+    /**
+     * Check if next page button is clickable.
+     * @return true if next page button is clickable else false.
+     */
+    public boolean isNextPageButtonClickable() {
+        return !nextPageButton.getElement().getAttribute("class").contains("disabled");
+    }
+
+    /**
+     * Click Track Package button for the given order status.
+     * @param statusStringId stringID of the order status.
+     */
+    public void clickTrackPackageButtonByStatus(String statusStringId) {
+        new BasePageElement(driver, String.format("%s-%s", trackPackageButtonByStatus.getName(), statusStringId),
+                String.format(trackPackageButtonByStatus.getXPath(), statusStringId))
+                .clickAndWait(orderStatusInTrackPackagePage);
+    }
+
+    /**
+     * Get order status in Track Package page.
+     * @return order status text.
+     */
+    public String getOrderStatusInTrackPackagePage() {
+        return orderStatusInTrackPackagePage.getText();
+    }
+
+    /**
+     * Get order placed on label and order date in Order Details page.
+     * @return order date text.
+     */
+    public String getOrderDateInOrderDetailsPage() {
+        return orderDateInOrderDetailsPage.getText();
+    }
+
+    /**
+     * Verify order# Label is present in Order Details Page.
+     */
+    public void verifyOrderNumberLabelInOrderDetailsPage() {
+        status.addIsDisplayed(orderNumberLabelInOrderDetailsPage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Shipping Address Label is present in Order Details Page.
+     */
+    public void verifyShippingAddressLabelInOrderDetailsPage() {
+        status.addIsDisplayed(shippingAddressLabelInOrderDetailsPage);
+        status.processStatus();
+    }
+
+    /**
+     * Get Shipping Address from Order Details Page.
+     * @return shipping address text.
+     */
+    public List<String> getShippingAddressInOrderDetailsPage() {
+        return shippingAddressInOrderDetailsPage.getElements().stream().map(element -> element.getText())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Verify Payment Method Label is present in Order Details Page.
+     * @param paymentMethodString to Parameterized for xpath.
+     */
+    public void verifyPaymentMethodLabelInOrderDetailsPage(String paymentMethodString) {
+        BasePageElement paymentMethodTextInOrderDetailsPage =  new BasePageElement(driver,
+                paymentMethodLabelInOrderDetailsPage.getName(),
+                String.format(paymentMethodLabelInOrderDetailsPage.getXPath(), paymentMethodString));
+        status.addIsDisplayed(paymentMethodTextInOrderDetailsPage);
+        status.processStatus();
+    }
+
+    /**
+     * Get Item title text.
+     * @return item title text.
+     */
+    public String getItemTitleText() {
+        return itemTitle.getText();
+    }
+
+    /**
+     * click Item title.
+     */
+    public void clickItemTitle() {
+        itemTitle.click();
+    }
+
+    /**
+     * Click order summary link inside the Invoice popover.
+     */
+    public void clickOrderSummaryLinkInsideInvoicePopover() {
+        orderSummaryLinkInsideInvoicePopover.click();
+    }
+
+    /**
+     * Verify Amazon Logo is present in Print Order Summary Page.
+     */
+    public void verifyAmazonLogoInPrintOrderSummaryPage() {
+        status.addIsDisplayed(amazonLogoInPrintOrderSummaryPage);
+        status.processStatus();
+    }
+
+    /**
+     * Get Item Price text in Order Details Page.
+     * @return item price text.
+     */
+    public String getItemPriceTextInOrderDetailsPage() {
+        return itemPriceInOrderDetailsPage.getText();
+    }
+
+    /**
+     * Get Item condition text in Order Details Page.
+     * @return item condition text.
+     */
+    public String getItemConditionTextInOrderDetailsPage() {
+        return itemConditionInOrderDetailsPage.getText();
+    }
+
+    /**
+     * Get SoldBy Seller Name text in Order Details Page.
+     * @return 'sold by seller name' text.
+     */
+    public String getSoldBySellerNameTextInOrderDetailsPage() {
+        return soldBySellerNameInOrderDetailsPage.getText();
+    }
+
+    /**
+     * Set the Selected Value in Order Filter Dropdown.
+     * @param index as 0,1,2 are index for 'last 30 days', 'past 3 months', and 'Current Year', respectively.
+     */
+    public void setSelectedValueInOrderFilter(int index) {
+        Select orderFilterSelect = new Select(orderFilterDropdown.getElement());
+        orderFilterSelect.selectByIndex(index);
+    }
+
+    /**
+     * If order is archived, filter it out.
+     */
+    public void filterOrderIfNeeded() {
+        if (!itemLink.isPresent() && orderFilterDropdown.isPresent()) {
+            int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+            //starting from index to 2 for current year.
+            for (int i = 2; i < getOptionsCountInOrderFilterDropdown(); i++) {
+                if (getValueFromOrderFilterDropdownByIndex(i).contains(String.valueOf(thisYear))) {
+                    selectOptionFromOrderFilterDropdownByIndex(i);
+                }
+                if (itemLink.isPresent()) {
+                    break;
+                }
+                thisYear -= 1;
+            }
+        }
+    }
+
+    /**
+     * filter order by status.
+     * @param statusStringId StringId of order status.
+     * @param stringDebugType type of string debugger
+     *                       - specifies stringDebug or showStrings to be used in StringDebuggerHelper class.
+     * @return boolean value of order presence by status.
+     */
+    public boolean filterOrderByStatus(String statusStringId, String stringDebugType) {
+        BasePageElement orderStatus = new BasePageElement(driver,
+                String.format("%s-%s", orderStatusByStringId.getName(), statusStringId),
+                String.format(orderStatusByStringId.getXPath(), statusStringId));
+        boolean orderFound = false;
+        if (!orderStatus.isPresent()) {
+            int filterIndex = 2; //initializing index to 2 for current year.
+            do {
+                //filtering for orders through pagination button.
+                if (nextPageButton.isPresent() && isNextPageButtonClickable()) {
+                    nextPageButton.click();
+                    StringDebuggerHelper.enableStringDebugMode(driver, stringDebugType);
+                } else if (filterIndex < getOptionsCountInOrderFilterDropdown()
+                        && !getValueFromOrderFilterDropdownByIndex(filterIndex).contains("archived")) {
+                    //filtering for orders through year filter.
+                    selectOptionFromOrderFilterDropdownByIndex(filterIndex);
+                    StringDebuggerHelper.enableStringDebugMode(driver, stringDebugType);
+                    filterIndex += 1;
+                } else  break;
+                if (orderStatus.isPresent()) {
+                    orderFound = true;
+                    break;
+                }
+            } while (true);
+        } else orderFound = true;
+        return orderFound;
+    }
+
+    /**
+     * Verify Buy It Again Button Color.
+     * @param orderIndex - index of order in YourOrders page.
+     * @return Returns rgba color code of the BuyItAgain button.
+     */
+    public String verifyBuyItAgainButtonColorByIndex(int orderIndex) {
+        BasePageElement buyItAgainButtonColorByIndex = new BasePageElement(driver,
+                String.format("%s-OrderIndex_%d", buyItAgainButtonColor.getName(), orderIndex),
+            orderBlockYourOrdersPage.getElements().get(orderIndex).getXPath() + buyItAgainButtonColor.getXPath());
+        status.addIsEnabled(buyItAgainButtonColorByIndex);
+        status.processStatus();
+        return buyItAgainButtonColorByIndex.getElement().getCssValue("background-color");
+    }
+
+    /**
+     * Click BuyItAgainButton from Your Orders page.
+     * @param orderIndex - index of order in YourOrders page.
+     */
+    public void clickBuyItAgainButtonByIndex(int orderIndex) {
+        new BasePageElement(driver, String.format("%s-OrderIndex_%d", buyItAgainButton.getName(), orderIndex),
+    orderBlockYourOrdersPage.getElements().get(orderIndex).getXPath() + buyItAgainButton.getXPath()).click();
+    }
+
+    /**
+     * Click 1st grid Element from BuyItAgain page.
+     */
+    public void clickGridElement() {
+    gridElement.click();
+    }
+
+    /**
+     * Click 1st grid Element ASIN title from Buy Again Page.
+     */
+    public void clickGridElementAsinTitle() {
+    buyAgainDetailAsinTitle.click();
+    }
+
+    /**
+     * Return grid Element ASIN title from Buy Again Page.
+     * @return String: Title of Product.
+     */
+    public String getGridElementAsinTitle() {
+    return buyAgainDetailAsinTitle.getText();
+    }
+
+    /**
+     * Click grid element Product Image from Buy Again Page.
+     */
+    public void clickGridElementImage() {
+    buyAgainDetailImageLink.click();
+    }
+
+    /**
+     * Verify Merchant info present in BuyAgain Pop-Up.
+     * @return boolean: True if the element is present, else false.
+     */
+    public boolean verifyBuyAgainMerchantInfo() {
+    return buyAgainPopUpMerchantInfo.isPresent();
+    }
+
+    /**
+     * Get city name in order details Page.
+     * @return city name.
+     */
+    public String getcityNameInShippingAddress() {
+        return cityNameInShippingAddress.getText();
+
+    }
+
+    /**
+     * Get Gift Card Payment Method Text from Order Details Page.
+     * @param giftCardPaymentString to Parameterized for xpath.
+     * @return Gift Card Payment Method text.
+     */
+    public String getGiftCardPaymentMethodInOrderDetailsPage(String giftCardPaymentString) {
+         BasePageElement giftCardPaymentText =  new BasePageElement(driver,
+                 giftCardPaymentMethodInOrderDetailsPage.getName(),
+                 String.format(giftCardPaymentMethodInOrderDetailsPage.getXPath(), giftCardPaymentString));
+         return giftCardPaymentText.getText();
+    }
+
+    /**
+     * Get credit Card Payment Method text from Order Details Page.
+     * @param paymentMethodString to Parameterized xpath.
+     * @param creditCardPaymentString to Parameterized xpath.
+     * @return Credit Card Payment text.
+     */
+    public String getCreditCardPaymentMethodTextInOrderDetailsPage(String paymentMethodString,
+             String creditCardPaymentString) {
+        BasePageElement creditCardPaymentText =  new BasePageElement(driver,
+                creditCardPaymentMethodInOrderDetailsPage.getName(),
+                String.format(creditCardPaymentMethodInOrderDetailsPage.getXPath(), paymentMethodString,
+                               creditCardPaymentString));
+        return creditCardPaymentText.getText();
+    }
+
+    /**
+     * Get all the recipient's name text.
+     * @return a list of text of the recipient's name.
+     */
+    public List<String> getRecipientNames() {
+        return shipToName.getElements().stream()
+                .map(element -> element.getText()).collect(Collectors.toList());
+    }
+
+    /**
+     * Verify if shipToNameDownarrow is Visible an Order Block.
+     * @return boolean true if element Present
+     */
+    public boolean isShipToDownarrowVisibleOnOrderBlock() {
+        return shipToNameDownArrow.isPresent();
+    }
+
+    /**
+     * Method to get Payment Method from Printable Order Summary
+     * @return Payment Method text
+     * @param paymentMethod to Parameterized xpath
+     */
+    public String getPaymentMethodFromPrintableOrderSummary(String paymentMethod) {
+        return new BasePageElement(driver, String.format("%s",
+                paymentMethodInPrintableOrderSummary.getName(), paymentMethod),
+                String.format(paymentMethodInPrintableOrderSummary.getXPath(), paymentMethod)).getText();
+    }
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+      waitForPageToLoad();
+      verifySearchBoxAndButtonPresent();
+      verifyItemImageIsDisplayed();
+      totalLabel.waitIsPresent();
+      status.addIsDisplayed(totalLabel);
+      status.processStatus();
+      trackPackageButton.waitIsPresent();
+      status.addIsEnabled(trackPackageButton);
+      status.processStatus();
+    }
+    /**
+     * Verify Prime Badge present for Global Store offer.
+     * @param sellerName of the global store under test.
+     * @return boolean of prime badge's presence
+     */
+    public boolean verifyPrimeBadgeForGlobalStoreOfferIsPresent(String sellerName) {
+        return new BasePageElement(driver, primeBadgeForGlobalStoreOffer.getName(),
+                String.format(primeBadgeForGlobalStoreOffer.getXPath(), sellerName)).isPresent();
+    }
+
+    /**
+     * Verify Shipping Charges are present.
+     * @param shippingText localized shipping text.
+     * @return boolean of shipping text present
+     */
+    public boolean verifyShippingChargesIsPresent(String shippingText) {
+        waitForPageToLoad();
+        return new BasePageElement(driver, shippingChargesText.getName(),
+                String.format(shippingChargesText.getXPath(), shippingText)).isPresent();
+    }
+
+    /**
+     * Verify Promise is present for GS offer in Your Order Page.
+     */
+    public void verifyGlobalStoreYourOrderPagePromisePresent() {
+        status.addIsDisplayed(globalStoreYourOrderPagePromise);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Promise is present for GS offer in Order Detail Page.
+     */
+    public void verifyGlobalStoreOrderDetailPagePromisePresent() {
+        status.addIsDisplayed(globalStoreOrderDetailPagePromise);
+        status.processStatus();
+    }
+}
