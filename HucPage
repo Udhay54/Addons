@@ -1,0 +1,168 @@
+package com.amazon.aeeqa.ui.pagemodels.huc;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * HUC Page Model.
+ *
+ * @author tingyong
+ */
+@PageName("huc")
+public class HucPage extends BasePageModel {
+
+    @Locator("CART_BUTTON")
+    private static BasePageElement cartButton;
+
+    @Locator("PROCEED_TO_CHECKOUT_BUTTON")
+    private static BasePageElement proceedToCheckoutButton;
+
+    @Locator("P13N_PRICE_BLOCK")
+    private static BasePageElement p13NPriceBlock;
+
+    @Locator("ORDER_ITEM_LINK_BY_ASIN")
+    private static BasePageElement orderItemLinkByAsin;
+
+    @Locator("IMPORT_FEES_DEPOSIT_INCLUDED_TEXT")
+    private static BasePageElement importFeesDepositIncludedText;
+
+    @Locator("IMPORT_FEES_DEPOSIT_LINK")
+    private static BasePageElement importFeesDepositLink;
+
+    @Locator("ORDER_ITEM_POPOVER")
+    private static BasePageElement orderItemPopover;
+
+    @Locator("GIFT_OPTION_NOT_AVAILABLE_TEXT")
+    private static BasePageElement giftOptionNotAvailableText;
+
+    @Locator("IMPORT_FEES_DEPOSIT_PRICE_TEXT")
+    private static BasePageElement importFeesDepositPriceText;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public HucPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(cartButton);
+        status.addIsDisplayed(proceedToCheckoutButton);
+        status.processStatus();
+    }
+
+    /**
+     * Go to cart from HUC page.
+     */
+    public void goToCart() {
+        verifyCurrentPage();
+        cartButton.click();
+    }
+
+    /**
+     * Proceed to checkout from HUC page.
+     */
+    public void goToCheckout() {
+        verifyCurrentPage();
+        proceedToCheckoutButton.click();
+    }
+
+    /**
+     * Get personalization price block.
+     * FYR: https://w.amazon.com/bin/view/Personalization
+     * @return personalization price block
+     */
+    public String getP13NPriceBlockText() {
+        verifyCurrentPage();
+        return p13NPriceBlock.getText();
+    }
+
+    /**
+     * Get currency code in personalization price block.
+     * @return currency code in personalization price block
+     */
+    public String getP13NPriceBlockCurrency() {
+        waitForPageToLoad();
+        String priceBlockText = p13NPriceBlock.getText();
+        String[] priceBlock = priceBlockText.split(" ");
+        if (priceBlock.length == 0) throw new IllegalArgumentException(
+                "Price block lenght is expected to be greater than 0 but is " + priceBlock.length);
+        String selectedCurrency = priceBlock[0];
+        return selectedCurrency;
+    }
+
+    /**
+     * Method helps to get the Import Fees Deposit Included text from the order item in HUC Page.
+     * @param asin to parameterized for xpath
+     * @return import fees deposit included text
+     */
+    public String getImportFeesDepositIncludedText(String asin) {
+        new BasePageElement(driver, orderItemLinkByAsin.getName(), String.format(orderItemLinkByAsin.getXPath(), asin))
+                .mouseOverAndWait(importFeesDepositIncludedText);
+        return importFeesDepositIncludedText.getText();
+        }
+
+    /**
+     * Method helps to get the Gift Option Not Available Text in the Huc Page on hovering over GS Item.
+     * @param asin to Parameterized for xpath
+     * @return gift option not available text
+     */
+    public String getGiftOptionNotAvailableText(String asin) {
+        new BasePageElement(driver, orderItemLinkByAsin.getName(), String.format(orderItemLinkByAsin.getXPath(), asin))
+                .mouseOverAndWait(importFeesDepositIncludedText);
+        return giftOptionNotAvailableText.getText();
+        }
+
+    /**
+     * Method helps to verify the Import Fees Deposit link is present or not.
+     * @param asin to parameterized for xpath
+     */
+    public void verifyImportFeesDepositLinkPresent(String asin) {
+        new BasePageElement(driver, orderItemLinkByAsin.getName(), String.format(orderItemLinkByAsin.getXPath(), asin))
+                .mouseOverAndWait(importFeesDepositLink);
+        status.addIsDisplayed(importFeesDepositLink);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to Verify the Order Item Popover is present in the HUC Page.
+     * @param asin to parameterized for xpath
+     */
+    public void verifyHucOrderItemPopoverPresent(String asin) {
+        new BasePageElement(driver, orderItemLinkByAsin.getName(), String.format(orderItemLinkByAsin.getXPath(), asin))
+                .mouseOverAndWait(orderItemPopover);
+        status.addIsDisplayed(orderItemPopover);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to click Import Fees Deposit(IFD) link and Verify it redirects to IFD help page.
+     * @param asin to parameterized for xpath
+     */
+    public void clickImportFeeDepositLink(String asin) {
+        new BasePageElement(driver, orderItemLinkByAsin.getName(), String.format(orderItemLinkByAsin.getXPath(), asin))
+                .mouseOverAndWait(importFeesDepositLink);
+        importFeesDepositLink.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method helps to get the Gift Option Not Available Text in the Huc Page on hovering over GS Item.
+     * @param asin to Parameterized for xpath
+     * @return ImportFeesDepositPrice
+     */
+    public String getImportFeesDepositPriceText(String asin) {
+        new BasePageElement(driver, orderItemLinkByAsin.getName(), String.format(orderItemLinkByAsin.getXPath(), asin))
+                .mouseOverAndWait(importFeesDepositPriceText);
+        return importFeesDepositPriceText.getText();
+        }
+}
