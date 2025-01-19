@@ -1,0 +1,2016 @@
+package com.amazon.aeeqa.ui.pagemodels.detail;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
+import com.amazon.aeeqa.ui.helper.BrowserDriverHelper;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.ui.pagemodels.customerreviews.AboveTheFoldSection;
+import com.amazon.aeeqa.ui.pagemodels.customerreviews.BelowTheFoldSection;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.google.common.collect.Lists;
+
+import lombok.Data;
+
+/**
+ * Detail Page Model.
+ * @author tingyong
+ */
+@PageName("detail")
+public class DetailPage extends BasePageModel {
+
+   @Locator("ADD_TO_CART_BUTTON")
+    private static BasePageElement addToCartButton;
+
+    @Locator("COUNTRY_ELIGIBLE_LABEL_NEXT_TO_PRICE")
+    private static BasePageElement countryEligibleLabelNextToPrice;
+
+    @Locator("COUNTRY_ELIGIBLE_LABEL_ON_BUYBOX")
+    private static BasePageElement countryEligibleLabelOnBuybox;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_LINK")
+    private static BasePageElement totalLandedCostDetailsLink;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_LINK_ON_BUYBOX")
+    private static BasePageElement totalLandedCostDetailsLinkOnBuybox;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_CONTENT_HEAD")
+    private static BasePageElement totalLandedCostDetailsContentHead;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_CONTENT_HEAD_ON_BUYBOX")
+    private static BasePageElement totalLandedCostDetailsContentHeadOnBuybox;
+
+    // Giving the first column text, returning the third column's price value.
+    @Locator("TOTAL_LANDED_COST_DETAILS_CONTENT_PRICE_BY_CELL")
+    private static BasePageElement totalLandedCostDetailsContentPriceByCell;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_CONTENT_PRICE_BY_CELL_ON_BUYBOX")
+    private static BasePageElement totalLandedCostDetailsContentPriceByCellOnBuybox;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_POPOVER_CLOSE_BUTTON")
+    private static BasePageElement totalLandedCostDetailsPopoverCloseButton;
+
+    @Locator("PRIME_BADGE_IN_PRICE_BLOCK")
+    private static BasePageElement primeBadgeInPriceBlock;
+
+    @Locator("PRIME_BADGE_IN_BUYBOX")
+    private static BasePageElement primeBadgeInBuyBox;
+
+    @Locator("FAST_TRACK_SHIPPING_MESSAGE")
+    private static BasePageElement fastTrackShippingMessage;
+
+    @Locator("ADS_AREA")
+    private static BasePageElement adsArea;
+
+    @Locator("PROMOTION_MESSAGE_UNDER_PRICE_LINE")
+    private static BasePageElement promotionMessageUnderPriceLine;
+
+    @Locator("PRICE_BLOCK")
+    private static BasePageElement priceBlock;
+
+    @Locator("CURRENCY_PREFERENCE_IN_IMPORT_FEE_DEPOSIT")
+    private static BasePageElement currencyPreferenceInImportFeeDeposit;
+
+    @Locator("CURRENCY_PREFERENCE_IN_SIMILARITIES")
+    private static BasePageElement currencyPreferenceInSimilrities;
+
+    @Locator("EVERYWHERE_CART_CART_BUTTON")
+    private static BasePageElement everyWhereCartCartButton;
+
+    @Locator("EVERYWHERE_CART_PROCEED_TO_CHECKOUT_BUTTON")
+    private static BasePageElement everyWhereCartProceedToCheckoutButton;
+
+    @Locator("EVERYWHERE_CART_CLOSE_BUTTON")
+    private static BasePageElement everyWhereCartCloseButton;
+
+    @Locator("SHIP_AND_SOLD_BY_TEXT")
+    private static BasePageElement shipAndSoldByText;
+
+    @Locator(value = "IMPORT_FEES_DEPOSIT_TEXT", stringId = "ags-import-charges-label")
+    private static BasePageElement importFeesDepositText;
+
+    @Locator("IMPORT_FEES_DEPOSIT_INCLUDED_TEXT")
+    private static BasePageElement importFeesDepositIncludedText;
+
+    @Locator("AMAZON_GLOBAL_STORE_SELLER_BLOCK")
+    private static BasePageElement amazonGlobalStoreSellerBlock;
+
+    @Locator("BUYBOX_ITEM_PRICE")
+    private static BasePageElement buyBoxItemPrice;
+
+    @Locator("IMPORT_FEES_DEPOSIT_POPOVER_TOTAL_PRICE")
+    private static BasePageElement importFeesDepositPopoverTotalPrice;
+
+    @Locator("DP_IMPORT_FEES_DEPOSIT_LINK")
+    private static BasePageElement importFeeDepositLink;
+
+    @Locator("AOD_LINK_IN_DETAIL_PAGE_CENTER")
+    private static BasePageElement aodLinkInDetailPageCenter;
+
+    @Locator("AOD_LINK_UNDER_BUY_BOX")
+    private static BasePageElement aodLinkUnderBuybox;
+
+    @Locator("IMPORT_FEES_DEPOSIT_POPOVER_IFD_PRICE")
+    private static BasePageElement importFeesDepositPopoverIFDPrice;
+
+    @Locator("IMPORT_FEES_DEPOSIT_POPOVER_ITEM_PRICE")
+    private static BasePageElement importFeesDepositPopoverItemPrice;
+
+    @Locator("AGS_PRIME_BADGE_IN_BUY_BOX")
+    private static BasePageElement agsPrimeBadgeInBuyBox;
+
+    @Locator("AGS_PRIME_SHIPPING_MESSAGE_IN_CENTER")
+    private static BasePageElement agsPrimeShippingMessageInCenter;
+
+    @Locator("AGS_PRIME_BADGE_IN_BOOK_CENTER")
+    private static BasePageElement agsPrimeBadgeInBookCenter;
+
+    @Locator("AGS_PRIME_BADGE_IN_CENTER")
+    private static BasePageElement agsPrimeBadgeInCenter;
+
+    @Locator("AGS_PRIME_SHIPPING_MESSAGE_IN_BUY_BOX")
+    private static BasePageElement agsPrimeShippingMessageInBuyBox;
+
+    @Locator("ADD_TO_LIST_BUTTON")
+    private static BasePageElement addToListButton;
+
+    @Locator("OFFERLISTING_VALUE")
+    private static BasePageElement offerListingValue;
+
+    @Locator("FAST_TRACK_PROMISE_MESSAGE")
+    private static BasePageElement fastTrackPromiseMessage;
+
+    @Locator("PRODUCT_IMAGE")
+    private static BasePageElement productImage;
+
+    @Locator("PRODUCT_TITLE")
+    private static BasePageElement productTitle;
+
+    @Locator("FEATURE_BULLETS")
+    private static BasePageElement featureBullets;
+
+    @Locator("MORE_PRODUCT_DETAILS_LINK")
+    private static BasePageElement moreProductDetailsLink;
+
+    @Locator("MORE_PRODUCT_DETAILS_SECTION")
+    private static BasePageElement moreProductDetailsSection;
+
+    @Locator("SIZE_SELECT")
+    private static BasePageElement sizeSelect;
+
+    @Locator("COLOR_NAMES")
+    private static BasePageElement colorNames;
+
+    @Locator("COLOR_BUTTON_BY_INDEX")
+    private static BasePageElement colorButtonByIndex;
+
+    @Locator("COLOR_AVAILABLE_BUTTON_BY_INDEX")
+    private static BasePageElement colorAvailableButtonByIndex;
+
+    @Locator("PRODUCT_DESCRIPTION")
+    private static BasePageElement productDescription;
+
+    @Locator(value = "ADDITIONAL_INFORMATION_SECTION", stringId = "dp-productDetails-header")
+    private static BasePageElement additionalInformationSection;
+
+    @Locator("BOOKS_TITLE")
+    private static BasePageElement booksTitle;
+
+    // More Buying Choices or "Other Sellers on Amazon" - It appears Below BuyBox on DP
+    // Page Elements for use in POJO: "MBCOffer"
+    @Locator("MBC_OFFERS")
+    private static BasePageElement mbcOffers;
+
+    @Locator("MBC_OFFER_PRICE")
+    private static BasePageElement mbcOfferPrice;
+
+    @Locator("MBC_OFFER_PRICE_PER_UNIT")
+    private static BasePageElement mbcOfferPricePerUnit;
+
+    @Locator("MBC_OFFER_SHIPPING")
+    private static BasePageElement mbcOfferShipping;
+
+    @Locator("MBC_OFFER_ADD_TO_CART_BUTTON")
+    private static BasePageElement mbcOfferAddToCartButton;
+
+    @Locator("MBC_POPOVER_CONTAINERS")
+    private static BasePageElement mbcPopoverContainers;
+
+    @Locator("MBC_POPOVER_SELLER_LINK")
+    private static BasePageElement mbcPopoverSellerLink;
+
+    @Locator("MBC_POPOVER_RATINGS_LINK")
+    private static BasePageElement mbcPopoverRatingsLink;
+
+    @Locator("MBC_POPOVER_AVAIL_TEXT")
+    private static BasePageElement mbcPopoverOfferAvailabilityText;
+
+    @Locator(value = "MBC_POPOVER_SHIPSFROM_TEXT", stringId = "mbc-shipping-rates-message")
+    private static BasePageElement mbcPopoverShipsFromText;
+
+    @Locator(value = "MBC_POPOVER_RETURN_TEXT", stringId = "gp-olp-return-policy_13486")
+    private static BasePageElement mbcPopoverReturnText;
+
+    @Locator("ITEM_QUANTITY_DROPDOWN")
+    private static BasePageElement itemQuantityDropdown;
+
+    @Locator("ITEM_QUANTITY_DROPDOWN_OPTIONS")
+    private static BasePageElement itemQuantityDropdownOptions;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_ICON")
+    private static BasePageElement averageCustomerReviewsIcon;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_LINK")
+    private static BasePageElement averageCustomerReviewsLink;
+
+    @Locator("CUSTOMER_REVIEWS_CONTENT")
+    private static BasePageElement customerReviewsContent;
+
+    @Locator(value = "NO_CUSTOMER_REVIEWS_TEXT", stringId = "arp-no-customer-reviews")
+    private static BasePageElement noCustomerReviewsText;
+
+    @Locator("WRITE_A_REVIEW_BUTTON")
+    private static BasePageElement writeAReviewButton;
+
+    @Locator("BUY_NOW_BUTTON")
+    private static BasePageElement buyNowButton;
+
+    // Regular/Suggested price
+    @Locator("STRIKE_PRICE")
+    private static BasePageElement strikePrice;
+
+    // You Save
+    @Locator("SAVINGS_TEXT")
+    private static BasePageElement savingsText;
+
+    @Locator("PRICE_PER_UNIT")
+    private static BasePageElement pricePerUnit;
+
+    @Locator("SUPER_SAVER_SHIPPING_MESSAGE")
+    private static BasePageElement superSaverShippingMessage;
+
+    @Locator("MEDIA_MATRIX_BUTTONS")
+    private static BasePageElement mediaMatrixButtons;
+
+    @Locator("MEDIA_MATRIX_SECONDARY_VIEW_LINK")
+    private static BasePageElement mediaMatrixSecondaryViewLink;
+
+    @Locator("MEDIA_MATRIX_SECONDARY_VIEW_TITLES")
+    private static BasePageElement mediaMatrixSecondaryViewTitles;
+
+    @Locator("SELLER_NAME_TEXT")
+    private static BasePageElement sellerNameText;
+
+    @Locator("SELLER_LINK")
+    private static BasePageElement sellerLink;
+
+    @Locator("FULFILLMENT_BY_AMAZON_LINK")
+    private static BasePageElement fulfillmentByAmazonLink;
+
+    @Locator("GLOBAL_STORE_BADGE")
+    private static BasePageElement globalStoreBadge;
+
+    @Locator("DELIVERY_PRICE")
+    private static BasePageElement deliveryPrice;
+
+    @Locator("AMAZON_GLOBAL_STORE_INTERNATIONAL_TEXT")
+    private static BasePageElement amazonGlobalStoreInternationalText;
+
+    @Locator("AMAZON_GLOBAL_STORE_SELLER_NAME")
+    private static BasePageElement amazonGlobalStoreSellerName;
+
+    // Some popover may appear, use this button to close it.
+    @Locator("POPOVER_CLOSE_BUTTON")
+    private static BasePageElement popoverCloseButton;
+
+    @Locator("TURBO_CHECKOUT_POPOVER_HEADER")
+    private static BasePageElement turboCheckoutPopoverHeader;
+
+    @Locator("TURBO_CHECKOUT_IFRAME")
+    private static BasePageElement turboCheckoutIFrame;
+
+    @Locator("TURBO_CHECKOUT_PLACE_YOUR_ORDER_BUTTON")
+    private static BasePageElement turboCheckoutPlaceYourOrderButton;
+
+    @Locator("CONTEXTUAL_WIDGET_ADDRESS")
+    private static BasePageElement contextualWidgetAddress;
+
+    @Locator("DYNAMIC_DELIVERY_MESSAGE")
+    private static BasePageElement dynamicDeliveryMessage;
+
+    @Locator("AVAILABILITY_MESSAGE")
+    private static BasePageElement availabilityMessage;
+
+    @Locator("SHIPS_FROM_AND_SOLD_BY_TEXT")
+    private static BasePageElement shipsFromAndSoldByText;
+
+    @Locator("ASIN_VALUE")
+    private static BasePageElement asinValue;
+
+    @Locator(value = "UNDELIVERY_MESSAGE", stringId = "dp_undeliverable_no_valid_delivery_options")
+    private static BasePageElement undeliverableMessage;
+
+    @Locator(value = "CURRENTLY_UNAVAILABLE_TEXT")
+    private static BasePageElement currentlyUnavailableText;
+
+    // Customer Reviews ATF
+    private AboveTheFoldSection aboveTheFoldSection;
+
+    // Customer Reviews BTF
+    private BelowTheFoldSection belowTheFoldSection;
+
+    // Detail Page Above The Fold
+    private DetailPageAboveTheFold detailPageAboveTheFold;
+
+    // Detail Page Below The Fold
+    private DetailPageBelowTheFold detailPageBelowTheFold;
+
+    @Locator("UNIVERSAL_DETAIL_INLINE_MESSAGE_BELOW_SUBNAV")
+    private static BasePageElement universalDetailInlineMessageBelowSubnav;
+
+    @Locator("KINDLE_ACCOUNT_LINKING_CHECKBOX")
+    private static BasePageElement kindleAccountLinkingCheckbox;
+
+    @Locator("WHY_IS_IT_IMPORTANT_LINK")
+    private static BasePageElement whyIsItImportantLink;
+
+    @Locator("WHY_IS_IT_IMPORTANT_LINK_POPOVER")
+    private static BasePageElement whyIsItImportantLinkPopover;
+
+    @Locator("WIFI_SIMPLE_SETUP_LINK")
+    private static BasePageElement wifiSimpleSetupLink;
+
+    @Locator("FEEDBACK_SECTION_MESSAGE")
+    private static BasePageElement feedbackSectionMessage;
+
+    @Locator("WARRANTY_SECTION_MESSAGE")
+    private static BasePageElement warrantySectionMessage;
+
+    @Locator("WARRANTY_SECTION_LINK")
+    private static BasePageElement warrantySectionLink;
+
+    @Locator("SHIPPING_DETAILS_LINK")
+    private static BasePageElement shippingDetailsLink;
+
+    @Locator("REPORT_INCORRECT_PRODUCT_INFO_LINK")
+    private static BasePageElement reportIncorrectProductInfoLink;
+
+    @Locator("ADD_GIFT_OPTIONS_CHECKBOX")
+    private static BasePageElement addGiftOptionsCheckbox;
+
+    @Locator("ADD_GIFT_OPTIONS_MESSAGE")
+    private static BasePageElement addGiftOptionsMessage;
+
+    @Locator(value = "SIZE_CHART_LINK", stringId = "sizeChartV2-display-sizeChart")
+    private static BasePageElement sizeChartLink;
+
+    @Locator(value = "SIZE_CHART_TITLE", stringId = "sizeChartV2-display-sizeChart")
+    private static BasePageElement sizeChartTitle;
+
+    @Locator("FIT_RECOMMENDATIONS_LINK")
+    private static BasePageElement fitRecommendationsLink;
+
+    @Locator("FITNESS_REVIEW_TITLE")
+    private static BasePageElement fitnessReviewTitle;
+
+    @Locator("PROTECTION_LABEL")
+    private static BasePageElement protectionLabel;
+
+    @Locator("PRIME_LABEL_BUYBOX")
+    private static BasePageElement primeLabelBuybox;
+
+    @Locator("CURRENTLY_UNAVAILABLE_MESSAGE")
+    private static BasePageElement currentlyUnavailableMessage;
+
+    @Locator("BUYBOX_LEARN_MORE_LINK")
+    private static BasePageElement clickBuyboxLearnMoreLink;
+
+    @Locator("LEARN_MORE_INSIDE_AMAZON_GLOBAL_STORE_POPOVER")
+    private static BasePageElement clickLearnMoreInsideAmazonGlobalStorePopover;
+
+    @Locator("SEPARATE_TERMS_INSIDE_AMAZON_GLOBAL_STORE_POPOVER")
+    private static BasePageElement clickSeparateTermsInsideAmazonGlobalStorePopover;
+
+    @Locator("INTERNATIONAL_PRODUCTS_INSIDE_AMAZON_GLOBAL_STORE_POPOVER")
+    private static BasePageElement internationalProductsInsideAmazonGlobalStorePopover;
+
+    @Locator("LEARN_MORE_LINK_INSIDE_IMPORT_FEES_DEPOSIT_POPOVER")
+    private static BasePageElement importFeesDepositPopoverLearnMoreLink;
+
+    @Locator("LEGAL_CONTENTS_INSIDE_IMPORT_FEES_DEPOSIT_POPOVER")
+    private static BasePageElement importFeesDepositPopoverLegalContents;
+
+    @Locator("NO_IMAGE_AVAILABLE")
+    private static BasePageElement noImageAvailable;
+
+    // Buy Box Variables Below
+    @Locator("BUYBOX_DELIVERY_PRICE")
+    private static BasePageElement buyboxDeliveryPrice;
+
+    @Locator("BUY_BOX_DELIVERY_MESSAGE")
+    private static BasePageElement buyBoxDeliveryMessage;
+
+    @Locator("BUY_BOX_PRICE_ABOVE_DELIVERY_MESSAGE")
+    private static BasePageElement buyBoxPriceAboveDeliveryMessage;
+
+    @Locator(value = "AGS_FREE_SHIPPING_MESSAGE")
+    private static BasePageElement agsFreeShippingMessage;
+
+    @Locator(value = "VARIATION_PRICE_FOR_BOOK")
+    private static BasePageElement variationPriceForBook;
+
+    @Locator(value = "BUYBOX_PRICE_FOR_BOOK")
+    private static BasePageElement buyboxPriceForBook;
+
+    @Locator(value = "SAVINGS_PERCENTAGE_TEXT")
+    private static BasePageElement savingsPercentageText;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public DetailPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Constructor with a driver instance and an ASIN url.
+     * @param driver the WebDriver instance.
+     * @param asinUrl the ASIN url to navigate.
+     */
+    public DetailPage(WebDriver driver, String asinUrl) {
+        super(driver);
+        setPageurl(asinUrl);
+        navigateToPage();
+    }
+
+    /**
+     * Verify the page has all the expected fields
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        status.addIsDisplayed(addToCartButton);
+        status.processStatus();
+    }
+
+    /**
+     * Get addToCartButton text.
+     * @return addToCartButton text.
+     */
+    public String getAddToCartButtonText() {
+        return addToCartButton.getElement().getAttribute("value");
+    }
+
+    /**
+     * Get addToCartButton presence.
+     * @return addToCartButton presence.
+     */
+    public boolean isAddToCartButtonPresent() {
+        return addToCartButton.isPresent();
+    }
+
+    /**
+     * Get ASIN shipping country eligible text.
+     * @return the eligible text.
+     */
+    public String getCountryEligibleText() {
+        return countryEligibleLabelNextToPrice.getText();
+    }
+
+    /**
+     * Get ASIN shipping country eligible text on buybox.
+     * @return the eligible text.
+     */
+    public String getCountryEligibleTextOnBuybox() {
+        return countryEligibleLabelOnBuybox.getText();
+    }
+
+    /**
+     * Click 'Add to Cart' button.
+     */
+    public void addToCart() {
+        addToCartButton.waitForElementToBeEnabled();
+        addToCartButton.click();
+    }
+
+    /**
+     * Verify total landed cost "Details" link present.
+     */
+    public void verifyTotalLandedCostDetailsLinkPresentAndClickable() {
+        status.addIsEnabled(totalLandedCostDetailsLink);
+        status.processStatus();
+    }
+
+    /**
+     * Click total landed cost "Details"
+     */
+    public void clickTotalLandedCostDetails() {
+        totalLandedCostDetailsLink.clickAndWait(totalLandedCostDetailsContentHead);
+    }
+
+    /**
+     * Verify total landed cost "Details" link on buybox present.
+     */
+    public void verifyTotalLandedCostDetailsLinkOnBuyboxPresentAndClickable() {
+        status.addIsEnabled(totalLandedCostDetailsLinkOnBuybox);
+        status.processStatus();
+    }
+
+    /**
+     * Get total landed cost popover head title.
+     * @return the popover's head text.
+     */
+    public String getTotalLandedCostDetailsPopoverHeadText() {
+        verifyTotalLandedCostDetailsLinkPresentAndClickable();
+        // Use JS click for this "Details" link
+        totalLandedCostDetailsLink.click(true);
+        totalLandedCostDetailsContentHead.waitIsPresent();
+        return totalLandedCostDetailsContentHead.getText();
+    }
+
+    /**
+     * Click total landed cost 'details' link in Price Section
+     */
+    public void clickTotalLandedCostDetailsInPriceSection() {
+        // Use JS click for this "Details" link
+        totalLandedCostDetailsLink.click(true);
+    }
+
+    /**
+     * Click total landed cost 'details' link in BuyBox
+     */
+    public void clickTotalLandedCostDetailsInBuyBox() {
+        // Use JS click for this "Details" link
+        totalLandedCostDetailsLinkOnBuybox.click();
+    }
+
+    /**
+     * Gets item price from the import fees deposit popover
+     * @return the total price displayed in the popover
+     */
+    public String getImportFeesDepositPopoverItemPriceText() {
+        importFeesDepositText.mouseOverAndWait(importFeesDepositPopoverItemPrice);
+        return importFeesDepositPopoverTotalPrice.getText();
+    }
+
+    /**
+     * Gets the IFD price from the import fees deposit popover
+     * @return the IFD price displayed in the popover
+     */
+    public String getImportFeesDepositPopoverIFDPriceText() {
+        importFeesDepositText.mouseOverAndWait(importFeesDepositPopoverIFDPrice);
+        return importFeesDepositPopoverIFDPrice.getText();
+    }
+
+    /**
+     * Return if the IFD popover is displayed or not when mousehover on IFD text
+     * @return the popover's presence
+     */
+    public boolean isImportFeesDepositPopOverPresent() {
+        importFeesDepositText.clickAndWait(importFeesDepositPopoverTotalPrice);
+        return importFeesDepositPopoverTotalPrice.isPresent();
+    }
+
+    /**
+     * Get total landed cost popover head title on buybox.
+     * @return the popover's head text.
+     */
+    public String getTotalLandedCostDetailsPopoverOnBuyboxHeadText() {
+        verifyTotalLandedCostDetailsLinkOnBuyboxPresentAndClickable();
+        // Use JS click for this "Details" link
+        totalLandedCostDetailsLinkOnBuybox.click(true);
+        totalLandedCostDetailsContentHeadOnBuybox.waitIsPresent();
+        return totalLandedCostDetailsContentHeadOnBuybox.getText();
+    }
+
+    /**
+     * Return the 3rd column's price value by given 1st column's text.
+     *
+     * @param firstColumnText each row's first column text.
+     * @return the same row's third column's text.
+     */
+    public String getTotalLandedCostDetailsContentPriceByCell(String firstColumnText) {
+        return new BasePageElement(driver,
+                totalLandedCostDetailsContentPriceByCell.getName() + "_" + firstColumnText,
+                String.format(totalLandedCostDetailsContentPriceByCell.getXPath(), firstColumnText)).getText();
+    }
+
+    /**
+     * Get buybox's total landed cost popover's price column text (3rd column) by given head text (1st column).
+     * @param firstColumnText each row's first column text.
+     * @return the price string by head text.
+     */
+    public String getTotalLandedCostDetailsContentPriceByCellOnBuybox(String firstColumnText) {
+        return new BasePageElement(driver,
+                totalLandedCostDetailsContentPriceByCellOnBuybox.getName() + "_" + firstColumnText,
+                String.format(totalLandedCostDetailsContentPriceByCellOnBuybox.getXPath(), firstColumnText)).getText();
+    }
+
+    /**
+     * Verify prime badge absent on Detail page price block.
+     */
+    public void verifyPrimeBadgeAbsentInPriceBlock() {
+        verifyCurrentPage();
+        status.addIsHiddenOrMissing(primeBadgeInPriceBlock);
+        status.processStatus();
+    }
+
+    /**
+     * Verify prime badge absent on Detail page in Buybox.
+     */
+    public void verifyPrimeBadgeAbsentInBuyBox() {
+        verifyCurrentPage();
+        status.addIsHiddenOrMissing(primeBadgeInBuyBox);
+        status.processStatus();
+    }
+
+    /**
+     * Get fast track shipping message on Detail page.
+     * @return fast track shipping message.
+     */
+    public String getFastTrackShippingMessage() {
+        fastTrackShippingMessage.waitIsPresent();
+        return fastTrackShippingMessage.getText();
+    }
+
+    /**
+     * Get fast track delivery promise message on Detail page.
+     * @return fast track deliver promise message.
+     */
+    public String getFastTrackPromiseMessage() {
+        fastTrackPromiseMessage.waitIsPresent();
+        return fastTrackPromiseMessage.getText();
+    }
+
+    /**
+     * Whether the advertisement area displayed.
+     * @return the ads displayed or not.
+     */
+    public boolean isAdsPresent() {
+        verifyCurrentPage();
+        return adsArea.isPresent();
+    }
+
+    /**
+     * Get the promotion message.
+     * @return the promotion text.
+     */
+    public String getPromotionMessage() {
+        return promotionMessageUnderPriceLine.getText();
+    }
+
+    /**
+     * Verify if protection (also referred as warranty) is present in buybox
+     * @return if present
+     */
+    public boolean isProtectionOrWarrantyPresentInBuyBox() {
+        verifyCurrentPage();
+        return protectionLabel.isPresent();
+    }
+
+    /**
+     * Verify if try prime label is present in buybox
+     * @return if present
+     */
+    public boolean isPrimeLabelPresentInBuyBox() {
+        verifyCurrentPage();
+        return primeLabelBuybox.isPresent();
+    }
+
+    /**
+     * Close the TLC details popover.
+     */
+    public void closeDetailsPopover() {
+        totalLandedCostDetailsPopoverCloseButton.click(true);
+    }
+
+    /**
+     * Get Currency code in detail page main price block
+     * @param currencyDecimalSeparator - country specific decimal separator in item price
+     * @return selected currency code
+     */
+    public String getCurrencyInPriceBlock(String currencyDecimalSeparator) {
+        String priceBlockText = getDetailPagePrice(currencyDecimalSeparator);
+        return priceBlockText.replaceAll("[0-9,.\\s]", "");
+    }
+
+    /**
+     * Method to get the DP price in the Price Block under the Title
+     *
+     * @return Price for the item in the Details page
+     *
+     */
+    public String getBuyingPriceInPriceBlock() {
+         if (priceBlock.countElements() > 1) {
+            return new BasePageElement(driver, priceBlock.getName() + "-range",
+                    String.format(priceBlock.getXPath() + "/parent::*")).getText();
+        } else {
+            return priceBlock.getText();
+        }
+    }
+
+    /**
+     * Navigate to Cart Page when ASINs have popover in Detail Page.
+     */
+    public void navigateToCartFromEveryWhereCart() {
+        everyWhereCartCartButton.waitForElementToBeEnabled();
+        everyWhereCartCartButton.click();
+    }
+
+    /**
+     * Navigate to Checkout Page when ASINs have popover in Detail Page.
+     */
+    public void navigateToCheckoutFromEveryWhereCart() {
+        everyWhereCartProceedToCheckoutButton.waitForElementToBeEnabled();
+        everyWhereCartProceedToCheckoutButton.click();
+    }
+
+    /**
+     * Get shipAndSoldByText's text.
+     * @param sellerNameText sellername to pass
+     * @return shipAndSoldByText element text.
+     */
+    public String getShipAndSoldByText(final String sellerNameText) {
+        return new BasePageElement(driver, shipAndSoldByText.getName() + "_" + sellerNameText,
+                String.format(shipAndSoldByText.getXPath(), sellerNameText)).getText();
+    }
+
+    /**
+     * Is Ship and sold by text present (e.g. Dispatches from and sold by Amazon Eu).
+     * @param sellerNameText sellerName to pass
+     * @return shipAndSoldByText true if present.
+     */
+    public boolean isPresentShipAndSoldByText(final String sellerNameText) {
+        return new BasePageElement(driver, shipAndSoldByText.getName() + "_" + sellerNameText,
+                String.format(shipAndSoldByText.getXPath(), sellerNameText)).isPresent();
+    }
+
+    /**
+     * Get Seller Name text.
+     * @return sellerNameText element text.
+     */
+    public String getSellerNameText() {
+        return sellerNameText.getText();
+    }
+
+    /**
+     * Get Seller Profile link.
+     * @return The ssp link from detail page.
+     */
+    public String getSellerLink() {
+        return sellerLink.getElement().getAttribute("href");
+    }
+
+    /**
+     * Method helps to get the Import Fees Deposit Included text from Detail Page
+     *
+     * @return import fees deposit included text
+     */
+    public String getImportFeesDepositIncludedText() {
+        verifyCurrentPage();
+        return importFeesDepositIncludedText.getText();
+    }
+
+    /**
+     * Verify Amazon Global Store Block Present in the Detail Page
+     */
+    public void verifyAmazonGlobalStoreSellerBlockPresent() {
+        waitForPageToLoad();
+        status.addIsDisplayed(amazonGlobalStoreSellerBlock);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to get the Item price in BuyBox Section from Detail Page
+     *
+     * @return item price in BuyBox Section
+     */
+    public String getBuyBoxItemPrice() {
+        verifyCurrentPage();
+        return buyBoxItemPrice.getText();
+    }
+
+    /**
+     * Method helps to get the Total Price from the Import Fees Deposit Popover.
+     *
+     * @return ImportFeesDepositPopover Total Price
+     */
+    public String getImportFeesDepositPopoverTotalPriceText() {
+        importFeesDepositText.clickAndWait(importFeesDepositPopoverTotalPrice);
+        return importFeesDepositPopoverTotalPrice.getText();
+    }
+
+    /**
+     * Helps identify Promise Message is present under the Price Line on BuyBox
+     * @return presence of simplified or fast track promise.
+     */
+    public boolean isPromiseMessagePresent() {
+        return dynamicDeliveryMessage.isPresent();
+    }
+
+    /**
+     * Helps identify Fast Track Promise Message is present under the Price Line on BuyBox
+     * @return presence of fast track promise.
+     */
+    public boolean isFastTrackPromiseMessagePresent() {
+        return fastTrackPromiseMessage.isPresent();
+    }
+
+    /**
+     * Helps to identify import fee detail link is present.
+     * @return presence of ImportFeeDepositLink in the detail page.
+     */
+    public boolean isImportFeeDepositLinkPresent() {
+        return importFeeDepositLink.isPresent();
+    }
+
+    /**
+     * Click on aod link in detail page.
+     */
+    public void clickAODLink() {
+        if (aodLinkUnderBuybox.isPresent()) {
+            aodLinkUnderBuybox.click();
+        } else if (aodLinkInDetailPageCenter.isPresent()) {
+            aodLinkInDetailPageCenter.click();
+        } else {
+            throw new NoSuchElementException("AOD link is not found in DetailPage");
+        }
+    }
+
+    /**
+     * Get text of the AOD link in Detail Page.
+     * @return the aod link text.
+     */
+    public String getTextFromAODLink() {
+        String aodText = "";
+        if (aodLinkUnderBuybox.isPresent()) {
+            aodText = aodLinkUnderBuybox.getText();
+        } else if (aodLinkInDetailPageCenter.isPresent()) {
+            aodText = aodLinkInDetailPageCenter.getText();
+        }
+        return aodText;
+    }
+
+    /**
+     * Helps to Identify prime badge in buybox is Present.
+     *
+     * @return boolean representing presence of prime badge.
+     */
+    public boolean isPrimeBadgeInBuyBoxPresent() {
+        return agsPrimeBadgeInBuyBox.isPresent();
+    }
+
+    /**
+     * Helps to Identify prime badge in center of DP is Present.
+     *
+     * @return boolean representing presence of prime badge.
+     */
+    public boolean isPrimeBadgeInCenterPresent() {
+        return agsPrimeBadgeInCenter.isPresent();
+    }
+
+    /**
+     * Helps to Identify prime badge in center of book DP is Present.
+     *
+     * @return boolean representing presence of prime badge.
+     */
+    public boolean isPrimeBadgeInBookCenterPresent() {
+        return agsPrimeBadgeInBookCenter.isPresent();
+    }
+
+    /**
+     * Helps to Identify prime shippoing message in buybox of DP is Present.
+     *
+     * @param freeInternationalShipMessage specific to a global store.
+     *
+     * @return boolean representing presence of prime shipping message in DP buybox.
+     */
+    public boolean isPrimeShippingMessageInBuyBoxPresent(String freeInternationalShipMessage) {
+        return new BasePageElement(driver, agsPrimeShippingMessageInBuyBox.getName(),
+                String.format(agsPrimeShippingMessageInBuyBox.getXPath(), freeInternationalShipMessage)).isPresent();
+    }
+
+    /**
+     * Helps to Identify prime shippoing message in center of DP is Present.
+     *
+     * @param freeInternationalShipMessage specific to a global store.
+     *
+     * @return boolean representing presence of prime shipping message in DP center.
+     */
+    public boolean isPrimeShippingMessageInCenterPresent(String freeInternationalShipMessage) {
+        return new BasePageElement(driver, agsPrimeShippingMessageInCenter.getName(),
+                String.format(agsPrimeShippingMessageInCenter.getXPath(), freeInternationalShipMessage)).isPresent();
+    }
+
+    /**
+     * Click 'Add to List' button.
+     */
+    public void addToList() {
+        addToListButton.click();
+    }
+
+    /**
+     * Get Offerlisting Value for the specific Merchant to add items from Cart Internal tool
+     * @return the OfferListing Value.
+     */
+    public String getOfferListingValue() {
+        waitForPageToLoad();
+        return offerListingValue.getValue("value");
+    }
+
+    /**
+     * Get Detail Page Price Value.
+     * @param currencyDecimalSeparator - country specific decimal separator in item price
+     * @return the price Value in Buy box or ourPrice.
+     */
+    public String getDetailPagePrice(String currencyDecimalSeparator) {
+        String dpPrice = null;
+        if (buyBoxItemPrice.isPresent()) {
+            dpPrice = getBuyBoxItemPrice();
+        } else if (priceBlock.isPresent()) {
+            dpPrice = getBuyingPriceInPriceBlock();
+        }
+        //convert new DP price format if present
+        if (dpPrice != null) dpPrice = dpPrice.replaceAll("[\\r\\n]+", currencyDecimalSeparator);
+        return dpPrice;
+    }
+
+    /**
+     * Seller link is present or not.
+     * @return true if the seller link present
+     */
+    public boolean isSellerLinkPresent() {
+        return sellerLink.isPresent();
+    }
+
+    /**
+     * Whether Product Image present or not.
+     * @return Product Image present or not.
+     */
+    public boolean isProductImagePresent() {
+        return productImage.isPresent();
+    }
+
+    /**
+     * Get product title.
+     * @return product title text.
+     */
+    public String getProductTitleText() {
+        productTitle.waitForTextNotBlank(5);
+        return productTitle.getText();
+    }
+
+    /**
+     * Get product description bullets' css styles.
+     * @return a list of product description bullets' @class attributes.
+     */
+    public List<String> getFeatureBulletsCss() {
+        if (moreProductDetailsLink.isPresent()) {
+            moreProductDetailsLink.click();
+        }
+        return featureBullets.getElements().stream().map(element -> element.getElement().getAttribute("class"))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get product description bullets text.
+     * @return a list of product description bullets.
+     */
+    public List<String> getFeatureBulletsText() {
+        return featureBullets.getElements().stream().map(element -> element.getText())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Verify more product details link & section.
+     */
+    public void verifyMoreProductDetails() {
+        status.addIsEnabled(moreProductDetailsLink);
+        status.processStatus();
+        moreProductDetailsLink.click();
+        status.addIsDisplayed(moreProductDetailsSection);
+        status.processStatus();
+    }
+
+    /**
+     * Is size select present or not.
+     * @return is size select present or not.
+     */
+    public boolean isSizeSelectPresent() {
+        return sizeSelect.isPresent();
+    }
+
+    /**
+     * Select a size.
+     * @param sizeName size visible text.
+     */
+    public void selectSize(final String sizeName) {
+        sizeSelect.setSelectedOption(sizeName);
+    }
+
+    /**
+     * Get size options.
+     * @return Size options.
+     */
+    public List<String> getSizes() {
+        Select sizeSelectElement = new Select(sizeSelect.getElement());
+        return sizeSelectElement.getOptions().stream()
+                .filter(e -> !"-1".equals(e.getAttribute("value")))
+                .map(e -> e.getText())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Verify colors clickable.
+     */
+    public void verifyColorsClickable() {
+        colorNames.getElements().forEach(status::addIsEnabled);
+        status.processStatus();
+    }
+
+    /**
+     * Get the available (having offer) selections <sizeName, colorIndexes> map.
+     * @return a list of available size/color selections.
+     */
+    public Map<String, List<Integer>> getAvailableSizesAndColors() {
+        String currentUrl = driver.getCurrentUrl();
+        Map<String, List<Integer>> result = new HashMap<>();
+        Select select = null;
+        int colorsCount = 0;
+        if (isSizeSelectPresent()) {
+            select = new Select(sizeSelect.getElement());
+        }
+        if (colorNames.isPresent()) {
+            colorsCount = colorNames.countElements();
+        }
+        if (isSizeSelectPresent() && colorNames.isPresent()) {
+            for (WebElement element : select.getOptions()) {
+                //skipping default 'select' option from dropdown.
+                if (!element.getAttribute("value").equals(Integer.toString(-1))) {
+                    String text = element.getText();
+                    select.selectByVisibleText(text);
+                    BrowserDriverHelper.waitUntilUrlChanged(driver, 3, 500, currentUrl);
+                    for (int i = 0; i < colorsCount; i++) {
+                        if (isColorAvailable(i)) {
+                            // Available <size, colorIndexes> pair
+                            List<Integer> colorIndexes = result.getOrDefault(text, new ArrayList<>());
+                            colorIndexes.add(i);
+                            result.putIfAbsent(text, colorIndexes);
+                        }
+                    }
+                }
+            }
+        } else if (isSizeSelectPresent()) {
+            // Only having size selection
+            for (WebElement element : select.getOptions()) {
+                //skipping default 'select' option from dropdown.
+                if (!element.getAttribute("value").equals(Integer.toString(-1))) {
+                    String text = element.getText();
+                    select.selectByVisibleText(text);
+                    BrowserDriverHelper.waitUntilUrlChanged(driver, 3, 500, currentUrl);
+                    if (!getOfferListingValue().isEmpty()) {
+                        // put color index to null as no colors selection
+                        result.put(text, null);
+                    }
+                }
+            }
+        } else if (colorNames.isPresent()) {
+            // Only having color selection
+            List<Integer> colorIndexes = new ArrayList<>();
+            for (int i = 0; i < colorsCount; i++) {
+                if (isColorAvailable(i)) {
+                    colorIndexes.add(i);
+                    // put size to null as no sizes selection
+                    result.put(null, colorIndexes);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Select item size and color.
+     * @param size size display name.
+     * @param colorIndex color index, starting from 0.
+     */
+    public void selectSizeAndColor(String size, int colorIndex) {
+        String currentUrl = driver.getCurrentUrl();
+        if (size != null && isSizeSelectPresent()) {
+            selectSize(size);
+            BrowserDriverHelper.waitUntilUrlChanged(driver, 3, 500, currentUrl);
+        }
+        if (colorIndex != -1 && colorNames.isPresent()) {
+            new BasePageElement(driver,
+                    colorButtonByIndex.getName() + "-" + colorIndex,
+                    String.format(colorButtonByIndex.getXPath(), colorIndex)).click();
+            BrowserDriverHelper.waitUntilUrlChanged(driver, 3, 500, currentUrl);
+        }
+    }
+
+    /**
+     * Is color available by index.
+     * @param colorIndex color index, starting from 0.
+     * @return Is color available.
+     */
+    public boolean isColorAvailable(int colorIndex) {
+        return new BasePageElement(driver,
+                colorAvailableButtonByIndex.getName() + "-" + colorIndex,
+                String.format(colorAvailableButtonByIndex.getXPath(), colorIndex)).isPresent();
+    }
+
+    /**
+     * Switch variation and verify aod link present.
+     */
+    public void switchColorAndVerifyAODLink() {
+        BasePageElement aodElement = null;
+        String currentUrl = driver.getCurrentUrl();
+        for (PageElement element : colorNames.getElements()) {
+            if (element.isEnabled()) {
+                element.click();
+                BrowserDriverHelper.waitUntilUrlChanged(driver, 3, 500, currentUrl);
+                if (aodLinkUnderBuybox.waitIsPresent()) {
+                    aodElement = aodLinkUnderBuybox;
+                    break;
+                } else if (aodLinkInDetailPageCenter.isPresent()) {
+                    aodElement = aodLinkInDetailPageCenter;
+                    break;
+                }
+            }
+        }
+        // The test case is to check at least one variation having an OLP link
+        status.addIsDisplayed(aodElement);
+        status.processStatus();
+    }
+
+    /**
+     * Get product description.
+     * @return product description text.
+     */
+    public String getProductDescriptionText() {
+        return productDescription.getText();
+    }
+
+    /**
+     * Verify Additional information section present.
+     */
+    public void verifyAdditionalInformationSectionPresent() {
+        status.addIsDisplayed(additionalInformationSection);
+        status.processStatus();
+    }
+
+    /**
+     * Get Feedback section message.
+     * @return Feedback section text.
+     */
+    public String getFeedbackSectionMessage() {
+        return feedbackSectionMessage.getText();
+    }
+
+    /**
+     * Get Warranty & Support section message.
+     * @return Warranty & Support section text.
+     */
+    public String getWarrantySectionMessage() {
+        return warrantySectionMessage.getText();
+    }
+
+    /**
+     * Gets the link from Warranty & Support Section.
+     * @return 'Click Here' link.
+     */
+    public String getWarrantySectionLink() {
+        return warrantySectionLink.getElement().getAttribute("href");
+    }
+
+    /**
+     * Click Warranty & Support Section 'Click Here' link.
+     */
+    public void clickWarrantySectionLink() {
+        warrantySectionLink.waitForElementToBeEnabled();
+        warrantySectionLink.click();
+    }
+
+    /**
+     * Get books title, books ASIN has a "booksTitle".
+     * @return books title text.
+     */
+    public String getBooksTitleText() {
+        return booksTitle.getText();
+    }
+
+    /**
+     * Click Customer review section is displayed
+     */
+    public void clickAverageCustomerReviewsLink() {
+        averageCustomerReviewsLink.click();
+    }
+
+    /**
+     * Verify No customer review link is displayed
+     * @return customer review link present or not
+     */
+    public boolean isAverageCustomerReviewsLinkPresent() {
+        return averageCustomerReviewsLink.isPresent();
+    }
+
+    /**
+     * Get customer review link text
+     * @return text
+     */
+    public String getAverageCustomerReviewsLinkText() {
+        return averageCustomerReviewsLink.getText();
+    }
+
+    /**
+     * Get MBC offer data list.
+     * @return a list of MBC offer data.
+     */
+    public List<MBCOffer> getMBCOffersData() {
+        List<MBCOffer> mbcOffersData = Lists.newArrayList();
+        for (int i = 1; i <= mbcOffers.getElements().size(); i++) {
+            MBCOffer mbcOffer = new MBCOffer();
+            mbcOffer.setPrice(new BasePageElement(driver, "mbc-offer-price-" + i,
+                    String.format(mbcOfferPrice.getXPath(),
+                            mbcOffers.getElements().get(i - 1).getXPath())).getText());
+            BasePageElement pricePerUnitElement = new BasePageElement(driver, "mbc-offer-ppu-" + i,
+                    String.format(mbcOfferPricePerUnit.getXPath(),
+                            mbcOffers.getElements().get(i - 1).getXPath()));
+            // Not all MBC offers have price per unit
+            if (pricePerUnitElement.isPresent()) {
+                mbcOffer.setPricePerUnit(pricePerUnitElement.getText());
+            }
+            mbcOffer.setShipping(new BasePageElement(driver, "mbc-offer-shipping-" + i,
+                    String.format(mbcOfferShipping.getXPath(),
+                            mbcOffers.getElements().get(i - 1).getXPath())).getText());
+            BasePageElement addToCartButton = new BasePageElement(driver, "mbc-offer-add-to-cart-" + i,
+                    String.format(mbcOfferAddToCartButton.getXPath(),
+                            mbcOffers.getElements().get(i - 1).getXPath()));
+            mbcOffer.setAddToCartButton(addToCartButton);
+            mbcOffer.setAddToCartPresent(addToCartButton.isPresent());
+            mbcOffersData.add(mbcOffer);
+        }
+        return mbcOffersData;
+    }
+
+    /**
+     * Get MBC popover data.
+     * @return a list of MBC popover data.
+     */
+    public List<MBCPopoverData> getMBCPopoversData() {
+        List<MBCPopoverData> mbcPopoversData = Lists.newArrayList();
+        mbcOffers.waitIsPresent();
+        List<PageElement> mbcOfferElements = mbcOffers.getElements();
+        for (int i = 1; i <= mbcOfferElements.size(); i++) {
+            scrollToElement(mbcOfferElements.get(i - 1));
+            mbcOfferElements.get(i - 1).click();
+            new BasePageElement(driver, "mbc-popover-" + i, String.format(
+                                    mbcPopoverContainers.getXPath(), i)).waitForElementToBeEnabled();
+            MBCPopoverData popoverData = new MBCPopoverData();
+            // Seller
+            PageElement sellerElement = new BasePageElement(driver, "mbc-popover-" + i + "-seller",
+                                        String.format(mbcPopoverSellerLink.getXPath(), i));
+            String sellerLinkOrText = sellerElement.getText();
+            if (sellerLinkOrText.contains("Amazon") &&
+                StringUtils.isBlank(sellerElement.getElement().getAttribute("href"))) {
+                    popoverData.setAmazonRetailOffer(true);
+            } else if (!sellerLinkOrText.contains("Amazon")) {
+                // Seller Ratings
+                popoverData.setSellerRatingsText(new BasePageElement(driver, "mbc-popover-" + i +
+                        "-rating", String.format(mbcPopoverRatingsLink.getXPath(), i)).getText());
+            } else if (StringUtils.isNotBlank(sellerElement.getElement().getAttribute("href"))) {
+                sellerLinkOrText = sellerElement.getElement().getAttribute("href");
+            }
+            popoverData.setSellerLinkOrText(sellerLinkOrText);
+            // Availability
+            popoverData.setAvailabilityText(new BasePageElement(driver, "mbc-popover-" + i + "-availability",
+                    String.format(mbcPopoverOfferAvailabilityText.getXPath(), i)).getText());
+            // Shipping rate link
+            BasePageElement shipsFromElement = new BasePageElement(driver, "mbc-popover-" + i + "-ship-rate",
+                    String.format(mbcPopoverContainers.getXPath() + mbcPopoverShipsFromText.getXPath(), i));
+            String shippingRateTextOrLink = shipsFromElement.getText();
+            if (StringUtils.isNotBlank(shipsFromElement.getElement().getAttribute("href"))) {
+                shippingRateTextOrLink = shipsFromElement.getElement().getAttribute("href");
+            }
+            popoverData.setShippingRatesLinkOrText(shippingRateTextOrLink);
+            // Return Policy link
+            BasePageElement returnElement = new BasePageElement(driver, "mbc-popover-" + i + "-return",
+                    String.format(mbcPopoverContainers.getXPath() + mbcPopoverReturnText.getXPath(), i));
+            String returnPolicyTextOrLink = returnElement.getText();
+            if (StringUtils.isNotBlank(returnElement.getElement().getAttribute("href"))) {
+                returnPolicyTextOrLink = returnElement.getElement().getAttribute("href");
+            }
+            popoverData.setReturnPolicyLinkOrText(returnPolicyTextOrLink);
+            mbcPopoversData.add(popoverData);
+        }
+        return mbcPopoversData;
+    }
+
+    /**
+     * Set a quantity from the dropdown.
+     * @param count item quantity.
+     */
+    public void selectItemQuantityFromDropdown(final int count) {
+        itemQuantityDropdown.click();
+        //count -1 is used to take quantity value as 1 since locator uses index value of qty box
+        new BasePageElement(driver, itemQuantityDropdownOptions.getName(),
+             String.format(itemQuantityDropdownOptions.getXPath(), count - 1)).click();
+    }
+
+    /**
+     * Verify average customer reviews.
+     */
+    public void verifyAverageCustomerReviewsPresent() {
+        status.addIsDisplayed(averageCustomerReviewsIcon);
+        status.processStatus();
+        averageCustomerReviewsLink.click();
+        status.addIsDisplayed(customerReviewsContent);
+        status.processStatus();
+    }
+
+    /**
+     * Verify no average customer reviews.
+     */
+    public void verifyNoAverageCustomerReviews() {
+        status.addIsDisplayed(noCustomerReviewsText);
+        status.processStatus();
+        scrollToElement(noCustomerReviewsText);
+        writeAReviewButton.waitIsPresent();
+        status.addIsDisplayed(writeAReviewButton);
+        status.processStatus();
+    }
+
+    /**
+     * Click Buy Now button.
+     */
+    public void clickBuyNowButton() {
+        buyNowButton.click();
+    }
+
+    /**
+     * Get the Regular/Suggested price (strike price).
+     * @return the price block text.
+     */
+    public String getStrikePrice() {
+        return strikePrice.getText();
+    }
+
+    /**
+     * Get You Save text.
+     * @return You Save block text.
+     */
+    public String getSavingsText() {
+        return savingsText.getText();
+    }
+
+    /**
+     * Get price per unit text.
+     * @return price per unit block text.
+     */
+    public String getPricePerUnitText() {
+        return pricePerUnit.getText();
+    }
+
+    /**
+     * Get Super Saver Shipping message.
+     * @return Super Saver Shipping text.
+     */
+    public String getSuperSaverShippingMessage() {
+        return superSaverShippingMessage.getText();
+    }
+
+    /**
+     * Get Media Matrix buttons' text.
+     * @return a list of Media Matrix Button text.
+     */
+    public List<String> getMediaMatrixButtonsText() {
+        mediaMatrixButtons.getElements().stream().forEach(status::addIsEnabled);
+        status.processStatus();
+        return mediaMatrixButtons.getElements().stream().map(button -> button.getText())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Click the Media Matrix secondary view link.
+     */
+    public void clickMediaMatrixSecondaryViewLink() {
+        mediaMatrixSecondaryViewLink.clickAndWait(mediaMatrixSecondaryViewTitles);
+    }
+
+    /**
+     * Get Media Matrix secondary view titles.
+     * @return a list of Media Matrix secondary view format text.
+     */
+    public List<String> getMediaMatrixSecondaryViewTitles() {
+        return mediaMatrixSecondaryViewTitles.getElements().stream().map(element -> element.getText())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Is the turbo checkout popover header present or not.
+     * @return Turbo checkout popover header present or not.
+     */
+    public boolean isTurboCheckoutPopoverHeaderPresent() {
+        return turboCheckoutPopoverHeader.isPresent(3);
+    }
+
+    /**
+     * Is the turbo checkout iframe present or not.
+     * @return Turbo checkout iframe present or not.
+     */
+    public boolean isTurboCheckoutIFramePresent() {
+        return turboCheckoutIFrame.waitIsPresent();
+    }
+
+    /**
+     * More Buying Choices.
+     * @author tingyong
+     */
+    @Data
+    public static class MBCOffer {
+        private String price;
+        private String pricePerUnit;
+        private String shipping;
+        private boolean isAddToCartPresent;
+        private BasePageElement addToCartButton;
+    }
+
+    /**
+     * MBC popover data.
+     * @author tingyong
+     */
+    @Data
+    public static class MBCPopoverData {
+        private String sellerLinkOrText;
+        private boolean isAmazonRetailOffer;
+        private String sellerRatingsText;
+        private String availabilityText;
+        private String shippingRatesLinkOrText;
+        private String returnPolicyLinkOrText;
+    }
+
+    /**
+     * Verify global store badge is present in Detail Page.
+     */
+    public void verifyGlobalStoreBadgePresent() {
+        status.addIsDisplayed(globalStoreBadge);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Amazon Global Store International Text is present in the Detail Page
+     */
+    public void verifyAmazonGlobalStoreInternationalTextIsPresent() {
+        status.addIsDisplayed(amazonGlobalStoreInternationalText);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Delivery Price is Present in the Detail Page
+     */
+    public void verifyDeliveryPriceIsPresent() {
+        status.addIsDisplayed(deliveryPrice);
+        status.processStatus();
+    }
+
+    /**
+     * Click on global store seller link.
+     * @param sellerNameText sellername to pass
+     */
+    public void clickOnGlobalStoreSellerLink(final String sellerNameText) {
+        // Normal clicking is not working well here, use JS click instead.
+        if (!new BasePageElement(driver, shipAndSoldByText.getName() + "_" + sellerNameText,
+                String.format(shipAndSoldByText.getXPath(), sellerNameText)).isPresent()) {
+            amazonGlobalStoreSellerName.click(true);
+        } else {
+            new BasePageElement(driver, shipAndSoldByText.getName() + "_" + sellerNameText,
+                    String.format(shipAndSoldByText.getXPath(), sellerNameText) + "//a").click();
+        }
+    }
+
+    /**
+     * Click on contextual widget address.
+     */
+    public void clickContextualWidgetAddress() {
+        contextualWidgetAddress.click();
+    }
+
+    /**
+     * Get the Contextual widget address.
+     * @return the address inside the detail page Contextual widget.
+     */
+    public String getContextualWidgetAddress() {
+        contextualWidgetAddress.waitIsPresent();
+        return contextualWidgetAddress.getText();
+    }
+
+    /**
+     * Get availability text.
+     * @return availability text.
+     */
+    public String getAvailabilityText() {
+        availabilityMessage.waitIsPresent();
+        return availabilityMessage.getText();
+    }
+
+    /**
+     * Get the dynamic delivery message.
+     * @return ddm delivery message.
+     */
+    public String getDynamicDeliveryMessage() {
+        return dynamicDeliveryMessage.waitForTextNotBlank(3).getText();
+    }
+
+    /**
+     * Get AboveTheFoldSection instance.
+     * @return AboveTheFoldSection instance.
+     */
+    public AboveTheFoldSection getAboveTheFoldSection() {
+        if (aboveTheFoldSection == null) {
+            aboveTheFoldSection = new AboveTheFoldSection(driver);
+        }
+        return aboveTheFoldSection;
+    }
+
+    /**
+     * Get BelowTheFoldSection instance.
+     * @return BelowTheFoldSection instance.
+     */
+    public BelowTheFoldSection getBelowTheFoldSection() {
+        if (belowTheFoldSection == null) {
+            belowTheFoldSection = new BelowTheFoldSection(driver);
+        }
+        return belowTheFoldSection;
+    }
+
+    /**
+     * Verify 'sold by: xxx' ('xxx' is source country specific, like 'Amazon US')
+     * text present and Enabled.
+     * @param columnName columnName here is Sold By.
+     * @param sellerNameText the dynamic replaced text by caller.
+     */
+    public void verifySoldByTextPresentAndEnabled(final String columnName, final String sellerNameText) {
+        BasePageElement shipsFromSoldByTextElement = new BasePageElement(driver, shipsFromAndSoldByText.getName()
+                + "_" + columnName + "_" + sellerNameText,
+                String.format(shipsFromAndSoldByText.getXPath(), columnName, sellerNameText));
+        status.addIsDisplayed(shipsFromSoldByTextElement);
+        status.addIsEnabled(shipsFromSoldByTextElement);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'Ships From: xxx' ('xxx' is source country specific, like 'Amazon US')
+     * text present and Enabled.
+     * @param columnName columnName here is Ships From.
+     * @param sellerNameText the dynamic replaced text by caller.
+     */
+    public void verifyShipsFromTextPresent(final String columnName, final String sellerNameText) {
+        status.addIsDisplayed(new BasePageElement(driver, shipsFromAndSoldByText.getName()
+                + "_" + columnName + "_" + sellerNameText,
+                String.format(shipsFromAndSoldByText.getXPath(), columnName, sellerNameText)));
+        status.processStatus();
+    }
+
+    /**
+     * Get ASIN Value for the ASIN on the DP.ASIN Value change for Variation ASIN based on the selection.
+     * This method helps to get the ASIN value after changing the variation helps to verify in cart Page
+     * @return the asin Value.
+     */
+    public String getASINValue() {
+        return asinValue.getValue("value");
+    }
+
+    /**
+     * Verify Currently Unavailable Text present.
+     * @param currentlyUnavailableString to Parameterized for xpath.
+     */
+    public void verifyCurrentlyUnavailableTextPresent(String currentlyUnavailableString) {
+        BasePageElement currentlyUnavailableMessage = new BasePageElement(driver, currentlyUnavailableText.getName(),
+                 String.format(currentlyUnavailableText.getXPath(), currentlyUnavailableString));
+        currentlyUnavailableMessage.waitForElementToBeEnabled();
+        status.addIsDisplayed(currentlyUnavailableMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify undeliverable message is Present in the Detail Page
+     * @return true if undeliverable message present
+     */
+    public boolean verifyUndeliverableMessagePresent() {
+        undeliverableMessage.waitForElementToBeEnabled();
+        return undeliverableMessage.isPresent();
+    }
+
+    /**
+     * Verify and click on Inline Message(ILM).
+     */
+    public void clickOnUniversalDetailILM() {
+        status.addIsDisplayed(universalDetailInlineMessageBelowSubnav);
+        status.processStatus();
+        universalDetailInlineMessageBelowSubnav.click();
+    }
+
+    /**
+     * Verify and click on Seller Name Link.
+     */
+    public void clickSellerLink() {
+        status.addIsDisplayed(sellerLink);
+        status.processStatus();
+        sellerLink.click();
+    }
+
+    /**
+     * Verify and click on fulfillment by amazon Link.
+     */
+    public void clickFulfillmentByAmazonLink() {
+        status.addIsDisplayed(fulfillmentByAmazonLink);
+        status.processStatus();
+        fulfillmentByAmazonLink.click();
+    }
+
+    /**
+     * Verify the checkbox for Link device to Amazon account for kindle asins.
+     */
+    public void verifyKindleAccountLinkingCheckboxPresent() {
+        status.addIsDisplayed(kindleAccountLinkingCheckbox);
+        status.processStatus();
+    }
+
+    /**
+     * Verify why is it important link popover and popover for kindle asins.
+     */
+    public void verifyWhyIsItImportantLink() {
+        status.addIsDisplayed(whyIsItImportantLink);
+        whyIsItImportantLink.mouseOver();
+        status.addIsDisplayed(whyIsItImportantLinkPopover);
+        status.processStatus();
+    }
+
+    /**
+     * Gets the text from the popover.
+     * @return Popover Text.
+     */
+    public String getTextFromWhyIsItImportantLinkPopover() {
+        return whyIsItImportantLinkPopover.getText();
+    }
+
+    /**
+     * Gets the text from the Wifi setup link.
+     * @return wifi setup help link.
+     */
+    public String getUrlFromWifiSetupLink() {
+        return wifiSimpleSetupLink.getElement().getAttribute("href");
+    }
+
+    /**
+     * Verify and click on Shipping Details Link.
+     */
+    public void clickShippingDetailsLink() {
+        status.addIsDisplayed(shippingDetailsLink);
+        status.processStatus();
+        shippingDetailsLink.click();
+    }
+
+    /**
+     * Click wifi simple setup link.
+     */
+    public void clickWifiSimpleSetupLink() {
+        wifiSimpleSetupLink.waitForElementToBeEnabled();
+        wifiSimpleSetupLink.click();
+    }
+
+    /**
+     * Verify "Report Incorrect Product Info" link present.
+     */
+    public void verifyReportIncorrectProductInfoLinkPresentAndClickable() {
+        status.addIsEnabled(reportIncorrectProductInfoLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Add Gift Options" message present.
+     */
+    public void verifyAddGiftOptionsMessagePresent() {
+        waitForPageToLoad();
+        status.addIsDisplayed(addGiftOptionsMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Add Gift Options" checkbox Absent.
+     */
+    public void verifyAddGiftOptionsCheckboxAbsent() {
+        status.addIsDisabled(addGiftOptionsCheckbox);
+        status.processStatus();
+    }
+
+    /**
+     * Method to check the 'Add Gift Options' checkbox is Checked.
+     * @return 'add gift options' checkbox checked or not
+     */
+    public boolean isAddGiftOptionsCheckboxChecked() {
+        return addGiftOptionsCheckbox.isSelected();
+    }
+
+    /**
+     * Uncheck 'Add Gift Options' checkbox.
+     */
+    public void uncheckAddGiftOptionsCheckbox() {
+        if (addGiftOptionsCheckbox.isPresent() && isAddGiftOptionsCheckboxChecked()) {
+            addGiftOptionsCheckbox.click();
+        }
+    }
+
+    /**
+     * check 'Add Gift Options' checkbox.
+     */
+    public void checkAddGiftOptionsCheckbox() {
+        if (addGiftOptionsCheckbox.isPresent() && !isAddGiftOptionsCheckboxChecked()) {
+            addGiftOptionsCheckbox.click();
+        }
+    }
+
+    /**
+     * Click on Size Chart link.
+     */
+    public void clickSizeChartLink() {
+        sizeChartLink.click();
+    }
+
+    /**
+     * Verify Size Chart popup title present.
+     */
+    public void verifySizeChartTitlePresent() {
+        sizeChartTitle.waitIsPresent();
+        status.addIsDisplayed(sizeChartTitle);
+        status.processStatus();
+    }
+
+    /**
+     * Click on Fit Recommendations link.
+     */
+    public void clickFitRecommendationsLink() {
+        fitRecommendationsLink.click();
+    }
+
+    /**
+     * Verify Fitness Review popup title present.
+     */
+    public void verifyFitnessReviewTitlePresent() {
+        fitnessReviewTitle.waitIsPresent();
+        status.addIsDisplayed(fitnessReviewTitle);
+        status.processStatus();
+    }
+
+    /**
+     * Mouse hover on Color Variation by Index By Availability.
+     * @param colorIndex of color variation.
+     */
+    public void hoverOnColorVariationByIndex(int colorIndex) {
+        BasePageElement colorVariationIndexByIndex = new BasePageElement(driver,
+                colorButtonByIndex.getName() + "-" + colorIndex,
+                String.format(colorButtonByIndex.getXPath(), colorIndex));
+        colorVariationIndexByIndex.mouseOver();
+    }
+
+    /**
+     * Click Learn More link in Amazon Global store buy Box section.
+     */
+    public void clickBuyboxLearnMore() {
+        clickBuyboxLearnMoreLink.click();
+    }
+
+    /**
+     * Click International Products link in Amazon Global store section.
+     */
+    public void clickInternationalProductsLink() {
+        internationalProductsInsideAmazonGlobalStorePopover.click();
+    }
+
+    /**
+     * Click Learn More link in Amazon Global store section
+     */
+    public void clickAmazonGlobalStoreLearnMoreLink() {
+        clickLearnMoreInsideAmazonGlobalStorePopover.click();
+    }
+
+    /**
+     * Getter method of ColorNames PageElement.
+     * @return ColorNames PageElement.
+     */
+    public BasePageElement getColorNames() {
+        return colorNames;
+    }
+
+    /**
+     * Getter method of AOD Link PageElement.
+     * @return AOD PageElement.
+     */
+    public BasePageElement getAODLink() {
+        return aodLinkUnderBuybox;
+    }
+
+    /**
+     * Getter method of AddtoCart PageElement.
+     * @return AddtoCart PageElement.
+     */
+    public BasePageElement getAddToCartButton() {
+        return addToCartButton;
+    }
+
+    /**
+     * Getter method of countryEligibleLabelOnBuybox PageElement.
+     * @return countryEligibleLabelOnBuybox PageElement.
+     */
+    public BasePageElement getCountryEligibleLabelOnBuybox() {
+        return countryEligibleLabelOnBuybox;
+    }
+
+    /**
+     * Getter method of countryEligibleLabelNextToPrice PageElement.
+     * @return countryEligibleLabelNextToPrice PageElement.
+     */
+    public BasePageElement getCountryEligibleLabelNextToPrice() {
+        return countryEligibleLabelNextToPrice;
+    }
+
+    /**
+     * Getter method of clickSeparateTermsInsideAmazonGlobalStorePopover PageElement.
+     * @return clickSeparateTermsInsideAmazonGlobalStorePopover PageElement.
+     */
+    public BasePageElement getClickSeparateTermsInsideAmazonGlobalStorePopover() {
+        return clickSeparateTermsInsideAmazonGlobalStorePopover;
+    }
+
+    /**
+     * Get DetailPageAboveTheFold model.
+     * @return DetailPageAboveTheFold instance.
+     */
+    public DetailPageAboveTheFold getDetailPageAboveTheFold() {
+        if (detailPageAboveTheFold == null) {
+            detailPageAboveTheFold = new DetailPageAboveTheFold(driver);
+        }
+        return detailPageAboveTheFold;
+    }
+
+    /**
+     * Get DetailPageBelowTheFold model.
+     * @return DetailPageBelowTheFold instance.
+     */
+    public DetailPageBelowTheFold getDetailPageBelowTheFold() {
+        if (detailPageBelowTheFold == null) {
+            detailPageBelowTheFold = new DetailPageBelowTheFold(driver);
+        }
+        return detailPageBelowTheFold;
+    }
+
+    /**
+     * Gets Text from BuyBox Currently unavailable message.
+     * @return String: Currently unavailable message.
+     */
+    public String getBuyBoxCurrentlyUnavailalbeMessage() {
+    return currentlyUnavailableMessage.getElement().getText();
+    }
+
+    /**
+    *  Verify Buy Now button is present or not.
+    *  @return boolean value based on BuyNow button presence.
+    */
+    public boolean isBuyNowButton() {
+    return buyNowButton.isPresent();
+    }
+
+    /**
+     * Is the Add to List button present or not.
+     * @return Add to List button is present or not.
+     */
+    public boolean isAddToListPresent() {
+        return addToListButton.isPresent();
+    }
+
+    /**
+     * Is Average Customer Reviews present or not.
+     * @return Average Customer Reviews is present or not.
+     */
+    public boolean isCustomerReviewsPresent() {
+        return averageCustomerReviewsIcon.isPresent();
+    }
+
+    /**
+     * Method helps to click the Learn more link inside import fees deposit popover.
+     */
+    public void clickLearnMoreLinkInsideImportFeesDepositPopOver() {
+        importFeesDepositText.click();
+        importFeesDepositPopoverLearnMoreLink.click();
+    }
+
+    /**
+    * Method helps to identify Legal Contents text inside Import Fees Deposit popover is present.
+    *
+    * @return presence of Legal Contents text
+    */
+    public String isImportFeesDepositPopoverLegalContentsTextPresent() {
+         importFeesDepositText.click();
+         return importFeesDepositPopoverLegalContents.getText();
+    }
+
+    /**
+     *  Verify No Image available is present or not.
+     *  @return boolean value based on No Image available presence.
+     */
+     public boolean isNoImageAvailable() {
+     return noImageAvailable.isPresent();
+     }
+
+     /**
+      *  Verify BuyBox Delivery Price is present or not.
+      *  @return String value based on Delivery Price presence.
+      */
+      public String isBuyBoxDeliveryPricePresent() {
+      return buyboxDeliveryPrice.getText();
+      }
+
+    /**
+     * Verify BuyBox Delivery Message is present or not.
+     * @return boolean 'true' if present, or else returns 'false'
+     */
+    public boolean isBuyBoxDeliveryMessagePresent() {
+          buyBoxDeliveryMessage.waitIsPresent();
+          return buyBoxDeliveryMessage.isPresent();
+      }
+
+    /**
+     * Verify BuyBox Price is present above Delivery Message.
+     * @return boolean 'true' if present, or else returns 'false'
+     */
+    public boolean isBuyBoxPricePresentAboveDeliveryMessage() {
+        buyBoxPriceAboveDeliveryMessage.waitIsPresent();
+        return buyBoxPriceAboveDeliveryMessage.isPresent();
+    }
+
+    /**
+     * Verify BuyBox Delivery Message is present or not.
+     * @return String value based on Delivery message presence.
+     */
+    public String getBuyBoxDeliveryMessageText() {
+          return buyBoxDeliveryMessage.getText();
+      }
+
+    /**
+     * Get Seller Name from Seller Link in Buy Box.
+     * @return Seller Name as String
+     */
+    public String getSellerNameFromBuyBox() {
+        sellerLink.waitIsPresent();
+        return sellerLink.getText();
+    }
+
+    /**
+     * Verify BuyBox free Delivery Message is present or not.
+     * @param freeInternationalShipMessage specific to a global store
+     * @return String value based on Free Delivery message presence.
+     */
+    public boolean isFreeDeliveryMessagePresent(String freeInternationalShipMessage) {
+        agsFreeShippingMessage.waitForElementToBeEnabled();
+        return new BasePageElement(driver, agsFreeShippingMessage.getName(),
+                String.format(agsFreeShippingMessage.getXPath(), freeInternationalShipMessage)).isPresent();
+      }
+
+    /**
+     * Get price displayed in the variations of the format.
+     * @return variation price for books as String
+     */
+    public String getVariationPriceForBook() {
+        variationPriceForBook.waitIsPresent();
+        return variationPriceForBook.getText();
+    }
+
+     /**
+     * Get price displayed in the buybox.
+     * @return buybox price for books as String
+     */
+    public String getBuyboxPriceForBook() {
+         buyboxPriceForBook.waitIsPresent();
+         return buyboxPriceForBook.getText();
+    }
+
+    /**
+     * Get Savings Percentage.
+     * @return Savings Percentage text.
+     */
+    public String getSavingsPercentageText() {
+        return savingsPercentageText.getText();
+    }
+}
