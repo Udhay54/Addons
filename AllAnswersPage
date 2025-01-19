@@ -1,0 +1,115 @@
+package com.amazon.aeeqa.ui.pagemodels.customerreviews;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * This page contains all the customer reviews elements in All Answers Page.
+ * You can Reach this page by clicking on any question in the BTF.
+ */
+@PageName("customer_reviews")
+public class AllAnswersPage extends BasePageModel {
+
+    @Locator("ANSWER_THIS_QUESTION_TEXT_AREA")
+    private static BasePageElement answerThisQuestionTextArea;
+
+    @Locator("ANSWER_THIS_QUESTION_BUTTON")
+    private static BasePageElement answerThisQuestionButton;
+
+    @Locator("SEE_ALL_QUESTIONS_ABOUT_THIS_PRODUCT_LINK")
+    private static BasePageElement seeAllQuestionsAboutThisProductLink;
+
+    @Locator("PRODUCT_TITLE_LINK")
+    private static BasePageElement productTitleLink;
+
+    @Locator("PRODUCT_IMAGE_LINK")
+    private static BasePageElement productImageLink;
+
+    /**
+     * Constructor with driver instance.
+     *
+     * @param driver the WebDriver instance.
+     */
+    public AllAnswersPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Constructor with a driver instance and an ASIN url.
+     *
+     * @param driver  the WebDriver instance.
+     * @param asinUrl the ASIN url to navigate.
+     */
+    public AllAnswersPage(WebDriver driver, String asinUrl) {
+        super(driver);
+        setPageurl(asinUrl);
+        navigateToPage();
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        verifyProductTitleLinkIsPresent();
+        verifyProductImageLinkIsPresent();
+        verifyAnswerThisQuestionTextAreaIsPresent();
+        verifyAnswerThisQuestionButtonLinkIsPresent();
+        verifySeeAllQuestionsAboutThisProductLinkIsPresent();
+    }
+
+    /**
+     * Verify product title link is present.
+     */
+    public void verifyProductTitleLinkIsPresent() {
+        status.addIsDisplayed(productTitleLink);
+        status.addIsDisplayed(productImageLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify product image link is present.
+     */
+    public void verifyProductImageLinkIsPresent() {
+        status.addIsDisplayed(productImageLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Answer This Question Text Area is present.
+     */
+    public void verifyAnswerThisQuestionTextAreaIsPresent() {
+        status.addIsDisplayed(answerThisQuestionTextArea);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Answer This Question Button is present.
+     */
+    public void verifyAnswerThisQuestionButtonLinkIsPresent() {
+        status.addIsDisplayed(answerThisQuestionButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify See All Questions About This Product is present.
+     */
+    public void verifySeeAllQuestionsAboutThisProductLinkIsPresent() {
+        status.addIsDisplayed(seeAllQuestionsAboutThisProductLink);
+        status.processStatus();
+    }
+
+    /**
+     * Click on See All Questions About This Product link.
+     */
+    public void clickOnSeeAllQuestionsAboutThisProductLink() {
+        if (seeAllQuestionsAboutThisProductLink.waitIsPresent()) {
+            seeAllQuestionsAboutThisProductLink.click();
+            waitForPageToLoad();
+        }
+    }
+}
