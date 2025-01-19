@@ -1,0 +1,629 @@
+package com.amazon.aeeqa.ui.pagemodels.home;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.utils.SleepUtil;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Home Page Model.
+ *
+ * @author tingyong
+ */
+@PageName("home")
+public class HomePage extends BasePageModel {
+
+    @Locator("NAV_LOGO")
+    private static BasePageElement navLogo;
+
+    @Locator("SIGN_IN_LINK_FOR_ALL_MARKETPLACES")
+    private static BasePageElement signInLinkForAllMarketPlaces;
+
+    @Locator("SEARCH_BOX")
+    private static BasePageElement searchBox;
+
+    @Locator("SEARCH_GO_BUTTON")
+    private static BasePageElement searchGoButton;
+
+    @Locator("NAV_LOGO_TRY_PRIME_LINK")
+    private static BasePageElement navLogoTryPrimeLink;
+
+    @Locator("NAV_LOGO_PRIME_LINK")
+    private static BasePageElement navLogoPrimeLink;
+
+    @Locator("NAV_TOOLS_TRY_PRIME_LINK")
+    private static BasePageElement navToolsTryPrimeLink;
+
+    @Locator("NAV_TOOLS_PRIME_LINK")
+    private static BasePageElement navToolsPrimeLink;
+
+    @Locator("NEW_AND_INTERESTING_FINDS_BANNER")
+    private static BasePageElement newAndInterestingFindsBanner;
+
+    @Locator("CURRENCY_AND_LANGUAGE_PICKER")
+    private static BasePageElement currencyAndLanguagePicker;
+
+    @Locator("LANGUAGE_OPTION_RADIO_BUTTONS_INSIDE_COP_LOP_PICKER")
+    private static BasePageElement languageOptionRadioButtonsInsideCOPLOPPicker;
+
+    @Locator("TOP_CURRENCY_WIDGET")
+    private static BasePageElement topCurrencyWidget;
+
+    @Locator("CURRENCY_DISPLAYED_IN_TOP_CURRENCY_WIDGET")
+    private static BasePageElement currencyDisplayedInTopCurrencyWidget;
+
+    @Locator("CHANGE_LINK_INSIDE_COP_LOP_PICKER")
+    private static BasePageElement changeLinkInsideCOPLOPPicker;
+
+    @Locator("BOTTOM_LANGUAGE_WIDGET")
+    private static BasePageElement bottomLanguageWidget;
+
+    @Locator("BOTTOM_CURRENCY_WIDGET")
+    private static BasePageElement bottomCurrencyWidget;
+
+    @Locator("LANGUAGE_OPTION_RADIO_BUTTONS_BY_HOVER_BOTTOM_LANGUAGE_WIDGET")
+    private static BasePageElement languageOptionRadioButtonsByHoverBottomLanguageWidget;
+
+    @Locator("LANGUAGE_SETTINGS_POPOVER")
+    private static BasePageElement languageSettingsPopover;
+
+    @Locator("LANGUAGE_OPTION_RADIO_BUTTONS_INSIDE_LANGUAGE_SETTINGS_POPOVER")
+    private static BasePageElement languageOptionRadioButtonsInsideLanguageSettingsPopover;
+
+    @Locator("HOME_PAGE_TODAYS_DEALS_SPANISH_TEXT")
+    private static BasePageElement homePageTodaysDealsSpanishText;
+
+    @Locator("LANGUAGE_SWITCHER_RADIO_BUTTON")
+    private static BasePageElement languageSwitcherRadioButton;
+
+    @Locator("LANGUAGE_SELECTED_SAVE_BUTTON")
+    private static BasePageElement languageSelectedSaveButton;
+
+    @Locator("LANGUAGE_WIDGETS_SPANISH_LANGUAGE_RADIO_BUTTON")
+    private static BasePageElement languageWidgetsSpanishLanguageRadioButton;
+
+    @Locator("LANGUAGE_WIDGET_CHANGE_LANGUAGE_TEXT")
+    private static BasePageElement languageWidgetChangeLanguageText;
+
+    @Locator("LANGUAGE_WIDGET_FLYOUT")
+    private static BasePageElement languageWidgetFlyout;
+
+    @Locator("CANCEL_BUTTON_INSIDE_LANGUAGE_SETTINGS_POPOVER")
+    private static BasePageElement cancelButtonInsideLanguageSettingsPopover;
+
+    @Locator("MARKETPLACE_WIDGET")
+    private static BasePageElement marketplaceWidget;
+
+    @Locator("CHANGE_CURRENCY_INSIDE_COP_LOP_PICKER")
+    private static BasePageElement changeCurrencyInsideCOPLOPPicker;
+
+    @Locator("CHANGE_CURRENCY_LEARN_MORE_LINK_INSIDE_COP_LOP_PICKER")
+    private static BasePageElement changeCurrencyLearnMoreLinkInsideCOPLOPPicker;
+
+    @Locator("CHANGE_CURRENCY_LINK_IN_NAV_FOOTER")
+    private static BasePageElement changeCurrencyLinkInNavFooter;
+
+    @Locator("CART_ICON_IN_NAV")
+    private static BasePageElement cartIconInNav;
+
+    @Locator("GATEWAY_HERO_BANNER")
+    private static BasePageElement gatewayMainContent;
+
+    @Locator("SIMILAR_ITEMS_BUTTON")
+    private static BasePageElement similarItemsButton;
+
+    @Locator("TOP_SELLERS_CARD")
+    private static BasePageElement topSellersCard;
+
+    @Locator("P13N_WIDGETS")
+    private static BasePageElement p13NWidgets;
+
+    @Locator("P13N_WIDGETS_TITLE")
+    private static BasePageElement p13NWidgetsTitle;
+
+    @Locator("HERO_BANNER_IMAGE")
+    private static BasePageElement heroBannerImg;
+
+    @Locator("JUMPIN_HERO_BANNER_LINK")
+    private static BasePageElement jumpinHeroBannerLink;
+
+    @Locator("MARKETPLACE_REDIRECT_OVERLAY")
+    private static BasePageElement marketplaceRedirectOverlay;
+
+    @Locator("STAY_ON_US_MP_REDIRECT")
+    private static BasePageElement stayOnUSMPRedirectPopup;
+
+    @Locator("OPT_OUT_OF_MP_REDIRECT")
+    private static BasePageElement outOutOfMPRedirectPopup;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public HomePage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(signInLinkForAllMarketPlaces);
+        status.processStatus();
+    }
+
+    /**
+     * Perform Amazon Sign-in.
+     */
+    public void clickSignInLink() {
+        verifyCurrentPage();
+        signInLinkForAllMarketPlaces.click();
+    }
+
+    /**
+     * Search on home page.
+     * @param keywords the keywords string to search.
+     */
+    public void search(final String keywords) {
+        // To restore focus in case it's lost
+        searchBox.click();
+        searchBox.setText(keywords);
+        searchGoButton.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Set Search Box text on home page.
+     * @param keywords the keywords string to search.
+     */
+    public void setSearchBox(final String keywords) {
+        searchBox.click();
+        searchBox.setText(keywords);
+    }
+
+    /**
+     * Method to get Search Box text.
+     * @return the text in the search box
+     */
+    public String getSearchBoxText() {
+    return searchBox.getText();
+    }
+
+    /**
+     * Check if search box keyword is not empty.
+     * @return boolean if present
+     */
+    public Boolean isSearchBoxKeywordPresent() {
+        //Adding an explicit sleep to address inconsistent failures
+        SleepUtil.sleep(2000);
+        searchBox.waitIsPresent();
+        if (searchBox.getElement().getAttribute("value").isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Verify "Try Prime" link absent (under Nav logo).
+     */
+    public void verifyNavLogoTryPrimeLinkAbsent() {
+        status.addIsHiddenOrMissing(navLogoTryPrimeLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Prime" link present (under Nav logo).
+     * @return displayed or not.
+     */
+    public boolean verifyNavLogoPrimeLinkPresent() {
+        return navLogoPrimeLink.isPresent();
+    }
+
+    /**
+     * Verify "Try Prime" link absent (on navtools bar).
+     */
+    public void verifyNavToolsTryPrimeLinkAbsent() {
+        status.addIsHiddenOrMissing(navToolsTryPrimeLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Prime" link present (on navtools bar).
+     */
+    public void verifyNavToolsPrimeLinkPresent() {
+        status.addIsDisplayed(navToolsPrimeLink);
+    }
+
+    /**
+     * Verify "Try Prime" link (on navtools bar) absent.
+     */
+    public void verifyNavTryPrimeLinkAbsent() {
+        status.addIsHiddenOrMissing(navToolsPrimeLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify new and interesting finds banner absent.
+     */
+    public void verifyNewAndInterestingFindsBannerAbsent() {
+        status.addIsHiddenOrMissing(newAndInterestingFindsBanner);
+        status.processStatus();
+    }
+
+    /**
+     * Verify currency and language picker present.
+     */
+    public void verifyCurrencyAndLanguagePickerPresent() {
+        status.addIsDisplayed(currencyAndLanguagePicker);
+        status.processStatus();
+    }
+
+    /**
+     * Verify marketplace widget (it is only in bottom) present.
+     */
+    public void verifyMarketplaceWidgetPresent() {
+        scrollToElement(marketplaceWidget);
+        marketplaceWidget.waitIsPresent();
+        status.addIsDisplayed(marketplaceWidget);
+        status.processStatus();
+    }
+
+    /**
+     * Verify bottom language widget present.
+     */
+    public void verifyBottomLanguageWidgetPresent() {
+        status.addIsDisplayed(bottomLanguageWidget);
+        status.processStatus();
+    }
+
+    /**
+     * Verify top currency widget present.
+     */
+    public void verifyTopCurrencyWidgetPresent() {
+        // Scroll to top
+        scrollToElement(navLogo);
+        currencyAndLanguagePicker.mouseOverAndWait(topCurrencyWidget);
+    }
+
+    /**
+     * Verify the selected currency is present in top currency widget present.
+     * @param selectedCurrency is the currency selected
+     */
+    public void verifyCurrencyDisplayedInTopCurrencyWidgetPresent(String selectedCurrency) {
+        // Scroll to top
+        scrollToElement(navLogo);
+        currencyAndLanguagePicker.mouseOverAndWait(topCurrencyWidget);
+        status.addIsDisplayed(new BasePageElement(driver, currencyDisplayedInTopCurrencyWidget.getName(),
+                String.format(currencyDisplayedInTopCurrencyWidget.getXPath(), selectedCurrency)));
+        status.processStatus();
+    }
+
+
+    /**
+     * Verify bottom currency widget present.
+     */
+    public void verifyBottomCurrencyWidgetPresent() {
+        bottomCurrencyWidget.waitIsPresent();
+        status.addIsDisplayed(bottomCurrencyWidget);
+        status.processStatus();
+    }
+
+    /**
+     * Click bottom currency widget.
+     */
+    public void clickBottomCurrencyWidget() {
+        verifyBottomCurrencyWidgetPresent();
+        bottomCurrencyWidget.click();
+    }
+
+    /**
+     * Get the bottom currency widget text displayed with the selected currency
+     * @return the text
+     */
+    public String getBottomCurrencyWidgetText() {
+        verifyBottomCurrencyWidgetPresent();
+        return bottomCurrencyWidget.getText();
+    }
+
+    /**
+     * Get language options count after hovering top currency and language picker.
+     * @return language options count.
+     */
+    public int getLanguageOptionsCountInsideCOPLOPPicker() {
+        currencyAndLanguagePicker.mouseOverAndWait(languageOptionRadioButtonsInsideCOPLOPPicker);
+        return languageOptionRadioButtonsInsideCOPLOPPicker.getElements().size();
+    }
+
+    /**
+     * Verify "Change" link present in currency & language picker.
+     */
+    public void verifyChangeLinkInsideCOPLOPPickerPresent() {
+        currencyAndLanguagePicker.mouseOverAndWait(changeLinkInsideCOPLOPPicker);
+    }
+
+    /**
+     * Click the top currency widget "Change" link.
+     */
+    public void clickChangeLinkInsideCOPLOPPicker() {
+        verifyChangeLinkInsideCOPLOPPickerPresent();
+        changeLinkInsideCOPLOPPicker.click();
+    }
+
+    /**
+     * Get page title after clicking change link inside COP LOP Picker.
+     * @return Page Title
+     */
+    public String getPageTitleAfterClickingChangeLinkInsideCOPLOPPicker() {
+        clickChangeLinkInsideCOPLOPPicker();
+        return driver.getTitle();
+    }
+
+    /**
+     * Verify language settings popover present by clicking bottom language widget.
+     */
+    public void verifyLanguageSettingsPopoverPresent() {
+        verifyBottomLanguageWidgetPresent();
+        bottomLanguageWidget.mouseOver();
+        languageWidgetFlyout.isPresent(5);
+    }
+
+    /**
+     * Get language options count by hovering on bottom language widget.
+     * @return language options count.
+     */
+    public int getBottomLanguageWidgetLanguageOptionsCount() {
+        // Scroll to bottom
+        scrollToElement(marketplaceWidget);
+        bottomLanguageWidget.mouseOverAndWait(languageOptionRadioButtonsByHoverBottomLanguageWidget);
+        return languageOptionRadioButtonsByHoverBottomLanguageWidget.getElements().size();
+    }
+
+    /**
+     * Get language options count after clicking bottom language widget.
+     * @return language options count.
+     */
+    public int getBottomLanguageWidgetLanguageOptionsCountInsidePopover() {
+        verifyLanguageSettingsPopoverPresent();
+        languageOptionRadioButtonsInsideLanguageSettingsPopover.isPresent(5);
+        return languageOptionRadioButtonsInsideLanguageSettingsPopover.getElements().size();
+    }
+
+    /**
+     * Click cancel button for language settings popover.
+     */
+    public void clickCancelButtonInsideLanguageSettingsPopover() {
+        cancelButtonInsideLanguageSettingsPopover.click();
+    }
+
+    /**
+     * Helps identify spanish radio button is indeed selected or not.
+     * @param selectedLanguage this is the user selected Spanish language
+     * @return  presence of radio button selection on spanish language
+     */
+    public boolean isSpanishLanguageSelected(final String selectedLanguage) {
+        clickcurrencyAndLanguagePicker();
+        return new BasePageElement(driver, languageWidgetsSpanishLanguageRadioButton.getName(),
+                String.format(languageWidgetsSpanishLanguageRadioButton.getXPath(), selectedLanguage)).doesExists();
+    }
+
+    /**
+     * Helps identify the presence of a string in language widget flyout.
+     * @return presence of change language text on the flyout
+     */
+    public boolean isChangeLanguagePresent() {
+        scrollToElement(bottomLanguageWidget);
+        bottomLanguageWidget.mouseOver();
+        languageWidgetFlyout.isPresent();
+        return languageWidgetChangeLanguageText.isPresent(5);
+    }
+
+    /**
+     * Gets the spanish text of today's deals on home page.
+     * @return today's deals text on home page
+     */
+    public boolean isTodaysDealsSpanishTextPresent() {
+        return homePageTodaysDealsSpanishText.isPresent(5);
+    }
+
+    /**
+     * Helps click on the user selected language.
+     * @param userSelectedLanguage is user selected language
+     */
+    public void clickOnSelectedLanguage(final String userSelectedLanguage) {
+
+        BasePageElement selectedLanguage = new BasePageElement(driver, languageSwitcherRadioButton.getName(),
+                String.format(languageSwitcherRadioButton.getXPath(), userSelectedLanguage));
+        selectedLanguage.click();
+    }
+
+    /**
+     * Helps click on save button after user has selected the language.
+     * @param userSelectedLangaugeSaveButtonText - user selected language's save button text
+     */
+    public void clickOnSelectedLanguageSaveRadioButton(final String userSelectedLangaugeSaveButtonText) {
+        BasePageElement selectedLanguageSaveRadioButton = new BasePageElement(driver,
+                languageSelectedSaveButton.getName(),
+                String.format(languageSelectedSaveButton.getXPath(), userSelectedLangaugeSaveButtonText));
+        selectedLanguageSaveRadioButton.clickAndWaitForDisappear(selectedLanguageSaveRadioButton);
+    }
+
+    /**
+     * Helps change language to user selected language.
+     * @param nonEnglishLanguage    user selected non-english language
+     * @param nonEnglishLanguageSaveButtonText  text of the save button in user selected language
+     */
+    public void switchToNonEnglishLanguage(final String nonEnglishLanguage,
+                                           final String nonEnglishLanguageSaveButtonText) {
+        clickcurrencyAndLanguagePicker();
+
+        // Wait for language switching radio buttons to fully load
+        // There are very few elements on the popup, tried many ways to wait on each element, but all were unstable.
+        SleepUtil.sleep(300);
+        clickOnSelectedLanguage(nonEnglishLanguage);
+        clickOnSelectedLanguageSaveRadioButton(nonEnglishLanguageSaveButtonText);
+    }
+
+    /**
+     * Verify change currency text is present.
+     */
+    public void verifyChangeCurrencyPresent() {
+        verifyChangeLinkInsideCOPLOPPickerPresent();
+        status.addIsDisplayed(changeCurrencyInsideCOPLOPPicker);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Learn more link is present next to Change currency.
+     */
+    public void verifyChangeCurrencyLearnMoreLinkPresent() {
+        verifyChangeLinkInsideCOPLOPPickerPresent();
+        status.addIsDisplayed(changeCurrencyLearnMoreLinkInsideCOPLOPPicker);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Click 'Change currency widget' in footer.
+     */
+    public void clickChangeCurrencyLinkInNavFooter() {
+        changeCurrencyLinkInNavFooter.waitIsPresent();
+        status.addIsDisplayed(changeCurrencyLinkInNavFooter);
+        status.processStatus();
+        changeCurrencyLinkInNavFooter.click();
+    }
+
+    /**
+     * Click on Cart icon in Global Nav.
+     */
+    public void clickCartIconInNav() {
+        status.addIsDisplayed(cartIconInNav);
+        status.processStatus();
+        cartIconInNav.click();
+    }
+
+    /**
+     * Get Text under Amazon Logo E.g Amazon.de. This method helps to get text ".de".
+     * @return navlogo text "e.g. Amazon.de or Amazon.sg based on the test"
+     */
+    public String getTextUnderAmazonLogo() {
+        status.addIsDisplayed(navLogo);
+        status.processStatus();
+        return navLogo.getText();
+    }
+
+    /**
+     * Method to Click on Amazon Logo icon in Global Nav.
+     */
+    public void clickAmazonLogo() {
+        navLogo.click();
+    }
+
+    /**
+     * Method helps to Verify Gateway Main Page Presents.
+     */
+    public void verifyGatewayMainPagePresent() {
+        status.addIsEnabled(gatewayMainContent);
+        status.processStatus();
+    }
+
+    /**
+     * Click on Top sellers card and Verify Similar Items Button in your store home page.
+     */
+    public void clickTopSellersCardAndVerifySimilarIItems() {
+        waitForPageToLoad();
+        topSellersCard.click();
+        status.addIsEnabled(similarItemsButton);
+    }
+
+    /**
+     * Get the number of P13N widgets displayed.
+     * @return an integer- as count of P13N widgets displayed.
+     */
+    public int getP13NWidgetsCount() {
+        status.addIsDisplayed(p13NWidgets);
+        status.processStatus();
+        return p13NWidgets.countElements();
+    }
+
+    /**
+     * Check if P13N widget displayed.
+     * @param index starting from 0
+     * @return true if present, else return false
+     */
+    public boolean isP13NWidgetPresent(int index) {
+        return p13NWidgets.getElements().get(index).isPresent();
+    }
+
+    /**
+     * Verify if P13N widget title displayed or not.
+     * @param index starting from 0
+     * @return true if present, else return false
+     */
+    public boolean isP13NWidgetTitlePresent(int index) {
+        return p13NWidgetsTitle.getElements().get(index).isPresent();
+    }
+
+    /**
+     * Method to get img attribute for 'Jumpin Hero' Banner.
+     * @return img alt attribute
+     */
+    public String getHeroBannerImg() {
+        return heroBannerImg.getElement().getAttribute("alt");
+    }
+
+    /**
+     * Method to get URL the Jumpin Hero Banner .
+     * @return url
+     */
+    public String getJumpinHeroBannerURL() {
+        return jumpinHeroBannerLink.getElement().getAttribute("href");
+    }
+
+    /**
+     * Method to click on 'Jumpin Hero' Banner.
+     */
+    public void clickHeroBanner() {
+        gatewayMainContent.click();
+    }
+
+    /**
+     * Method to click on 'Language Picker' Button.
+     */
+    public void clickcurrencyAndLanguagePicker() {
+        currencyAndLanguagePicker.clickAndWait(cancelButtonInsideLanguageSettingsPopover);
+    }
+
+    /**
+     * Check if Marketplace redirect overlay popup is shown
+     * @return presence
+     */
+    public boolean isMarketplaceRedirectOverlayPresent() {
+        return marketplaceRedirectOverlay.isPresent();
+    }
+
+    /**
+     * Method to click on "Stay on A.com" option in Marketplace redirect popup
+     */
+    public void clickStayOnUSMPOnRedirectPopup() {
+         stayOnUSMPRedirectPopup.clickAndWaitForDisappear(stayOnUSMPRedirectPopup);
+    }
+
+    /**
+     * Check if "Don't show me this again" checkbox in Marketplace redirect popup is present
+     * @return presence
+     */
+    public boolean isOutOfMPRedirectPopupPresent() {
+        return outOutOfMPRedirectPopup.isPresent();
+    }
+
+    /**
+     * Method to click on "Don't show me this again" checkbox in Marketplace redirect popup
+     */
+    public void clickOutOfMPOnRedirectPopup() {
+        outOutOfMPRedirectPopup.click();
+    }
+
+}
