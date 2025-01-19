@@ -1,0 +1,349 @@
+package com.amazon.aeeqa.ui.pagemodels;
+
+import com.amazon.aeeqa.exceptions.ShadowDOMProcessingException;
+import com.amazon.aeeqa.ui.groups.TestEnvGroups;
+import com.amazon.aeeqa.util.RetrySteps;
+import com.amazon.aeeqa.utils.ScrollDirectionEnum;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.element.WebDriverToolkitFactory;
+import com.amazon.dtk.listener.extensions.ListenerOrchestrator;
+import com.amazon.dtk.page.ContextType;
+import com.amazon.dtk.page.DTKModel;
+import io.appium.java_client.PerformsTouchActions;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.lang.reflect.Field;
+import java.time.Duration;
+import java.util.Arrays;
+
+/**
+ * Base PageModel for all AEE UI Automation tests.
+ *
+ * @author tingyong
+ */
+@Slf4j
+public class BasePageModel extends DTKModel {
+
+    private static DynamicTargetCountry dynamicTargetCountry = new DynamicTargetCountry();
+    private static final int MAX_SCROLL = 25;
+    private static final double COORDINATES_START_POSITION = 0.2;
+    private static final double COORDINATES_END_POSITION = 0.8;
+    private static final String GATEWAY_PAGE_WEBVIEW_URL = "/gp/gw/ajax/mshop.html";
+    private static final int WAIT_SWIPE = 6;
+
+    /**
+     * Default Constructor for AEE Base PageModel.
+     *
+     * @param driver - Web driver instance.
+     */
+    public BasePageModel(final WebDriver driver) {
+        super(driver, dynamicTargetCountry.getDynamicG2S2Configuration());
+        initializeShadowElements();
+    }
+
+    /**
+     * Waits until the page is in the state "Complete" as well as isOnView requirements are met in case it was overriden
+     * by the PageModel.
+     *
+     * @see #isOnView
+     */
+    @Override
+    public void waitForPageToLoad() {
+        val webDriverToolkitInstance = WebDriverToolkitFactory.getInstance();
+        final String jQueryNotActiveScript = "if(window.jQuery){return jQuery.active == 0}else{return true}";
+        try {
+            log.info("Waiting for Page to load");
+            new WebDriverWait(driver,
+                    Duration.ofSeconds(webDriverToolkitInstance.getWebDriverTimeOut().getWebDriverExplicitTimeOut()),
+                    Duration.ofMillis(POLL_SLEEP_MILLIS))
+                    .until((ExpectedCondition<Boolean>) d -> {
+                        log.debug("Checking if page is loaded");
+                        return (executeScript("return document.readyState")
+                                .toString().equalsIgnoreCase("complete")
+                                && executeScript(jQueryNotActiveScript).equals(true) && isOnView());
+                    });
+        } catch (final Exception waitingException) {
+            if (System.getProperty("testEnv").equalsIgnoreCase(TestEnvGroups.PROD)) {
+                // catch the exception, report it, and throw up
+                log.error("Exception happened on waitForPageToLoad", waitingException);
+                throw waitingException;
+            } else {
+                log.warn("Ignoring exception happened on waitForPageToLoad in gamma", waitingException);
+            }
+        }
+        ListenerOrchestrator.pageModelLoaded(this, driver);
+    }
+
+    /**
+     * Method helps to Scroll the page in Mobile App until the Element present.
+     * @param pageElement to look and scroll for.
+     * @param direction swipe direction as SWIPE_UP, SWIPE_DOWN etc.
+     * @throws NoSuchElementException exception
+     */
+    public void scrollPageUntilElementIsFound(BasePageElement pageElement, ScrollDirectionEnum direction)
+            throws NoSuchElementException {
+            if (!pageElement.isPresent()) {
+                for (int scrolluntilElement = 0; scrolluntilElement < MAX_SCROLL; scrolluntilElement++) {
+                    switchDirection(direction);
+                    if (pageElement.isPresent()) {
+                        break;
+                    }
+                    if (scrolluntilElement == (((MAX_SCROLL)) - 1)) {
+                        throw new NoSuchElementException("Element could not be found");
+                    }
+                }
+            }
+        }
+
+    /**
+     * Method helps to Scroll the page in Mobile App until the Target present till specific element.
+     * @param untilElement till final element to swipe
+     * @param targetElement target element
+     * @param direction swipe direction
+     * @throws NoSuchElementException No such element exception
+     */
+    public void scrollPageUntilElementIsFound(BasePageElement untilElement,
+            BasePageElement targetElement, ScrollDirectionEnum direction)
+            throws NoSuchElementException {
+            if (!untilElement.isPresent()) {
+                for (int scrolluntilElement = 0; scrolluntilElement < MAX_SCROLL; scrolluntilElement++) {
+                    switchDirection(direction);
+                    if (targetElement.isPresent()) {
+                        break;
+                    }
+                    if (untilElement.isPresent()) {
+                        break;
+                    }
+                    if (scrolluntilElement == (((MAX_SCROLL)) - 1)) {
+                        throw new NoSuchElementException("Element could not be found");
+                    }
+                }
+            }
+        }
+
+    /**
+     * Method to swipe the page based on the direction.
+     * @param direction Swipe Direction as SWIPE_UP, SWIPE_DOWN etc.
+     */
+    public void switchDirection(ScrollDirectionEnum direction) {
+        switch (direction) {
+        case SWIPE_UP:
+            swipeBottomToTop();
+            break;
+        case SWIPE_DOWN:
+            swipeTopToBottom();
+            break;
+        default:
+        break;
+        }
+    }
+
+    /**
+     * Method to Swipe Up in Mobile App.
+     */
+    public void swipeBottomToTop() {
+        Dimension size = driver.manage().window().getSize();
+        int startx = size.width / 4;
+        int starty = (int) (size.height * COORDINATES_START_POSITION);
+        int endy = (int) (size.height * COORDINATES_END_POSITION);
+        swipe(startx, starty, startx, endy);
+    }
+
+    /**
+     * Method to Swipe bottom in Mobile App.
+     */
+    public void swipeTopToBottom() {
+        Dimension size = driver.manage().window().getSize();
+        int startx = size.width / 4;
+        int starty = (int) (size.height * COORDINATES_END_POSITION);
+        int endy = (int) (size.height * COORDINATES_START_POSITION);
+        swipe(startx, starty, startx, endy);
+    }
+
+    /**
+     * Method to touch the element in Mobile App.
+     * @param appElement Element
+     */
+    public void touchElement(BasePageElement appElement) {
+        new TouchAction((PerformsTouchActions) getAppiumDriver()).press(new PointOption<>()
+                .withCoordinates(appElement.getElement().getLocation().getX(),
+                appElement.getElement().getLocation().getY())).release().perform();
+    }
+
+    /**
+     * Method to Swipe in Mobile App based on the Coordinates.
+     * @param startx x
+     * @param starty y
+     * @param endx x
+     * @param endy y
+     */
+    public void swipe(int startx, int starty, int endx, int endy) {
+        new TouchAction((PerformsTouchActions) getAppiumDriver())
+                .press(new PointOption<>().withCoordinates(startx, starty))
+                .waitAction(new WaitOptions().withDuration(Duration.ofSeconds((6))))
+                .moveTo(new PointOption<>().withCoordinates(endx, endy))
+                .release().perform();
+    }
+
+    /**
+     * Whether current driver is AndroidDriver.
+     * @return current driver is AndroidDriver or not.
+     */
+    public boolean isAndroidDriver() {
+        return driver instanceof AndroidDriver;
+    }
+
+    /**
+     * Whether current driver is IOSDriver.
+     * @return current driver is IOSDriver or not.
+     */
+    public boolean isIOSDriver() {
+        return driver instanceof IOSDriver;
+    }
+
+    /**
+     * Press Enter key for mobile (mShop).
+     * @param inputBox the input element.
+     */
+    public void pressEnterKeyForMobile(final PageElement inputBox) {
+        if (isAndroidDriver()) {
+            getAndroidDriver().pressKey(new KeyEvent().withKey(AndroidKey.ENTER));
+        } else {
+            // TODO: For IOSDriver, we haven't tested it, but using the following way for now.
+            inputBox.sendKey("\n");
+        }
+    }
+
+    /**
+     * Navigate to a given navigationUrl.
+     * @param navigationUrl url to navigate.
+     */
+    public void goToUrlByWebViewForMobile(final String navigationUrl) {
+        RetrySteps.runWithRetry("GetWebView", 3, 5000, () -> {
+            for (String context : getContextSet()) {
+                if (context.contains("WEBVIEW")) {
+                    setWebContext(ContextType.PARTIAL_URL, GATEWAY_PAGE_WEBVIEW_URL);
+                    driver.navigate().to(navigationUrl);
+                    setContextById("NATIVE_APP");
+                    break;
+                }
+            }
+            return true;
+        }, false, null, Exception.class);
+    }
+
+    /**
+     * Method to invoke 'swipe' action on given Mobile App/Web element.
+     * @param driver the WebDriver to do the action.
+     * @param xStart start point for x coordination.
+     * @param yStart start point for y coordination.
+     * @param xEnd   end point for x coordination.
+     * @param yEnd   end point for y coordination.
+     */
+    public static void swipe(final WebDriver driver, final int xStart, final int yStart,
+        final int xEnd, final int yEnd) {
+        {
+            new TouchAction((PerformsTouchActions) driver)
+                .press(new PointOption<>().withCoordinates(xStart, yStart))
+                .waitAction(
+                    new WaitOptions().withDuration(Duration.ofSeconds((WAIT_SWIPE))))
+                .moveTo(new PointOption<>().withCoordinates(xEnd, yEnd))
+                .release().perform();
+        }
+    }
+
+    /**
+     * Swiping on a specified element.
+     *
+     * @param driver the WebDriver to do the action.
+     * @param pageElement element to swipe on.
+     * @param direction   scroll direction, only left and right are supported.
+     */
+    public static void swipeOnElement(final WebDriver driver, final PageElement pageElement,
+        final ScrollDirectionEnum direction) {
+        Dimension windowSize = driver.manage().window().getSize();
+        WebElement webElement = pageElement.getElement();
+        Dimension elementSize = webElement.getSize();
+        Point elementLocation = webElement.getLocation();
+
+        int y = elementLocation.y + elementSize.height / 2;
+        int xStart, xEnd;
+
+        switch (direction) {
+            case SWIPE_LEFT:
+                xStart = (int) (windowSize.width * 0.8);
+                xEnd = (int) (windowSize.width * 0.2);
+                break;
+            case SWIPE_RIGHT:
+                xStart = (int) (windowSize.width * 0.2);
+                xEnd = (int) (windowSize.width * 0.8);
+                break;
+            default:
+                throw new UnsupportedOperationException(
+                    String.format("Unsupported scroll direction %s", direction));
+        }
+
+        swipe(driver, xStart, y, xEnd, y);
+    }
+
+    /**
+     * Method to initialize shadow elements.
+     * This method processes all BasePageElement fields with the ShadowDOM annotation
+     * in the pagemodel class hierarchy, including superclasses.
+     */
+    private void initializeShadowElements() {
+        Class<?> currentClass = this.getClass();
+        // Continue up the inheritance chain until we reach BasePageModel
+        while (currentClass != null && currentClass != BasePageModel.class) {
+            try {
+                // Process only BasePageElement fields with ShadowDOM in Pagemodel class.
+                Arrays.stream(currentClass.getDeclaredFields())
+                        .filter(field -> BasePageElement.class.isAssignableFrom(field.getType())
+                                && field.isAnnotationPresent(AEELocator.class)
+                                && field.getAnnotation(AEELocator.class).shadowDOM())
+                        .forEach(this::processShadowDOMField);
+            } catch (Exception e) {
+                throw new ShadowDOMProcessingException(String.format("Exception caught while processing shadowDOM for" +
+                        "page element in pagemodel [%s]:%n[%s]", currentClass.getSimpleName(), e.getMessage()), e);
+            }
+            currentClass = currentClass.getSuperclass();
+        }
+    }
+
+    /**
+     * Method to sets the shadowDOM flag for BasePageElement fields.
+     * @param field the page element field to process.
+     */
+    private void processShadowDOMField(Field field) {
+        field.setAccessible(true);
+        BasePageElement pageElement;
+
+        try {
+            pageElement = (BasePageElement) field.get(this);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(String.format("Access denied for page element field [%s]: %s",
+                    field.getName(), e.getMessage()), e);
+        }
+
+        if (pageElement == null) {
+            throw new NullPointerException(String.format("Cannot process shadow dom for Page Element " +
+                    "field: [%s] with null value.", field.getName()));
+        }
+        pageElement.setShadowElement(true);
+    }
+}
