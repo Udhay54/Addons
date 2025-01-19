@@ -1,0 +1,559 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import com.amazon.aeeqa.utils.SleepUtil;
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.dtk.element.PageElement;
+
+import java.security.SecureRandom;
+import java.util.Random;
+
+/**
+ * Checkout - PaymentSelectionPage.
+ *
+ * @author tingyong
+ */
+@PageName("checkout.psp")
+public class PaymentSelectionPage extends CheckoutPage {
+
+    // Default internal used hard decline card number.
+    private static final String HARD_DECLINE_CARD_NUMBER = "4444333322221111";
+
+    // Default internal used ACCB decline card number.
+    private static final String ACCB_CARD_NUMBER = "5304460102537758";
+
+    // Card 5556 will be deprecated https://issues.amazon.com/issues/P23570522
+    private static final String CREDIT_CARD_NUMBER = "4000056655665556";
+
+    // Kamino Payment Token
+    private static final String AEEQA1_TOKEN = "5428370082948225";
+
+    private static final String CREDIT_CARD_CVV_NUMBER = "123";
+
+    // It may differ to countries.
+    @Locator("PAYMENT_INSTRUMENT_RADIO_BUTTON")
+    private static BasePageElement paymentInstrumentRadioButton;
+
+    @Locator("PAYMENT_INSTRUMENT_GC_RADIO_BUTTON")
+    private static BasePageElement paymentInstrumentGcRadioButton;
+
+    @Locator("PAYMENT_INSTRUMENT_RADIO_BUTTON_BY_ACCOUNT_HOLDER_NAME")
+    private static BasePageElement paymentInstrumentRadioButtonByAccountHolderName;
+
+    @Locator("CONTINUE_BUTTON")
+    private static BasePageElement continueButton;
+
+    @Locator("CARD_NUMBER_TEXT")
+    private static BasePageElement cardNumberText;
+
+    @Locator("CARD_NUMBER_INPUT")
+    private static BasePageElement cardNumberInput;
+
+    @Locator("CARD_NUMBER_CVV_INPUT")
+    private static BasePageElement cardNumberCvvInput;
+
+    @Locator("CONFIRM_CARD_BUTTON")
+    private static BasePageElement confirmCardButton;
+
+    @Locator("BILLING_ADDRESS_TEXT")
+    private static BasePageElement billingAddressText;
+
+    @Locator("BILLING_ADDRESS_UPDATE_BUTTON")
+    private static BasePageElement billingAddressUpdateButton;
+
+    @Locator("BILLING_ADDRESS_SELECTION_PAGE_HEAD")
+    private static BasePageElement billingAddressSelectionPageHead;
+
+    @Locator("BILLING_ADDRESS_FIRST_USE_THIS_ADDRESS_BUTTON")
+    private static BasePageElement billingAddressFirstUseThisAddressButton;
+
+    @Locator("PRIME_UPSELL_AREA")
+    private static BasePageElement primeUpsellArea;
+
+    @Locator("TRY_PRIME_POPOVER")
+    private static BasePageElement tryPrimePopover;
+
+    @Locator("PROMOTION_CONTAINER_IN_PAYMENT_PAGE")
+    private static BasePageElement promotionContainerInPaymentPage;
+
+    @Locator("PSP_GIFT_CARD_BALANCE_CHECKBOX")
+    private static BasePageElement pspGiftCardBalanceCheckbox;
+
+    @Locator("PSP_ADD_NEW_CREDIT_CARD_LINK")
+    private static BasePageElement pspAddNewCardLink;
+
+    @Locator("PSP_APPLY_PROMO_CODE_LINK")
+    private static BasePageElement pspApplyPromoCodeLink;
+
+    @Locator("PSP_APPLY_PROMO_CODE_INPUT")
+    private static BasePageElement pspApplyPromoCodeInput;
+
+    @Locator("PSP_APPLY_PROMO_CODE_BUTTON")
+    private static BasePageElement pspApplyPromoCodeButton;
+
+    @Locator("PSP_PROMO_CODE_APPLIED_CHECKBOX")
+    private static BasePageElement pspPromoCodeAppliedCheckbox;
+
+    //TODO: This locator needs to be deleted if PAGE_LOADING_SPINNER works fine https://issues.amazon.com/issues/D103271413
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    // Duplicate this locator from Checkout/ReviewYourOrders page for handling unexpected popup pages.
+    @Locator("PLACE_YOUR_ORDER_BUTTON")
+    private static BasePageElement placeYourOrderButton;
+
+    @Locator("CASH_ON_DELIVERY_RADIO_BUTTON")
+    private static BasePageElement cashOnDeliveryRadioButton;
+
+    @Locator("CASH_ON_DELIVERY_CASH_TERMS_TEXT")
+    private static BasePageElement cashOnDeliveryCashTermsText;
+
+    @Locator("NAV_BAR_AMAZON_LOGO")
+    private static BasePageElement navBarAmazonLogo;
+
+    @Locator("ACCB_CURRENCY_PRE_SELECTION_OPTION")
+    private static BasePageElement accbCurrencyPreSelectedOption;
+
+    @Locator("ACCB_CURRENCY_OPTIONS_SECTION")
+    private static BasePageElement accbCurrencyOptionsSection;
+
+    @Locator("CHANGE_ACCB_CARD_CURRENCY")
+    private static BasePageElement changeACCBCardCurrency;
+
+    @Locator("ACCB_CURRENCY_SELECT_DIFFERENT_CURRENCY_OPTION")
+    private static BasePageElement accbSelectDifferentCurrencyOption;
+
+    @Locator("ACCB_CURRENCY_DROPDOWN")
+    private static BasePageElement accbCurrencyDropdown;
+
+    @Locator("CURRENCY_PREFERENCE_POPOVER_LIST_IN_ACCB_CARD_OPTIONS")
+    private static BasePageElement currencyPreferencePopoverListInACCBCardOptions;
+
+    @Locator("CHANGE_TO_SPECIFIC_CURRENCY_IN_CURRENCY_PREFERENCE_POPOVER_LIST_IN_ACCB_CARD_OPTIONS")
+    private static BasePageElement changeToSpecificCurrencyPreferencePopoverListInACCBCardOptions;
+
+    @Locator("AMAZON_REWARDS_VISA_OR_STORE_PROMOTION_CARD_IN_PAYMENT_PAGE")
+    private static BasePageElement amazonRewardsVisaOrStorePromotionCardInPaymentPage;
+
+    @Locator("PAYMENT_CARD_WARNING_EXPIRY_DATE")
+    private static BasePageElement paymentCardWarningExpiryDate;
+
+    @Locator("PAYMENT_CARD_EXPIRY_DATE_UPDATE_LINK")
+    private static BasePageElement paymentCardExpiryDateUpdateLink;
+
+    private AddCreditCardWidget addCreditCardWidget;
+    private CheckoutPage checkoutPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public PaymentSelectionPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Click payment continue button to place order.
+     */
+    public void continueToPlaceOrder() {
+        if (!placeYourOrderButton.isPresent(3)) {
+            ifPrimeUpsellAreaPresentClickDecline();
+            ifTryPrimePopoverPresentClickDecline();
+            getCheckoutPage().closeSPCPrimeOffer();
+            if (!placeYourOrderButton.isPresent(3)) {
+                setPaymentCardDetails();
+                ifPrimeUpsellAreaPresentClickDecline();
+                ifTryPrimePopoverPresentClickDecline();
+                getCheckoutPage().closeSPCPrimeOffer();
+            }
+            placeYourOrderButton.waitIsPresent();
+        }
+    }
+
+    /**
+     * Is Payment Page present or not.
+     * @return payment selection page present or not.
+     */
+    public boolean isPaymentPagePresent() {
+        return continueButton.isPresent(3);
+    }
+
+    /**
+     * Is payment instrument radio button present or not.
+     * @return payment instrument radio button present or not.
+     */
+    public boolean isPaymentInstrumentRadioButtonPresent() {
+        paymentInstrumentRadioButton.waitForElementToBeEnabled();
+        return paymentInstrumentRadioButton.isPresent();
+    }
+
+    /**
+     * If a new shipping address, 'Address Challenge' may occur and ask to confirm the credit card.
+     */
+    public void paymentConfirmCardIfNeeded() {
+        paymentInstrumentRadioButton.waitIsPresent();
+        if (!paymentInstrumentRadioButton.isSelected()) {
+            continueButton.waitForElementToBeEnabled();
+            continueButton.click(true);
+        }
+        inputConfirmCardIfNeeded();
+    }
+
+    /**
+     * Method to select payment method type by account holder name.
+     * @param accountHolderName cardAccountholdername
+     */
+    public void paymentConfirmCardIfNeeded(String accountHolderName) {
+        BasePageElement paymentInstrumentRadioButton = new BasePageElement(driver,
+                paymentInstrumentRadioButtonByAccountHolderName.getName() + "_" + accountHolderName,
+                String.format(paymentInstrumentRadioButtonByAccountHolderName.getXPath(), accountHolderName));
+        if (!paymentInstrumentRadioButton.isSelected()) {
+            paymentInstrumentRadioButton.click();
+        }
+        inputConfirmCardIfNeeded();
+    }
+
+    /**
+     * Method to input Card Confirmation If needed.
+     */
+    public void inputConfirmCardIfNeeded() {
+        if (cardNumberInput.isPresent(3)) {
+            // TODO: Card 5556 will be replaced by card 1111 after Jun 20. https://issues.amazon.com/issues/P23570522
+            String cardPlaceholder = cardNumberInput.getValue("placeholder");
+            String cardPlaceholdernum = cardPlaceholder.replaceAll("[^0-9]", "");
+            switch (cardPlaceholdernum) {
+                case "5556":
+                    cardNumberInput.setText(CREDIT_CARD_NUMBER);
+                    break;
+                case "7758":
+                    cardNumberInput.setText(ACCB_CARD_NUMBER);
+                    break;
+                case "8225":
+                    cardNumberInput.setText(AEEQA1_TOKEN);
+                    break;
+                default:
+                    cardNumberInput.setText(HARD_DECLINE_CARD_NUMBER);
+            }
+            confirmCardButton.click(true);
+            confirmCardButton.waitForElementToDisappear();
+        }
+        if (cardNumberCvvInput.isPresent(3)) {
+            cardNumberCvvInput.setText(CREDIT_CARD_CVV_NUMBER);
+        }
+    }
+    /**
+     * Method to input ACCB currency choice If needed.
+     */
+    public void inputACCBCurrencyChoiceIfNeeded() {
+        if (accbCurrencyOptionsSection.isPresent(3)) {
+            accbCurrencyPreSelectedOption.waitForElementToBeEnabled();
+            accbCurrencyPreSelectedOption.clickAndWait(continueButton);
+            continueButton.click(true);
+            }
+        if (continueButton.isPresent(3)) {
+            continueButton.click(true);
+            }
+        }
+
+    /**
+     * Method to click on 'Change card currency' in ACCB card
+     */
+    public void clickACCBChangeCardCurrencyOption() {
+        changeACCBCardCurrency.clickAndWaitWithRetries(accbSelectDifferentCurrencyOption);
+    }
+
+    /**
+     * Method to get the default ACCB currency text that is preselected
+     * @return text
+     */
+    public String getACCBDefaultSelectedCurrencyText() {
+        return accbCurrencyPreSelectedOption.getElement().getAttribute("value");
+    }
+
+    /**
+     * Method to click on 'My card is in a different currency' in ACCB card
+     */
+    public void clickACCBDifferentCurrencyOption() {
+        accbSelectDifferentCurrencyOption.clickAndWait(accbCurrencyDropdown);
+    }
+
+    /**
+     * Method to click on ACCB currency dropdown - 'Select card currency'
+     */
+    public void clickACCBCurrencyDropdown() {
+        accbCurrencyDropdown.click();
+    }
+
+    /**
+     * Selects a random currency from currency preference dropdown and get the selected Value.
+     * @param sourceCountryCode is the MP for test
+     * @return selectedCurrency from currency preference dropdown.
+     */
+    public String getSelectedRandomCurrencyFromCurrencyPreferenceDropdownForACCBCard(String sourceCountryCode) {
+        Random random = new SecureRandom();
+        int listNumber;
+        String selectedCurrency;
+        BasePageElement currencyOptionInCurrencyPreferencePopoverListInACCBCard;
+        if (sourceCountryCode.equals("SG")) {
+            //Currently SG supports only one currency in ACCB, so directly hardocding the export currency supported
+            currencyOptionInCurrencyPreferencePopoverListInACCBCard =
+                new BasePageElement(driver, changeToSpecificCurrencyPreferencePopoverListInACCBCardOptions.getName(),
+                    String.format(changeToSpecificCurrencyPreferencePopoverListInACCBCardOptions.getXPath(), "MYR"));
+        } else if (sourceCountryCode.equals("AU")) {
+            //Currently AU supports only one currency in ACCB, so directly hardocding the export currency supported
+            currencyOptionInCurrencyPreferencePopoverListInACCBCard =
+                 new BasePageElement(driver, changeToSpecificCurrencyPreferencePopoverListInACCBCardOptions.getName(),
+                     String.format(changeToSpecificCurrencyPreferencePopoverListInACCBCardOptions.getXPath(), "NZD"));
+        } else {
+            //Other MPs (such as US/JP) have 150 currency options in ACCB
+            //But for the sake of test taking only the top 4 currencies in ACCB
+            listNumber = random.nextInt(3) + 1;
+            currencyOptionInCurrencyPreferencePopoverListInACCBCard =
+                    new BasePageElement(driver, currencyPreferencePopoverListInACCBCardOptions.getName(),
+                            String.format(currencyPreferencePopoverListInACCBCardOptions.getXPath(), listNumber));
+        }
+        selectedCurrency = currencyOptionInCurrencyPreferencePopoverListInACCBCard.getText();
+        currencyOptionInCurrencyPreferencePopoverListInACCBCard.click();
+        return selectedCurrency;
+    }
+
+    /**
+     * Gets Card Number from the selected Payment Method.
+     * @param accountHolderName card accountHolderName
+     * @return Card number
+     */
+    public String getCardNumberTextFromSelectedPaymentMethod(String accountHolderName) {
+        BasePageElement cardNumberTextByAccountHolderName =
+                new BasePageElement(driver, cardNumberText.getName() + "_" + accountHolderName,
+                        String.format(cardNumberText.getXPath(), accountHolderName));
+        return cardNumberTextByAccountHolderName.waitForTextNotBlank(3).getText();
+    }
+
+    /**
+     * Method to check the Gift Card Balance is Checked by default.
+     * @return gift card checkbox checked or not
+     */
+    public boolean isGiftCardBalanceCheckboxChecked() {
+        return pspGiftCardBalanceCheckbox.isSelected();
+    }
+
+    /**
+     * Uncheck using GC balance checkbox for payment.
+     */
+    public void uncheckGiftCardBalanceCheckbox() {
+        if (pspGiftCardBalanceCheckbox.isPresent() && isGiftCardBalanceCheckboxChecked()) {
+            pspGiftCardBalanceCheckbox.click();
+        }
+    }
+
+    /**
+     * Apply Promotion code (in Payment selection page).
+     * @param promoCode promotion code.
+     */
+    public void applyPromoCodeInPaymentSelectionPage(final String promoCode) {
+        if (pspPromoCodeAppliedCheckbox.isSelected()) {
+            return;
+        }
+        pspApplyPromoCodeLink.click();
+        pspApplyPromoCodeInput.waitForElementToBeEnabled();
+        pspApplyPromoCodeInput.setText(promoCode);
+        pspApplyPromoCodeButton.click();
+        sectionalLoadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Verify promotion area absent in payment page.
+     */
+    public void verifyPromotionContainerInPaymentPageAbsent() {
+        status.addIsHiddenOrMissing(promotionContainerInPaymentPage);
+        status.processStatus();
+    }
+
+    /**
+     * Helps updating billing address, if need to be updated for the given payment method.
+     */
+    public void updateBillingAddressIfNeeded() {
+        if (!placeYourOrderButton.isPresent(3) && billingAddressText.isPresent(3)) {
+            billingAddressUpdateButton.waitForElementToBeEnabled();
+            billingAddressUpdateButton.clickAndWait(placeYourOrderButton);
+        }
+    }
+
+    /**
+     * Method to add new 'Payment Method'.
+     * @param creditCardNumber to parameterized
+     * @param creditCardName to parameterized
+     * @param creditCardExpiryMonth to parameterized
+     * @param creditCardExpiryYear to parameterized
+     */
+    public void addNewPaymentMethod(String creditCardName, String creditCardNumber, String creditCardExpiryMonth,
+                                    String creditCardExpiryYear) {
+        pspAddNewCardLink.click();
+        getAddCreditCardWidget().addNewPaymentMethod(creditCardName, creditCardNumber,
+                creditCardExpiryMonth, creditCardExpiryYear);
+        BasePageElement paymentInstrumentRadioButton = new BasePageElement(driver,
+                paymentInstrumentRadioButtonByAccountHolderName.getName() + "_" + creditCardName,
+                String.format(paymentInstrumentRadioButtonByAccountHolderName.getXPath(), creditCardName));
+        paymentInstrumentRadioButton.waitIsPresent();
+    }
+
+    /**
+     * Method to Click expiry date 'Update' link.
+     */
+    public void clickExpiryDateUpdateLink() {
+        paymentCardExpiryDateUpdateLink.clickAndWaitForDisappear(sectionalLoadingSpinner);
+    }
+
+    /**
+     * Method to Click 'Add new card' link/button.
+     */
+    public void clickAddNewCardLink() {
+        pspAddNewCardLink.clickAndWaitForDisappear(sectionalLoadingSpinner);
+    }
+
+    /**
+     * Method to select Payment Method on PSP, if not already selected.
+     */
+    public void selectPaymentRadioButtonIfNoSelected() {
+        boolean selected = false;
+        paymentInstrumentRadioButton.waitForElementToBeEnabled();
+        for (PageElement radioButton : paymentInstrumentRadioButton.getElements()) {
+            if (radioButton.isSelected()) {
+                selected = true;
+                break;
+            }
+        }
+        if (!selected && paymentInstrumentRadioButton.isPresent()) {
+            paymentInstrumentRadioButton.click();
+        }
+    }
+
+    /**
+     * Verify 'Amazon Logo' is present on the Nav Bar.
+     */
+    public void verifyAmazonLogoPresent() {
+        status.addIsDisplayed(navBarAmazonLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Method to get Cash Terms Text next to the Cash On Delivery Payment Options.
+     * @return Cash Terms text e.g. EGP 5
+     */
+    public String getCashOnDeliveryCashTermsText() {
+        return cashOnDeliveryCashTermsText.getText();
+    }
+
+    /**
+     * Click Cash On Delivery Radio Button on PSP and Continue to RYO.
+     */
+    public void clickCashOnDeliveryRadioButtonAndContinueToPlaceOrder() {
+        continueButton.waitForElementToBeEnabled();
+        cashOnDeliveryRadioButton.click();
+        continueButton.click(true);
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        placeYourOrderButton.waitIsPresent();
+    }
+
+    /**
+     * Get AddCreditCardWidget instance.
+     * @return AddCreditCardWidget instance.
+     */
+    public AddCreditCardWidget getAddCreditCardWidget() {
+        if (addCreditCardWidget == null) {
+            addCreditCardWidget = new AddCreditCardWidget(driver);
+        }
+        return addCreditCardWidget;
+    }
+
+    /**
+     * Is prime sign up transition page present or not during transition to SPC page.
+     * @return prime sign up transition page present or not.
+     */
+    public boolean isPrimeSignupPagePresent() {
+        setPaymentCardDetails();
+        return primeUpsellArea.isPresent(3);
+    }
+
+    /**
+     * This method helps to set the payment card details in payment page.
+     */
+    public void setPaymentCardDetails() {
+       //For MENA Countries, GC is also radio button, adding this condition to skip selecting Payment method
+        if (!paymentInstrumentGcRadioButton.isPresent(3)) {
+            selectPaymentRadioButtonIfNoSelected();
+        }
+        continueButton.waitForElementToBeEnabled();
+        continueButton.click(true);
+        waitForPageToLoad();
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        if (!placeYourOrderButton.isPresent(3)) {
+            // If Account has multiple Card, Card Confirmation is displaying only after clicking Payment Continue Button
+            if (cardNumberInput.isPresent(3)) {
+                inputConfirmCardIfNeeded();
+                continueButton.click(true);
+            }
+            if (cardNumberCvvInput.isPresent(3)) {
+                cardNumberCvvInput.setText(CREDIT_CARD_CVV_NUMBER);
+                continueButton.click(true);
+            }
+            if (billingAddressSelectionPageHead.isPresent(3)) {
+                billingAddressFirstUseThisAddressButton.click();
+            }
+            inputACCBCurrencyChoiceIfNeeded();
+        }
+    }
+
+    /**
+     * Method helps to check if prime upsell area present.
+     * If present then method will click "No thanks" link to continue to place order.
+     */
+    public void ifPrimeUpsellAreaPresentClickDecline() {
+        if (primeUpsellArea.isPresent(3)) {
+            primeUpsellArea.clickAndWaitForDisappear(primeUpsellArea);
+            SleepUtil.sleep(5000);
+        }
+    }
+
+    /**
+     * Method helps to check if Try prime offer popover is present.
+     * If present then method will click "Not right now" link to continue to place order.
+     */
+    public void ifTryPrimePopoverPresentClickDecline() {
+        if (tryPrimePopover.isPresent(3)) {
+            tryPrimePopover.click();
+        }
+    }
+
+    /**
+     * Verify Amazon Rewards Visa or Store card promotion container is displayed in payment page.
+     * @return boolean of promotion container is displayed or not.
+     */
+    public boolean isAmazonRewardsVisaOrStorePromotionCardPresent() {
+        waitForPageToLoad();
+        return amazonRewardsVisaOrStorePromotionCardInPaymentPage.isPresent();
+    }
+
+    /**
+     * Method to verify expiry warning present In payment card.
+     * @return boolean expiry warning is present or Not.
+     */
+    public boolean isPaymentCardExpiryWarningPresent() {
+        waitForPageToLoad();
+        return paymentCardWarningExpiryDate.isPresent(5);
+    }
+
+    /**
+     * Get CheckoutPage model.
+     * @return CheckoutPage instance.
+     */
+    public CheckoutPage getCheckoutPage() {
+        if (checkoutPage == null) {
+            checkoutPage = new CheckoutPage(driver);
+        }
+        return checkoutPage;
+    }
+}
