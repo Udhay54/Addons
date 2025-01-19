@@ -1,0 +1,61 @@
+package com.amazon.aeeqa.ui.pagemodels.countryselection;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Country Selection Page Model.
+ *
+ * @author tingyong
+ */
+@PageName("country_selection")
+public class CountrySelectionPage extends BasePageModel {
+
+    @Locator("COUNTRY_DROPDOWN")
+    private static BasePageElement countryDropdown;
+
+    @Locator("COUNTRY_DROPDOWN_BUTTON")
+    private static BasePageElement countryDropdownButton;
+
+    @Locator("COUNTRY_DROPDOWN_OPTION")
+    private static BasePageElement countryDropdownOption;
+
+    @Locator("GO_TO_WEBSITE_BUTTON")
+    private static BasePageElement goToWebsiteButton;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public CountrySelectionPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(countryDropdownButton);
+        status.processStatus();
+    }
+
+    /**
+     * Select a country and go to website.
+     * @param country country name text.
+     */
+    public void selectACountry(final String country) {
+        // countryDropdown.setSelectedOption(country);
+        countryDropdownButton.click();
+        // Dynamic element
+        BasePageElement countryDropdownOptionByText = new BasePageElement(driver, "COUNTRY_DROPDOWN_OPTION",
+                String.format(countryDropdownOption.getXPath(), country));
+        countryDropdownOptionByText.click();
+        goToWebsiteButton.click();
+    }
+
+}
