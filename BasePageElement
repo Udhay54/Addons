@@ -1,0 +1,391 @@
+package com.amazon.aeeqa.ui.pagemodels;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.Keys;
+
+import com.amazon.aeeqa.exceptions.ShadowDOMProcessingException;
+import com.amazon.aeeqa.testngreport.TestResultHtmlReporter;
+import com.amazon.aeeqa.ui.helper.BrowserDriverHelper;
+import com.amazon.aeeqa.util.RetrySteps;
+import com.amazon.dtk.element.ElementAction;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.g2s2.model.LocatorResult;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+/**
+ * Base PageElement for all AEE UI Automation tests.
+ *
+ * @author tingyong
+ */
+@Slf4j
+public class BasePageElement extends PageElement {
+
+    private boolean isShadowElement;
+    private List<BasePageElement> shadowDomElements;
+    private Actions actions;
+
+    /**
+     * Constructs AEE Base PageElement for given locator locatorName, xpath
+     * and driver Should be used in case you are overriding default locator store - G2S2.
+     *
+     * @param driver the custom driver.
+     * @param locatorName page element locatorName.
+     * @param xpathValue page element xpath.
+     */
+    public BasePageElement(WebDriver driver, String locatorName, String xpathValue) {
+        this(driver, locatorName, xpathValue, false);
+        this.actions = new Actions(driver);
+    }
+
+    /**
+     * Constructs AEE Base PageElement for given locator locatorName, xpath and shadowElement flag.
+     * and driver Should be used in case you are overriding default locator store - G2S2.
+     *
+     * @param driver the custom driver.
+     * @param locatorName page element locatorName.
+     * @param xpathValue page element xpath.
+     * @param isShadowElement whether the element is a shadow element.
+     */
+    public BasePageElement(WebDriver driver, String locatorName, String xpathValue, boolean isShadowElement) {
+        super(driver, locatorName, xpathValue);
+        setShadowElement(isShadowElement);
+    }
+
+    /**
+     * Constructs AEE Base PageElement for a locator result.
+     *
+     * @param driver the driver for this execution.
+     * @param locatorName page element locatorName.
+     * @param locatorResult {@link LocatorResult} returned from G2S2.
+     */
+    public BasePageElement(final WebDriver driver, final String locatorName, final LocatorResult locatorResult) {
+        super(driver, locatorName, locatorResult);
+        this.actions = new Actions(driver);
+    }
+
+    /**
+     * Method that logs the action made and the result into log. The goal of this abstraction is to normalize all the
+     * methods to the same format. And outputs it to result html report as well.
+     *
+     * @param actionName the action triggered
+     * @param extraDetails Extra details (such as the result or the wait time)
+     * @param duration duration of the action (in Nanoseconds)
+     */
+    @Override
+    protected void loggingAction(final ElementAction actionName, final String extraDetails, final Duration duration) {
+        super.loggingAction(actionName, extraDetails, duration);
+        TestResultHtmlReporter.addText(String.format("=> [%s] {%s} action costed %dms and returned %s",
+                actionName, getName(), duration.toMillis(), extraDetails));
+    }
+
+    /**
+     * A retry version of clickAndWait().
+     *
+     * @param waitForElement the element to wait for displayed.
+     */
+    public void clickAndWaitWithRetries(final BasePageElement waitForElement) {
+        clickAndWaitWithRetries(waitForElement, BrowserDriverHelper.getDefaultDriverTimeoutInSeconds());
+    }
+
+    /**
+     * A retry version of clickAndWait().
+     * Usually it's not recommended to call it, but it's a useful workaround for some cases.
+     * Be prudent to call this method (as it duplicates clicking for retries).
+     *
+     * @param waitForElement the element to wait for displayed.
+     * @param expectedTimeoutInSeconds expected timeout value for clicking 'clickElement' and see 'waitForElement'.
+     */
+    public void clickAndWaitWithRetries(final BasePageElement waitForElement,
+            final int expectedTimeoutInSeconds) {
+        // Retry 3 times with 1s backoff
+        RetrySteps.runWithRetry("clickAndWaitWithRetries", 3, 1000,
+                () -> {
+                    // Note, the caller should be responsible to set the timeout back if needed.
+                    waitForElement.setTimeoutDuration(expectedTimeoutInSeconds);
+                    this.clickAndWait(waitForElement);
+                    return true;
+                }, false /* not ignore final exception */, null,
+                TimeoutException.class, ElementClickInterceptedException.class);
+    }
+
+    /**
+     * Click current element and wait for certain element to disappear with retries.
+     * @param elementToDisappear waitForElementToDisappear.
+     */
+    public void clickAndWaitForDisappear(final BasePageElement elementToDisappear) {
+        // Retry 3 times with 1s backoff
+        RetrySteps.runWithRetry("clickAndWaitForDisappear", 3, 1000,
+                () -> {
+                    if (isPresent()) {
+                        this.click();
+                    }
+                    elementToDisappear.waitForElementToDisappear();
+                    return true;
+                }, false /* not ignore final exception */, () -> {
+                    // If failed within retry, try js click.
+                    if (isPresent()) {
+                        this.click(true);
+                    }
+                    return true;
+                },
+                TimeoutException.class, ElementClickInterceptedException.class);
+    }
+
+    /**
+     * Max waiting for a time to check whether the element is present or not.
+     *
+     * @param timeoutSeconds max waiting time.
+     * @return true, if element is present; false if element is not present
+     */
+    public boolean isPresent(int timeoutSeconds) {
+        // current timeout value
+        int previousTimeout = this.getTimeoutDuration();
+        // new timeout value
+        this.setTimeoutDuration(timeoutSeconds);
+        boolean isPresent = this.waitIsPresent();
+        // restore timeout value
+        this.setTimeoutDuration(previousTimeout);
+        return isPresent;
+    }
+
+    /**
+     * Wait for the element's text is not blank by retries.
+     * @param timeoutSeconds max waiting time for the element present.
+     * @return current element.
+     */
+    public BasePageElement waitForTextNotBlank(int timeoutSeconds) {
+        if (isPresent(timeoutSeconds)) {
+            // Retry up to 3 times if the element's text is blank
+            RetrySteps.runWithRetry("waitForTextNotBlank", 3, 50,
+                    () -> {
+                        if (StringUtils.isBlank(this.getText())) {
+                            throw new RuntimeException("The element's text is blank.");
+                        }
+                        return true;
+                    }, false, null, Exception.class);
+        } else {
+            throw new TimeoutException(String.format("Element [%s] not found with timeout: %d seconds",
+                    this, timeoutSeconds));
+        }
+        return this;
+    }
+
+    /**
+     * Method to set ShadowElement flag and ShadowDOM locators chain.
+     * @param isShadowElement flag to set shadow element of the page element.
+     */
+    public void setShadowElement(boolean isShadowElement) {
+        this.isShadowElement = isShadowElement;
+        if (isShadowElement) {
+            setShadowLocatorChain();
+        }
+    }
+
+    /**
+     * Set text and leave the text box using Tab action.
+     *
+     * @param value the text to set.
+     */
+    public void setTextAndLeave(String value) {
+        this.setText(value);
+        this.actions.sendKeys(Keys.TAB).build().perform();
+    }
+
+    /**
+     * Double-click action on the element.
+     */
+    public void doubleClick() {
+        this.actions.doubleClick(this.getElement()).build().perform();
+    }
+
+    /**
+     * Overrides xpath for the current BasePageElement with shadow DOM handling.
+     *
+     * @param values - array of String values to override the xpath.
+     * @return BasePageElement - PageElement with overridden xpath.
+     */
+    public BasePageElement overrideXpath(final String... values) {
+        try {
+            BasePageElement overriddenElement = new BasePageElement(driver, this.getName(),
+                    String.format(this.getXPath(), (Object[]) values));
+            if (this.isShadowElement) {
+                overriddenElement.setShadowLocatorChain();
+            }
+            return overriddenElement;
+        } catch (Exception e) {
+            log.error("Failed overriding xpath for element[{}]. Number of specifiers(%s) in xpath- {{}} and " +
+                    "override values count-{} don't match", this.getName(), this.getXPath(), values.length);
+            return this;
+        }
+    }
+
+    /**
+     * Method to get list of elements from shadow DOM.
+     * If the element is not a shadow DOM element, it will throw an exception.
+     * @param isShadowElement flag to check if the element is a shadow DOM element.
+     * @return List of WebElements representing the child elements from shadow DOM.
+     */
+    public List<WebElement> getElements(boolean isShadowElement) {
+        if (this.isShadowElement) {
+            return this.getElementsInShadowDOM();
+        } else {
+            throw new ShadowDOMProcessingException("This is not a shadow DOM element, use DTK 'getElements()' method");
+        }
+    }
+
+
+    /* ******************************************************************** */
+    /*         DTK Element Method Overrides to support Shadow DOM           */
+    /* ******************************************************************** */
+
+    /**
+     * Overrides DTK getElement Method to handle user actions(setText, mouseover, etc) of shadow DOM elements.
+     * If the element is shadowDOM element, it will use the getElementsInShadowDOM method to get the child element.
+     * Otherwise, it will use the default getElement method.
+     * @return WebElement instance of the current element.
+     */
+    @Override
+    public WebElement getElement() {
+        if (this.isShadowElement) {
+            return this.getDomElement(true);
+        } else {
+            return super.getElement();
+        }
+    }
+
+    /**
+     * Overrides DTK getElement Method to get elements counts of shadow DOM elements.
+     * If the element is shadowDOM element, it will use the getElementsInShadowDOM method to get the child elements.
+     * Otherwise, it will use the default countElements method.
+     * @return int count of elements matching the locator.
+     */
+    @Override
+    public int countElements() {
+        if (this.isShadowElement) {
+            return this.getElementsInShadowDOM().size();
+        } else {
+            return super.countElements();
+        }
+    }
+
+    /**
+     * Overrides DTK click Method to handle shadow DOM elements.
+     * If the element is shadowDOM element, it will use the getElement method to click it.
+     * Otherwise, it will use the default click method.
+     */
+    @Override
+    public void click() {
+        if (this.isShadowElement) {
+             this.getElement().click();
+        } else {
+             super.click();
+        }
+    }
+
+
+    /* ******************************************************************** */
+    /*                  Private methods to support Shadow DOM               */
+    /* ******************************************************************** */
+
+    /**
+     * Method to get the list of child elements in the shadow DOM.
+     * @return List of WebElements representing the child elements.
+     */
+    private List<WebElement> getElementsInShadowDOM() {
+        return this.getDomElement(false);
+    }
+
+    /**
+     * Method to get the shadow DOM element of page element.
+     * @param isSingleElement Flag to indicate if the return element(s) is single or multiple.
+     * @return WebElement or List<WebElement> instance of the current element.
+     */
+    private <R> R getDomElement(boolean isSingleElement) {
+        SearchContext currentContext = driver;
+        List<BasePageElement> ancestorChain = this.shadowDomElements;
+        try {
+            int chainSize = ancestorChain.size();
+            //Traverse nested shadowDOM elements excluding last target element.
+            for (int i = 0; i < chainSize - 1; i++) {
+                WebElement ancestorElement = findElementInSearchContext(currentContext,
+                        ancestorChain.get(i).getByForType(), true);
+                currentContext = ancestorElement.getShadowRoot();
+            }
+            return findElementInSearchContext(currentContext,
+                    ancestorChain.get(chainSize - 1).getByForType(), isSingleElement);
+        } catch (Exception e) {
+            throw new ShadowDOMProcessingException(String.format("Failed to get element [%s] in shadow DOM: %s",
+                    this.getName(), e.getMessage()), e);
+        }
+    }
+
+
+    /**
+     * Method to find shadow DOM element in search context.
+     * @param context SearchContext to search for the element.
+     * @param locator Locator to find the element.
+     * @param isSingleElement Flag to indicate if the return element(s) is single or multiple.
+     * @return WebElement or List<WebElement> instance of the current element.
+     */
+    @SuppressWarnings("unchecked")
+    private <R> R findElementInSearchContext(SearchContext context, By locator, boolean isSingleElement) {
+        return new WebDriverWait(driver, Duration.ofSeconds(this.timeoutDuration))
+                .until(driver -> {
+                     if (isSingleElement) {
+                         WebElement element = context.findElement(locator);
+                         return (R) element;
+                     } else {
+                         List<WebElement> elements = context.findElements(locator);
+                         return (R) elements;
+                     }
+                });
+    }
+
+    /**
+     * Method to set the shadow DOM locators chain.
+     */
+    private void setShadowLocatorChain() {
+        String locatorName = this.getName();
+        String locatorValue = this.getXPath();
+        String locatorType = this.getByForType().toString();
+
+        // Validates CSS Locatortype for shadow DOM element.
+        if (!(this.getByForType() instanceof By.ByCssSelector)) {
+            throw new ShadowDOMProcessingException(String.format(
+                    "Only CSS type locator is supported for Shadow DOM elements but provided other locator type: {%s}" +
+                            " for locator [%s].", locatorType, locatorName));
+        }
+
+        // Split and validate css selectors.
+        final String[] selectors = this.getXPath().split(",");
+        if (selectors.length == 1) {
+            throw new ShadowDOMProcessingException(String.format(
+                    "Multiple css selectors is required for ShadowDOM elements but provided locator [%s] with single " +
+                            "css selector: {%s}.", locatorName, locatorValue));
+        }
+
+        // Generate chain of page elements for shadow DOM processing.
+        String locatorTypePrefix = "css:";
+        final String baseLocatorName = locatorName + "-";
+        this.shadowDomElements = IntStream.range(0, selectors.length)
+                .mapToObj(index -> new BasePageElement(driver,
+                        baseLocatorName + index,
+                        locatorTypePrefix + selectors[index].trim()))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+    }
+}
