@@ -1,0 +1,83 @@
+package com.amazon.aeeqa.ui.pagemodels;
+
+import com.amazon.dtk.configuration.DTKProperties;
+import com.amazon.dtk.g2s2.G2S2Environment;
+import com.amazon.dtk.g2s2.builder.DiamondG2S2Configuration;
+import com.amazon.dtk.type.G2S2ClientType;
+import com.amazon.dtk.g2s2.model.PlatformName;
+import com.amazon.dtk.type.CountryCode;
+
+import java.util.EnumSet;
+
+/**
+ * Dynamic decide target country's DiamondG2S2Configuration.
+ *
+ * TODO: It is aware of client parameters which is not good.
+ *
+ * @author tingyong
+ */
+public class DynamicTargetCountry {
+
+    private static final String LOCATOR_TABLE = "diamond_locators";
+    private static final String PLATFORM_TRANSFORM_PROPERTY = "platformTransform";
+    /** For Mobile tests, Platform Transform ("-DplatformTransform=true", default is "false") */
+    private static final String PLATFORM_TRANSFORM = System.getProperty(PLATFORM_TRANSFORM_PROPERTY);
+
+    //
+    // ==== Static parameters
+    //
+    private static final G2S2ClientType G2S2_CLIENT_TYPE =
+                getClientType(DTKProperties.get("g2s2clienttype").orElse("READ"));
+     //       G2S2ClientType.getClientType(DTKProperties.get("g2s2clienttype").orElse("READ"));
+    private static final String G2S2_LABEL = DTKProperties.get("g2s2stagelabel").orElse("AEEUIProd");
+    private static final String PLATFORM = DTKProperties.get("platformname").orElse("desktop");
+    private static final String MOBILE_WEB_PLATFORM_VALUE = "mobileweb";
+
+    /**
+     * Get dynamic g2s2 config per client parameters, especially the dynamic ""agsTargetCountry"" parameter.
+     * @return g2s2 config.
+     */
+    public DiamondG2S2Configuration getDynamicG2S2Configuration() {
+        return DiamondG2S2Configuration.builder().withClientType(G2S2_CLIENT_TYPE)
+                .withClientConfiguration(G2S2Environment.CLIENT_CONFIGURATION)
+                .withLocatorTable(LOCATOR_TABLE)
+                .withLocatorStageLabel(G2S2_LABEL)
+                .withCountryCode(CountryCode.getValidCountryCode(getTargetCountryCode()))
+                .withPlatformName(PlatformName.getValidPlatFormName(getPlatformValue()))
+                .build();
+    }
+
+    //
+    // ==== Dynamic parameters
+    //
+    // TODO: Multiple threads running, consider ITestContext
+    // It may be different according to different <test> tag
+    private String getTargetCountryCode() {
+        return System.getProperty("agsTargetCountry", DTKProperties.get("countrycode").orElse("US"));
+    }
+
+    /**
+     * Method to set platformvalue. This method is implemented to address the DTK issue https://issues.amazon.com/issues/DTK-210
+     * @return Override platform name to mobile when condition met
+     */
+    private String getPlatformValue() {
+        if ((PLATFORM.toString().equalsIgnoreCase("android_phone")
+                || PLATFORM.toString().equalsIgnoreCase("ios_phone"))
+                && PLATFORM_TRANSFORM.equalsIgnoreCase("true")) {
+            return MOBILE_WEB_PLATFORM_VALUE;
+        } else {
+            return PLATFORM;
+        }
+    }
+
+    /**
+     * Method to set G2S2 client type.
+     * @param clientType input client type.
+     * @return Override clientType to .
+     */
+    public static G2S2ClientType getClientType(String clientType) {
+       // log.info("G2S2 Instance Type passed: %s", new Object[]{clientType.toUpperCase()});
+        return EnumSet.allOf(G2S2ClientType.class).stream().filter((e) ->
+                e.name().equalsIgnoreCase(clientType)).findFirst().orElse(G2S2ClientType.READ);
+    }
+}
