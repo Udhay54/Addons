@@ -1,0 +1,76 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Update and delete items page.
+ */
+@PageName("checkout.UpdateAndDeleteItem")
+public class UpdateAndDeleteItemPage extends BasePageModel {
+
+    @Locator("ITEM_QUANTITY_DROPDOWN_LIST")
+    private static BasePageElement itemQuantityDropdownList;
+
+    @Locator("ITEM_QUANTITY_BY_TEXT")
+    private static BasePageElement itemQuantityByText;
+
+    @Locator("DELETE_ITEM_BUTTON")
+    private static BasePageElement deleteItemButton;
+
+    @Locator("CONTINUE_BUTTON")
+    private static BasePageElement continueButton;
+
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public UpdateAndDeleteItemPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Click continue button.
+     */
+    public void clickContinueButton() {
+        continueButton.clickAndWaitForDisappear(continueButton);
+        loadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Update item quantity.
+     * @param asin test asin.
+     * @param newQuantity new quantity.
+     */
+    public void updateItemQuantity(final String asin, final int newQuantity) {
+        BasePageElement updateQuantity = new BasePageElement(driver,
+                itemQuantityDropdownList.getName(),
+                String.format(itemQuantityDropdownList.getXPath(), asin));
+        updateQuantity.click();
+        BasePageElement quantity = new BasePageElement(driver,
+                itemQuantityByText.getName(),
+                String.format(itemQuantityByText.getXPath(), String.valueOf(newQuantity)));
+        quantity.click();
+        loadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Delete item.
+     * @param asin test asin.
+     */
+    public void deleteItem(final String asin) {
+        BasePageElement deleteButton = new BasePageElement(driver,
+                deleteItemButton.getName(),
+                String.format(deleteItemButton.getXPath(), asin));
+        deleteButton.click();
+        loadingSpinner.waitForElementToDisappear();
+    }
+
+}
