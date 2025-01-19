@@ -1,0 +1,547 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import com.amazon.aeeqa.testaddress.Address;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Checkout - AddressSelectionPage.
+ *
+ * @author tingyong
+ */
+@PageName("checkout.asp")
+public class AddressSelectionPage extends CheckoutPage {
+
+    @Locator("DELIVER_TO_THIS_ADDRESS_BUTTON")
+    private static BasePageElement deliverToThisAddressButton;
+
+    @Locator("DELIVERY_TO_THIS_ADDRESS_BUTTON_BY_ADDRESS_NAME")
+    private static BasePageElement deliverToThisAddressButtonByAddressName;
+
+    @Locator("DELIVERY_TO_THIS_ADDRESS_NAME")
+    private static BasePageElement deliveryToThisAddressName;
+
+    @Locator("DELIVERY_TO_THIS_ADDRESS_RADIO_BUTTON_BY_ADDRESS_NAME")
+    private static BasePageElement deliverToThisAddressRadioButtonByAddressName;
+
+    @Locator("DELIVERY_TO_THIS_ADDRESS_BUTTON_BY_COUNTRY_NAME")
+    private static BasePageElement deliverToThisAddressButtonByCountryName;
+
+    @Locator("AMAZON_PICK_UP_LOGO")
+    private static BasePageElement amazonPickUpLogo;
+
+    @Locator("AMAZON_PICK_UP_SECTION_IN_CHECKOUT")
+    private static BasePageElement amazonPickUpSectionInCheckout;
+
+    @Locator("AMAZON_PICK_UP_SECTION_ADRESSES")
+    private static BasePageElement amazonPickUpSectionAddressesInCheckout;
+
+    @Locator("AMAZON_PICK_UP_SECTION_ADRESSES_RADIO_BUTTON")
+    private static BasePageElement amazonPickUpSectionAddressesRadioButtonInCheckout;
+
+    @Locator("SEARCH_FOR_AMAZON_PICK_UP_POINT_LINK")
+    private static BasePageElement searchForAmazonPickUpPointLink;
+
+    @Locator("SEARCH_VIA_ADDRESS_TEXT_BOX")
+    private static BasePageElement searchViaAddressTextBox;
+
+    @Locator("SEARCH_VIA_STORE_ZIP_TEXT_BOX")
+    private static BasePageElement searchViaStoreZipTextBox;
+
+    @Locator("SEARCH_VIA_LANDMARK_TEXT_BOX")
+    private static BasePageElement searchViaLandmarkTextBox;
+
+    @Locator("PICK_UP_SEARCH_BUTTON")
+    private static BasePageElement pickUpSearchButton;
+
+    @Locator("ADDRESS_FULLNAME_HEADING_BY_NAME")
+    private static BasePageElement addressFullNameHeadingByName;
+
+    @Locator("EDIT_ADDRESS_BUTTON_BY_NAME")
+    private static BasePageElement editAddressButtonByName;
+
+    @Locator("EDIT_ADDRESS_LINK_BY_NAME")
+    private static BasePageElement editAddressLinkByName;
+
+    @Locator("ADDRESS_TEXT_BY_NAME_AND_ATTRIBUTE")
+    private static BasePageElement addressTextByNameAndAttribute;
+
+    @Locator("DELETE_ADDRESS_BUTTON_BY_NAME")
+    private static BasePageElement deleteAddressButtonByName;
+
+    @Locator("DELIVER_TO_MULTIPLE_ADDRESS_LINK")
+    private static BasePageElement deliverToMultipleAddressLink;
+
+    @Locator(value = "UNDELIVERABLE_ALERT_TEXT", stringId = "rcx-checkout-cant-ship-retail")
+    private static BasePageElement undeliverableAlertText;
+
+    @Locator("UNDELIVERABLE_ALERT_TEXT")
+    private static BasePageElement productTitleOnUnDeliverableAlertText;
+
+    @Locator("UNDELIVERABLE_ALERT_TEXT_UNDER_ADDRESS_DROPDOWN")
+    private static BasePageElement undeliverableAlertTextUnderAddressDropdown;
+
+    //TODO: This locator needs to be deleted if PAGE_LOADING_SPINNER works fine https://issues.amazon.com/issues/D103271413
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    @Locator("ADDRESS_VALIDATION_ERROR_ALERT_MESSAGE")
+    private static BasePageElement addressValidationErrorAlertMessage;
+
+    @Locator("NAV_BAR_AMAZON_LOGO")
+    private static BasePageElement navBarAmazonLogo;
+
+    @Locator("USE_THIS_ADDRESS_BUTTON")
+    private static BasePageElement useThisAddressButton;
+
+    @Locator("ADD_NEW_ADDRESS_LINK")
+    private static BasePageElement addNewAddressLink;
+
+    @Locator(value = "AMAZON_PICK_UP_INELIGIBLE_ALERT",
+            stringId = "apcx-item-fulfillment-network-ineligible-single-item")
+    private static BasePageElement amazonPickupInEligibleAlert;
+
+    @Locator("SEARCH_FOR_AMAZON_PICK_UP_LOCATION_NEXT_TO_ADD_NEW_ADDRESS")
+    private static BasePageElement searchForAmazonPickUpNextToAddNewAddress;
+
+    @Locator("AMAZON_PICK_UP_ADDRESS_MAP_LINK")
+    private static BasePageElement amazonPickUpAddressMapLink;
+
+    @Locator ("SPC_ADDRESSPAGE_SAVE_QUANTITY_BUTTON")
+    private static BasePageElement spcAddresspageSaveQuantityButton;
+
+    @Locator ("FIND_A_PICK_UP_LOCATION_LINK")
+    private static BasePageElement findAPickUpLocationLink;
+
+    @Locator ("YOUR_PICK_UP_LOCATIONS_TITLE")
+    private static BasePageElement yourPickUpLocationsTitle;
+
+    @Locator("SHOW_MORE_ADDRESSES_LINK")
+    private static BasePageElement showMoreAddressesLink;
+
+    @Locator("CHECKOUT_SOSP_PANEL")
+    private static BasePageElement checkoutSospPanel;
+
+    @Locator ("UNDELIVERABLE_ALERT_LEARN_MORE_LINK")
+    private static BasePageElement undeliverableAlertLearnMoreLink;
+
+    // Css values for City/Zipcode/PhoneNumber/... in Address Selection Page
+    // They should be stable so that we can share the one element ADDRESS_TEXT_BY_NAME_AND_ATTRIBUTE
+    private static final String CSS_ZIPCODE_AND_CITY = "displayAddressPostalCodeCity";
+    private static final String CSS_PHONE_NUMBER = "displayAddressPhoneNumber";
+    private static final String CSS_LINE1 = "displayAddressAddressLine1";
+    private static final String CSS_COUNTRY_NAME = "displayAddressCountryName";
+
+    private AddEditAddressWidget addAddressWidget;
+
+    private MultiAddressSelectionPage multiAddrPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public AddressSelectionPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Deliver to the first address.
+     */
+    public void deliverToThisAddress() {
+        if (deliverToThisAddressButton.isPresent()) {
+            deliverToThisAddressButton.click();
+            sectionalLoadingSpinner.waitForElementToDisappear();
+        } else {
+            //If the TrueSPC Page shows, click Use this AddressButton with the already
+            //selected Address
+            clickUseThisAddressButton();
+        }
+    }
+
+    /**
+     * Verify Deliver to this address button present.
+     * @return returns the availablity of delivertothisaddressbutton
+     */
+    public boolean isDeliverToThisAddressButtonPresent() {
+        return deliverToThisAddressButton.isPresent();
+    }
+
+    /**
+     * Method to click Delivery this address by Address name.
+     * @param addressName to parameterized
+     *
+     */
+    public void deliverToThisAddressByAddressName(String addressName) {
+        BasePageElement deliverToThisAddressButton = new BasePageElement(driver,
+                deliverToThisAddressButtonByAddressName.getName() + "_" + addressName,
+                String.format(deliverToThisAddressButtonByAddressName.getXPath(), addressName));
+        BasePageElement deliverToThisAddressRadioButton = new BasePageElement(driver,
+                deliverToThisAddressRadioButtonByAddressName.getName() + "_" + addressName,
+                String.format(deliverToThisAddressRadioButtonByAddressName.getXPath(), addressName, addressName));
+        if (showMoreAddressesLink.doesExists()) {
+            showMoreAddressesLink.click();
+        }
+        if (deliverToThisAddressRadioButton.isPresent(5)) {
+            deliverToThisAddressRadioButton.click();
+            clickUseThisAddressButton();
+            sectionalLoadingSpinner.waitForElementToDisappear();
+            if (deliverToThisAddressRadioButton.isPresent(5)) {
+                clickUseThisAddressButton();
+            }
+        } else {
+            deliverToThisAddressButton.click();
+            sectionalLoadingSpinner.waitForElementToDisappear();
+        }
+    }
+
+    /**
+     * Method to click Delivery this address by country name.
+     * @param countryName to parameterized
+     *
+     */
+    public void deliverToThisAddressByCountryName(String countryName) {
+        new BasePageElement(driver, deliverToThisAddressButtonByCountryName.getName(),
+                String.format(deliverToThisAddressButtonByCountryName.getXPath(), countryName))
+                .click();
+        sectionalLoadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Verify Search Via Address Text Box Present.
+     * @return true if search via address text box present
+     */
+    public boolean isSearchViaAddressTextBoxPresent() {
+        return searchViaAddressTextBox.isPresent();
+    }
+
+    /**
+     * Verify Search Via Zip Text Box Present.
+     * @return true if search via Store zip text box present
+     */
+    public boolean isSearchViaStoreZipTextBoxPresent() {
+        return searchViaStoreZipTextBox.isPresent();
+    }
+
+    /**
+     * Verify Pick up Search button present.
+     * @return true if pick up search button present
+     */
+    public boolean isPickUpSearchButtonPresent() {
+        return pickUpSearchButton.isPresent();
+    }
+
+    /**
+     * Verify Amazon Pick up Address Map Link present.
+     * @return true if pick up address Map Link present
+     */
+    public boolean isAmazonPickUpAddressPresent() {
+        return amazonPickUpAddressMapLink.isPresent();
+    }
+
+    /**
+     * Verify Search Via Landmark Text Box Present.
+     * @return true if search via Landmark text box present
+     */
+    public boolean isSearchViaLandmarkTextBoxPresent() {
+        return searchViaLandmarkTextBox.isPresent();
+    }
+
+    /**
+     * Verify Search Amazon Pick Up Point Link Present in ASP.
+     * @return true if search amazon pick up point present
+     */
+    public boolean isSearchAmazonPickUpPointLinkPresent() {
+        return searchForAmazonPickUpPointLink.isPresent();
+    }
+
+    /**
+     * Verify Search Amazon Pick Up Point Link Present in ASP.
+     * @return true if search amazon pick up point present
+     */
+    public boolean isSearchForAmazonPickUpNextToAddNewAddressPresent() {
+        return searchForAmazonPickUpNextToAddNewAddress.isPresent();
+    }
+
+    /**
+     * Verify Amazon Pick Up Logo Present in ASP.
+     * @return amazon PickUpLogo Present
+     */
+    public boolean isAmazonPickUpLogoPresent() {
+        return amazonPickUpLogo.isEnabled();
+    }
+
+    /**
+     * Verify Amazon Pick Up Section - 'Your pickup locations'
+     * @return presence
+     */
+    public boolean isAmazonPickUpSectionPresent() {
+        return amazonPickUpSectionInCheckout.isPresent();
+    }
+
+    /**
+     * Verify is addresses shown in Amazon Pick Up Section in SASP
+     * @return presence
+     */
+    public boolean isAmazonPickUpSectionAddressesListPresent() {
+        return amazonPickUpSectionAddressesInCheckout.isPresent();
+    }
+
+    /**
+     * Verify radio button shown in addresses list shown in Amazon Pick Up Section in SASP
+     * @return presence
+     */
+    public boolean isAmazonPickUpSectionAddressesListRadioButtonEnabled() {
+        return amazonPickUpSectionAddressesRadioButtonInCheckout.isPresent();
+    }
+
+    /**
+     * Verify Amazon Pick Up InEligible Alert Present in ASP.
+     * @return amazon PickUp ineligible alert Present
+     */
+    public boolean isAmazonPickUpInEligibleAlertPresent() {
+        return amazonPickupInEligibleAlert.isPresent();
+    }
+
+    /**
+     * Is Address present by name.
+     * @param addressFullName address full name.
+     * @return is Address present or not.
+     */
+    public boolean isAddressPresent(final String addressFullName) {
+        return new BasePageElement(driver,
+                deliveryToThisAddressName.getName() + "-" + addressFullName,
+                String.format(deliveryToThisAddressName.getXPath(), addressFullName))
+                .isPresent();
+    }
+
+    /**
+     * Edit existing address.
+     * @param addressFullName address full name.
+     * @param newAddress New Address to set.
+     */
+    public void editAddressByName(String addressFullName, Address newAddress) {
+        BasePageElement editAddressButton = new BasePageElement(driver,
+                editAddressButtonByName.getName() + "-" + addressFullName,
+                String.format(editAddressButtonByName.getXPath(), addressFullName));
+        BasePageElement editAddressLink = new BasePageElement(driver,
+                editAddressLinkByName.getName() + "-" + addressFullName,
+                String.format(editAddressLinkByName.getXPath(), addressFullName));
+        //Adding this condition since TrueSPC weblab is experimental. Once is launched
+        // this will be removed
+        if (editAddressButton.isPresent()) {
+            editAddressButton.click();
+        } else {
+            editAddressLink.clickAndWaitForDisappear(sectionalLoadingSpinner);
+        }
+        getAddressWidget().addOrEditAddress(newAddress);
+    }
+
+    /**
+     * Read address info from Address Selection Page into Address object.
+     * @param addressFullName address full name.
+     * @return Address object.
+     */
+    public Address loadAddress(String addressFullName) {
+        // zip code and city are displayed together in one line as "<zip code> <city>"
+        String zipCodeAndCity = getAddressText(addressFullName, CSS_ZIPCODE_AND_CITY);
+        String zipCode = StringUtils.substringBefore(zipCodeAndCity, " ");
+        String city = StringUtils.substringAfter(zipCodeAndCity, " ");
+        // phone number is displayed as "Tel No.: <phone number>"
+        String phoneNumber = getAddressText(addressFullName, CSS_PHONE_NUMBER);
+        phoneNumber = StringUtils.substringAfter(phoneNumber, ":").trim();
+        return Address.builder()
+                .fullName(addressFullName)
+                .line1(getAddressText(addressFullName, CSS_LINE1))
+                .zipCode(zipCode)
+                .city(city)
+                .country(getAddressText(addressFullName, CSS_COUNTRY_NAME))
+                .phoneNumber(phoneNumber)
+                .build();
+    }
+
+    private String getAddressText(String addressFullName, String attribute) {
+        return new BasePageElement(driver,
+                addressTextByNameAndAttribute.getName() + "-" + addressFullName + "-" + attribute,
+                String.format(addressTextByNameAndAttribute.getXPath(), addressFullName, attribute))
+                .getText();
+    }
+
+    /**
+     * Delete existing address.
+     * @param addressFullName address full name.
+     */
+    public void deleteAddressByName(String addressFullName) {
+        BasePageElement deleteButtonByName = new BasePageElement(driver,
+                deleteAddressButtonByName.getName() + "-" + addressFullName,
+                String.format(deleteAddressButtonByName.getXPath(), addressFullName));
+        deleteButtonByName.click();
+        deleteButtonByName.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to click DeliverToMultipleAddressLink.
+     */
+    public void clickDeliverToMultipleAddressLinkInMultiShipOptionsPage() {
+        deliverToMultipleAddressLink.isPresent(5);
+        deliverToMultipleAddressLink.clickAndWaitForDisappear(deliverToMultipleAddressLink);
+    }
+
+    /**
+     * Method to check DeliverToMultipleAddressLink present.
+     * @return present of multiple address link
+     */
+    public boolean isDeliverToMultipleAddressLinkPresent() {
+        return deliverToMultipleAddressLink.isPresent();
+    }
+
+    /**
+     * Verify undeliverableAlertText present.
+     */
+    public void verifyUndeliverableAlertTextPresent() {
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        undeliverableAlertText.waitIsPresent();
+        status.addIsDisplayed(undeliverableAlertText);
+        status.processStatus();
+    }
+
+    /**
+     * Get alert message shown under address dropdown
+     * @return String
+     */
+    public String getUndeliverableAlertTextUnderAddressDropdownText() {
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        undeliverableAlertTextUnderAddressDropdown.waitIsPresent();
+        return undeliverableAlertTextUnderAddressDropdown.getText();
+    }
+
+    /**
+     * Verify Product Title Present on undeliverableAlertText.
+     * @param productTitle product title to verify the text
+     */
+    public void verifyProductTitleInsiderUndeliverableAlertTextPresent(String productTitle) {
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        BasePageElement productTitleText = new BasePageElement(driver,
+                productTitleOnUnDeliverableAlertText.getName() + "-" + productTitle,
+                String.format(productTitleOnUnDeliverableAlertText.getXPath(), productTitle));
+        productTitleText.waitIsPresent();
+        status.addIsDisplayed(productTitleText);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Address Validation Error Present based on the input passed.
+     * @param errorMessage localized value of the error message
+     */
+    public void verifyAddressValidationErrorPresent(String errorMessage) {
+        waitForPageToLoad();
+        BasePageElement validationErrorMessage = new BasePageElement(driver,
+                addressValidationErrorAlertMessage.getName(),
+                String.format(addressValidationErrorAlertMessage.getXPath(), errorMessage));
+        validationErrorMessage.waitForTextNotBlank(5);
+        status.addIsDisplayed(validationErrorMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Get AddEditAddressWidget instance.
+     * @return AddEditAddressWidget instance.
+     */
+    public AddEditAddressWidget getAddressWidget() {
+        if (addAddressWidget == null) {
+            addAddressWidget = new AddEditAddressWidget(driver);
+        }
+        return addAddressWidget;
+    }
+
+    /**
+     * Get MultiAddressSelectionPage instance.
+     * @return MultiAddressSelectionPage instance.
+     */
+    public MultiAddressSelectionPage getMultiAddrPage() {
+        if (multiAddrPage == null) {
+            multiAddrPage = new MultiAddressSelectionPage(driver);
+        }
+        return multiAddrPage;
+    }
+
+    /**
+     * Click Use this Address Button in Address Selection Page.
+     */
+    public void clickUseThisAddressButton() {
+        if (useThisAddressButton.isPresent(2)) {
+            useThisAddressButton.click();
+            sectionalLoadingSpinner.waitForElementToDisappear();
+        }
+    }
+
+    /**
+     * Click Add New Address Link in Address Selection Page.
+     */
+    public void clickAddNewAddressLink() {
+        if (addNewAddressLink.isPresent(5)) {
+            addNewAddressLink.click();
+        }
+    }
+
+    /**
+     * Verify 'Amazon Logo' is present on the Nav Bar.
+     */
+    public void verifyAmazonLogoPresent() {
+        status.addIsDisplayed(navBarAmazonLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Save Quantity Button is Present
+     * @return Save quantity button
+     */
+    public boolean isSaveQuantityButtonPresent() {
+       return spcAddresspageSaveQuantityButton.isPresent();
+    }
+
+    /**
+     * Method to click Save Quantity Button
+     */
+    public void clickSaveQuantityButton() {
+       spcAddresspageSaveQuantityButton.click();
+        sectionalLoadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * To verify "Find a pick-up location" link is Present
+     * @return Find a PickUp location link Presence
+     */
+    public boolean isFindAPickUpLocationLinkPresent() {
+        return findAPickUpLocationLink.isPresent();
+    }
+
+    /**
+     * Get SASP Your pickup location title text.
+     * @param text Your pickup location text for Parameterized xpath
+     * @return Your pickup location title text.
+     */
+    public String getYourPickUpLocationTitle(final String text) {
+        return new BasePageElement(driver, yourPickUpLocationsTitle.getName(),
+                String.format(yourPickUpLocationsTitle.getXPath(), text)).getText();
+    }
+
+    /**
+     * Method to verify 'Special Delivery Options' widget loading inside ASP page.
+     * @return boolean checkout 'Special Delivery Options' widget Present is present or Not.
+     */
+    public boolean isCheckoutSpecialDeliveryOptionWidgetPresent() {
+        return checkoutSospPanel.doesExists();
+    }
+
+    /**
+     * Method to click Learn more link in Undeliverable alert message.
+     */
+    public void clickLearnMoreLinkInUndeliverableAlertMessage() {
+        undeliverableAlertLearnMoreLink.isPresent(2);
+        undeliverableAlertLearnMoreLink.click();
+    }
+
+}
