@@ -1,0 +1,429 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.dtk.element.PageElement;
+
+import lombok.Data;
+import sable.internal.org.apache.commons.lang.StringUtils;
+
+/**
+ * SOSP Page Model.
+ * SOSP is Ship option Selection Page
+ *
+ * @author vllaks
+ *
+ */
+@PageName("checkout.sosp")
+public class SospPage extends BasePageModel {
+
+    @Locator("IMPORT_FEES_DEPOSIT_INCLUDED_TEXT")
+    private static BasePageElement importFeesDepositIncludedText;
+
+    @Locator("SHIP_BY_TEXT")
+    private static BasePageElement shipByText;
+
+    @Locator("SOLD_BY_TEXT")
+    private static BasePageElement soldByText;
+
+    @Locator("CONTINUE_BUTTON")
+    private static BasePageElement continueButton;
+
+    @Locator("CHOOSE_DELIVERY_OPTION_RADIO_BUTTON")
+    private static BasePageElement chooseDeliveryOptionRadioButton;
+
+    @Locator("SHIPPING_SPEED_INSIDE_CHOOSE_DELIVERY_OPTION")
+    private static BasePageElement shippingSpeedInsideChooseDeliveryOption;
+
+    @Locator("SOSP_STANDARD_SHIP_OPTION")
+    private static BasePageElement sospStandardShipOption;
+
+    @Locator("SOSP_PRIORITY_SHIP_OPTION")
+    private static BasePageElement sospPriorityShipOption;
+
+    @Locator("GLOBAL_STORE_BADGE")
+    private static BasePageElement globalStoreBadge;
+
+    @Locator("SOSP_PRIORITY_SHIP_OPTION_SELECTED")
+    private static BasePageElement sospPriorityShipOptionSelected;
+
+    @Locator("ORDER_INDEX")
+    private static BasePageElement orderIndex;
+
+    @Locator("SHIP_OPTION_BY_NAME")
+    private static BasePageElement shipOptionByName;
+
+    @Locator("SHIP_OPTION_RADIO_BUTTON_BY_NAME")
+    private static BasePageElement shipOptionRadioButtonByName;
+
+    @Locator("DEFAULT_SELECTED_SHIP_OPTION")
+    private static BasePageElement defaultSelectedShipOption;
+
+    @Locator("SHIPMENT_HEADING")
+    private static BasePageElement shipmentHeading;
+
+    @Locator("SHIPPING_FROM_HEADING")
+    private static BasePageElement shippingFromHeading;
+
+    @Locator("SHIPPING_TO")
+    private static BasePageElement shippingTo;
+
+    @Locator("PRODUCT_TITLE")
+    private static BasePageElement productTitle;
+
+    @Locator("PRODUCT_PRICE")
+    private static BasePageElement productPrice;
+
+    @Locator("PRODUCT_QUANTITY")
+    private static BasePageElement productQuantity;
+
+    @Locator("CHANGE_QUANTITY_OR_REMOVE_BUTTON")
+    private static BasePageElement changeQuantityOrRemoveButton;
+
+    @Locator("LEARN_MORE_LINK")
+    private static BasePageElement learnMoreLink;
+
+    @Locator("NAV_BAR_AMAZON_LOGO")
+    private static BasePageElement navBarAmazonLogo;
+
+    @Locator("AGS_STANDARD_DEEP_CHECK_PROMISE_IN_RYO")
+    private static BasePageElement agsStandardDeepCheckPromiseInRYO;
+
+    @Locator("AGS_PRIORITY_DEEP_CHECK_PROMISE_IN_RYO")
+    private static BasePageElement agsPriorityDeepCheckPromiseInRYO;
+
+    @Locator("AGS_STANDARD_SHIP_OPTION_RADIO_BUTTON_IN_RYO")
+    private static BasePageElement agsStandardShipOptionRadioButton;
+
+    @Locator("AGS_PRIORITY_SHIP_OPTION_RADIO_BUTTON_IN_RYO")
+    private static BasePageElement agsPriorityShipOptionRadioButton;
+
+    private UpdateAndDeleteItemPage updateAndDeleteItemPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public SospPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(continueButton);
+        status.processStatus();
+    }
+
+    /**
+     * Click continue in Select a shipping address page.
+     */
+    public void continueToPayment() {
+        continueButton.clickAndWaitForDisappear(continueButton);
+    }
+
+    /**
+     * Method helps to get the Import Fees Deposit Included text from SOSP Page.
+     * @return import fees deposit included text
+     */
+    public String getImportFeesDepositIncludedText() {
+        verifyCurrentPage();
+        return importFeesDepositIncludedText.getText();
+    }
+
+    /**
+     * Method helps to get the Shipped By text from SOSP Page.
+     * Adding Param to handle ship by string for UK and Non-Uk AGS marketplaces as they are different.
+     * @param placeholderText as 'Shipped' OR 'Dispatched'
+     * @return 'Shipped By' Text
+     */
+    public String getShipByText(String placeholderText) {
+       return new BasePageElement(driver, shipByText.getName() + "_" + placeholderText,
+               String.format(shipByText.getXPath(), placeholderText)).getText();
+    }
+
+    /**
+     * Method helps to get the Sold By Text from SOSP Page.
+     * @return Sold By text
+     */
+    public String getSoldByText() {
+        return soldByText.getText();
+    }
+
+    /**
+     * Verify Delivery Option presents based on the Placeholder text passed.
+     * @param placeholderText the dynamic replaced text by caller.
+     */
+    public void verifyDeliveryOptionPresent(final String placeholderText) {
+        status.addIsDisplayed(new BasePageElement(driver,
+                chooseDeliveryOptionRadioButton.getName() + "_" + placeholderText,
+                String.format(chooseDeliveryOptionRadioButton.getXPath(), placeholderText)));
+        status.processStatus();
+    }
+
+    /**
+     * Get Ship speed options count inside Choose Delivery Option.
+     * @return Ship Speed options count.
+     */
+    public int getShipSpeedOptionsInsideChooseDeliveryOption() {
+        return shippingSpeedInsideChooseDeliveryOption.getElements().size();
+    }
+
+    /**
+     * Verify global store ship options are present.
+     */
+    public void verifyGlobalStoreShipOptionsPresent() {
+        status.addIsDisplayed(sospStandardShipOption);
+        status.addIsDisplayed(sospPriorityShipOption);
+        status.processStatus();
+    }
+
+    /**
+     * Is clicking on priority ship option works or not.
+     * @return boolean selection of priority ship option
+     */
+    public boolean isPriorityShipOptionClickable() {
+        sospPriorityShipOption.click();
+        return sospPriorityShipOptionSelected.isPresent();
+    }
+
+    /**
+     * Verify global store badge is present in SOSP.
+     */
+    public void verifyGlobalStoreBadgePresent() {
+        status.addIsDisplayed(globalStoreBadge);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Get order index for a given asin's title.
+     * @param asinTitle asin title.
+     * @return order index in SOSP page.
+     * Note: This method throws exception, if asinTitle not found.
+     */
+    public int getOrderIndex(final String asinTitle) {
+        for (PageElement orderIndexElement : orderIndex.getElements()) {
+            if (orderIndexElement.getText().equals(asinTitle)) {
+                // The @data-testid format here is "ItemInfo_name_<order index>_<item index>"
+                return Integer.parseInt(StringUtils.substringBetween(orderIndexElement.getValue("data-testid"),
+                        "name_", "_"));
+            }
+        }
+        throw new RuntimeException("The asin title was not found: " + asinTitle);
+    }
+
+    /**
+     * Is a given ship option displayed or not.
+     * @param orderIndex starting from 0.
+     * @param shipOptionName ship option display name in SOSP page.
+     * @return is the given ship option displayed or not.
+     */
+    public boolean isShipOptionPresent(final int orderIndex, final String shipOptionName) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", shipOptionByName.getName(), shipOptionName),
+                String.format(shipOptionByName.getXPath(), orderIndex + 1, shipOptionName)).isPresent();
+    }
+
+    /**
+     * Is a given ship option radio button selected or not.
+     * @param orderIndex starting from 0.
+     * @param shipOptionName ship option display name in SOSP page.
+     * @return is the given ship option displayed or not.
+     */
+    public boolean isShipOptionSelected(final int orderIndex, final String shipOptionName) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", shipOptionRadioButtonByName.getName(), shipOptionName),
+                String.format(shipOptionRadioButtonByName.getXPath(), orderIndex + 1, shipOptionName)).isPresent();
+    }
+
+    /**
+     * Get all ship options description lines for specified order.
+     * @param orderIndex starting from 0.
+     * @return ship options' description.
+     */
+    public List<String> getAllShipOptionsDescription(final int orderIndex) {
+        return new BasePageElement(driver, shipOptionByName.getName(),
+                // Use the "" string as a pass in parameter here to match all ship options
+                String.format(shipOptionByName.getXPath(), orderIndex + 1, "")).getElements().stream()
+                .map(element -> element.getText()).collect(Collectors.toList());
+    }
+
+    /**
+     * Get default ship options description for specified order.
+     * @param orderIndex starting from 0.
+     * @return default selected ship options' description.
+     */
+    public String getDefaultShipOptionsDescription(final int orderIndex) {
+        return new BasePageElement(driver, defaultSelectedShipOption.getName(),
+                String.format(defaultSelectedShipOption.getXPath(), orderIndex + 1)).getText();
+    }
+
+    /**
+     * Get the shipping and product details.
+     * @param orderIndex starting from 0.
+     * @param productIndex starting from 0.
+     * @return ShippingHeadAndProductDetails object.
+     */
+    public ShippingHeadAndProductDetails getShippingheadAndProductDetails(final int orderIndex,
+            final int productIndex) {
+        ShippingHeadAndProductDetails details = new ShippingHeadAndProductDetails();
+        details.setShipmentHeading(new BasePageElement(driver,
+                shipmentHeading.getName() + "_" + orderIndex,
+                String.format(shipmentHeading.getXPath(), orderIndex)).getText());
+        details.setShippingFromHeading(new BasePageElement(driver,
+                shippingFromHeading.getName() + "_" + orderIndex,
+                String.format(shippingFromHeading.getXPath(), orderIndex)).getText());
+        details.setShippingTo(new BasePageElement(driver,
+                shippingTo.getName() + "_" + orderIndex,
+                String.format(shippingTo.getXPath(), orderIndex)).getText());
+        details.setProductTitle(new BasePageElement(driver,
+                productTitle.getName() + "_" + orderIndex + "_" + productIndex,
+                String.format(productTitle.getXPath(), orderIndex, productIndex)).getText());
+        details.setProductPrice(new BasePageElement(driver,
+                productPrice.getName() + "_" + orderIndex + "_" + productIndex,
+                String.format(productPrice.getXPath(), orderIndex, productIndex)).getText());
+        details.setProductQuantity(new BasePageElement(driver,
+                productQuantity.getName() + "_" + orderIndex + "_" + productIndex,
+                String.format(productQuantity.getXPath(), orderIndex, productIndex)).getText());
+        details.setSoldBy(new BasePageElement(driver,
+                soldByText.getName() + "_" + orderIndex + "_" + productIndex,
+                String.format(soldByText.getXPath(), orderIndex, productIndex)).getText());
+        return details;
+    }
+
+    /**
+     * Product details in Multiple Address Selection page.
+     */
+    @Data
+    public static class ShippingHeadAndProductDetails {
+        private String shipmentHeading;
+        private String shippingFromHeading;
+        private String shippingTo;
+        private String productTitle;
+        private String productPrice;
+        private String productQuantity;
+        private String soldBy;
+    }
+
+    /**
+     * Click 'Learn more' link next to ship by.
+     * @param orderIndex by order index, starting from 0.
+     */
+    public void clickLearnMoreLink(final int orderIndex) {
+        new BasePageElement(driver,
+                learnMoreLink.getName(),
+                String.format(learnMoreLink.getXPath(), orderIndex)).click();
+    }
+
+    /**
+     * Click the changeQuantityOrRemoveButton.
+     * @param orderIndex by order index, starting from 0.
+     */
+    public void clickChangeQuantityOrRemoveButton(final int orderIndex) {
+        BasePageElement updateButton = new BasePageElement(driver,
+                changeQuantityOrRemoveButton.getName(),
+                String.format(changeQuantityOrRemoveButton.getXPath(), orderIndex));
+        updateButton.clickAndWaitForDisappear(updateButton);
+    }
+
+    /**
+     * Get UpdateAndDeleteItemPage instance.
+     * @return UpdateAndDeleteItemPage instance.
+     */
+    public UpdateAndDeleteItemPage getUpdateAndDeleteItemPage() {
+        if (updateAndDeleteItemPage == null) {
+            updateAndDeleteItemPage = new UpdateAndDeleteItemPage(driver);
+        }
+        return updateAndDeleteItemPage;
+    }
+
+    /**
+     * Verify 'Amazon Logo" present on the Nav Bar.
+     */
+    public void verifyAmazonLogoPresent() {
+        status.addIsDisplayed(navBarAmazonLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Method to get standard deep check promise in RYO.
+     * @return standard deep check promise text.
+     */
+    public String getStandardDeepCheckPromiseInCheckout() {
+        agsStandardDeepCheckPromiseInRYO.waitForElementToBeEnabled();
+        return agsStandardDeepCheckPromiseInRYO.getText();
+    }
+
+    /**
+     * Method to get priority deep check promise in RYO.
+     * @return priority deep check promise text.
+     */
+    public String getPriorityDeepCheckPromiseInCheckout() {
+        agsPriorityDeepCheckPromiseInRYO.waitForElementToBeEnabled();
+        return agsPriorityDeepCheckPromiseInRYO.getText();
+    }
+
+    /**
+     * Verify standard deep check promise present in RYO.
+     * @return standard deep check promise.
+     */
+    public boolean isStandardDeepCheckPromisePresent() {
+        agsStandardDeepCheckPromiseInRYO.waitForElementToBeEnabled();
+        return agsStandardDeepCheckPromiseInRYO.isPresent();
+    }
+
+    /**
+     * Verify priority deep check promise present in RYO.
+     * @return priority deep check promise.
+     */
+    public boolean isPriorityDeepCheckPromisePresent() {
+        agsPriorityDeepCheckPromiseInRYO.waitForElementToBeEnabled();
+        return agsPriorityDeepCheckPromiseInRYO.isPresent();
+    }
+
+    /**
+     * Method to select standard ship option, if not selected.
+     */
+    public void selectStandardOptiontRadioButtonIfNotSelected() {
+        boolean selected = false;
+        agsStandardShipOptionRadioButton.waitForElementToBeEnabled();
+        for (PageElement radioButton : agsStandardShipOptionRadioButton.getElements()) {
+            if (radioButton.isSelected()) {
+                selected = true;
+                break;
+            }
+        }
+        if (!selected && agsStandardShipOptionRadioButton.isPresent()) {
+            agsStandardShipOptionRadioButton.click();
+        }
+        driver.navigate().refresh();
+    }
+
+    /**
+     * Method to select priority ship option, if not selected.
+     */
+    public void selectPriorityOptiontRadioButtonIfNotSelected() {
+        boolean selected = false;
+        agsPriorityShipOptionRadioButton.waitForElementToBeEnabled();
+        for (PageElement radioButton : agsPriorityShipOptionRadioButton.getElements()) {
+            if (radioButton.isSelected()) {
+                selected = true;
+                break;
+            }
+        }
+        if (!selected && agsPriorityShipOptionRadioButton.isPresent()) {
+            agsPriorityShipOptionRadioButton.click();
+        }
+        driver.navigate().refresh();
+    }
+
+}
