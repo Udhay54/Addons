@@ -1,0 +1,117 @@
+package com.amazon.aeeqa.ui.pagemodels.customerreviews;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * This page will contains all the customer reviews elements in Above The Fold(ATF) section in Detail page.
+ */
+
+@PageName("customer_reviews")
+public class AboveTheFoldSection extends BasePageModel {
+
+    @Locator("STAR_RATING_BAR_IN_ABOVE_THE_FOLD")
+    private static BasePageElement starRatingBarInAboveTheFold;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_POPOVER_ARROW_IN_ABOVE_THE_FOLD")
+    private static BasePageElement averageCustomerReviewsPopoverArrowInAboveTheFold;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_TEXT_IN_ABOVE_THE_FOLD")
+    private static BasePageElement averageCustomerReviewsTextInAboveTheFold;
+
+    @Locator("ANSWERED_QUESTIONS_LINK_IN_ABOVE_THE_FOLD")
+    private static BasePageElement answeredQuestionsLinkInAboveTheFold;
+
+    /**
+     * Constructor with driver instance.
+     *
+     * @param driver the WebDriver instance.
+     */
+    public AboveTheFoldSection(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Constructor with a driver instance and an ASIN url.
+     *
+     * @param driver  the WebDriver instance.
+     * @param asinUrl the ASIN url to navigate.
+     */
+    public AboveTheFoldSection(WebDriver driver, String asinUrl) {
+        super(driver);
+        setPageurl(asinUrl);
+        navigateToPage();
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        verifyStarRatingBar();
+        verifyAverageCustomerReviewsText();
+        verifyAverageCustomerReviewsPopoverArrow();
+    }
+
+    /**
+     * Verify star rating Bar is present.
+     */
+    public void verifyStarRatingBar() {
+        status.addIsDisplayed(starRatingBarInAboveTheFold);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Average customer reviews popover arrow is present.
+     */
+    public void verifyAverageCustomerReviewsPopoverArrow() {
+        status.addIsDisplayed(averageCustomerReviewsPopoverArrowInAboveTheFold);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Average customer reviews text is present.
+     *
+     * @return text of customer reviews average.
+     */
+    public String verifyAverageCustomerReviewsText() {
+        status.addIsDisplayed(averageCustomerReviewsTextInAboveTheFold);
+        status.processStatus();
+        return averageCustomerReviewsTextInAboveTheFold.getText();
+    }
+
+    /**
+     * Verify star rating Bar is Not present.
+     */
+    public void verifyStarRatingBarIsNotPresent() {
+        status.addIsHiddenOrMissing(starRatingBarInAboveTheFold);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Answered Questions link is present.
+     */
+    public void verifyAnsweredQuestionsLinkIsPresent() {
+        status.addIsDisplayed(answeredQuestionsLinkInAboveTheFold);
+        status.processStatus();
+    }
+
+    /**
+     * Click Answered Questions link.
+     */
+    public void clickAnsweredQuestionsLink() {
+        answeredQuestionsLinkInAboveTheFold.click();
+    }
+
+    /**
+     * Verify Answered Question link is Not present.
+     */
+    public void verifyAnsweredQuestionsLinkIsNotPresent() {
+        status.addIsHiddenOrMissing(answeredQuestionsLinkInAboveTheFold);
+        status.processStatus();
+    }
+}
