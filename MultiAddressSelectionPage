@@ -1,0 +1,320 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
+
+import com.amazon.aeeqa.testaddress.Address;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.ui.pagemodels.youraddress.AddEditAddressWidget;
+import com.amazon.aeeqa.util.RetrySteps;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.dtk.element.PageElement;
+
+import lombok.Data;
+
+/**
+ * Checkout - MultiAddressSelectionPage.
+ *
+ * @author tingyong
+ */
+@PageName("checkout.MultiAddr")
+public class MultiAddressSelectionPage extends BasePageModel {
+
+    @Locator("CONTINUE_BUTTON_IN_MULTI_SHIP_OPTIONS")
+    private static BasePageElement continueButtonInMultiShipOptions;
+
+    @Locator("ADD_NEW_ADDRESS_BUTTON")
+    private static BasePageElement addNewAddressButton;
+
+    @Locator("DELETE_ITEM_BUTTON")
+    private static BasePageElement deleteItemButton;
+
+    @Locator("DELIVERY_ADDRESS_ITEM")
+    private static BasePageElement deliveryAddressItem;
+
+    @Locator("SELECT_ADDRESS_DROPDOWN_LIST_IN_MULTI_SHIP_OPTIONS")
+    private static BasePageElement selectAddressDropdownListInMultiShipOptions;
+
+    @Locator("SELECT_QUANTITY_DROPDOWN_LIST_IN_MULTI_SHIP_OPTIONS_PAGE")
+    private static BasePageElement selectQuantityDropdownListInMultiShipOptionsPage;
+
+    @Locator("QUANTITY_T0_SELECT_IN_MULTI_SHIP_OPTIONS_PAGE")
+    private static BasePageElement quantityToSelectInMultiShipOptionsPage;
+
+    @Locator("QUANTITY_INPUTS")
+    private static BasePageElement quantityInputs;
+
+    @Locator("ADDRESS_DROPDOWN_LIST")
+    private static BasePageElement addressDropdownList;
+
+    @Locator("SELECTED_QUANTITY_IN_MULTI_SHIP_OPTIONS_PAGE")
+    private static BasePageElement selectedQuantityInMultiShipOptionsPage;
+
+    @Locator("SELECTED_ADDRESS_IN_MULTI_SHIP_OPTIONS_PAGE")
+    private static BasePageElement selectedAddressInMultiShipOptionsPage;
+
+    @Locator("QUANTITY_DROPDOWN_LIST_AVAIL_IN_MULTI_SHIP_OPTIONS_PAGE")
+    private static BasePageElement quantityDropdownListAvailInMultiShipOptionsPage;
+
+    @Locator("PRODUCT_IMAGE")
+    private static BasePageElement productImage;
+
+    @Locator("PRODUCT_TITLE")
+    private static BasePageElement productTitle;
+
+    @Locator("PRODUCT_TITLE_BY_INDEX_NUMBER")
+    private static BasePageElement productTitleByIndexNumber;
+
+    @Locator("PRODUCT_PRICE")
+    private static BasePageElement productPrice;
+
+    @Locator("PRODUCT_SELLER")
+    private static BasePageElement productSeller;
+
+    @Locator("CONDITION_OF_USE_LINK")
+    private static BasePageElement conditionOfUseLink;
+
+    @Locator("PRIVACY_LINK")
+    private static BasePageElement privacyLink;
+
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    private AddEditAddressWidget addressWidget;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public MultiAddressSelectionPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Select Address and Continue when we do multi checkout.
+     * @param addressName to Select
+     * @param isRetryContinue true retry clicking continue button
+     */
+    //TODO:Refactor this method to reuse in other business units.
+    public void deliverToMultipleAddressAndContinueInMultiShipOptions(String addressName, boolean isRetryContinue) {
+        waitForPageToLoad();
+        BasePageElement selectedDeliveryAddress = new BasePageElement(driver,
+                selectedAddressInMultiShipOptionsPage.getName() + "_" + addressName,
+                String.format(selectedAddressInMultiShipOptionsPage.getXPath(), addressName));
+        //If Address 2 is set as default shipping method, Multi Ship option will select
+        //same address. To avoid such race condition, setting the address to Address1 to select if Address2 is selected
+        if (selectedDeliveryAddress.isPresent(3)) {
+            addressName = "Address1";
+        }
+        BasePageElement deliveryAddressItemToSelect = new BasePageElement(driver,
+                deliveryAddressItem.getName() + "_" + addressName,
+                String.format(deliveryAddressItem.getXPath(), addressName));
+        RetrySteps.runWithRetry("waitForAddressToBeSelected", 3, 1000,
+                () -> {
+                    selectAddressDropdownListInMultiShipOptions.clickAndWaitWithRetries(deliveryAddressItemToSelect);
+                    deliveryAddressItemToSelect.clickAndWaitForDisappear(loadingSpinner);
+                    waitForPageToLoad();
+                    return true;
+                }, false, null, Exception.class);
+        if (isRetryContinue) {
+            clickContinueButton();
+        } else {
+            continueButtonInMultiShipOptions.click();
+        }
+    }
+
+    /**
+     * Is address selection a native select element or not.
+     * @return Is address selection a native select element or not.
+     */
+    public boolean isAddressNativeSelectElement() {
+        waitForPageToLoad();
+        BasePageElement firstAddressDropdownList = new BasePageElement(driver,
+                addressDropdownList.getName() + "_" + 1,
+                String.format(addressDropdownList.getXPath(), 1));
+        return firstAddressDropdownList.isPresent();
+    }
+
+    /**
+     * Select delivery address.
+     * @param addressDropdownListIndex starting from 1.
+     * @param addressIndex address index inside the address dropdown list, starting from 0.
+     */
+    public void selectAddress(int addressDropdownListIndex, int addressIndex) {
+        Select addressSelect = new Select(new BasePageElement(driver,
+                addressDropdownList.getName() + "_" + addressDropdownListIndex,
+                String.format(addressDropdownList.getXPath(), addressDropdownListIndex)).getElement());
+        addressSelect.selectByIndex(addressIndex);
+    }
+
+    /**
+     * Method to update quantity for the items in Multi Ship options selection page.
+     */
+    public void updateQuantityInMultiShipOptionsPage() {
+        waitForPageToLoad();
+        List<PageElement> availableQuantityList = quantityDropdownListAvailInMultiShipOptionsPage.getElements();
+        for (int i = 1; i <= availableQuantityList.size(); i++) {
+            BasePageElement selectedQuantityToVerify = new BasePageElement(driver,
+                    selectedQuantityInMultiShipOptionsPage.getName() + "_" + i,
+                    String.format(selectedQuantityInMultiShipOptionsPage.getXPath(), i));
+            BasePageElement selectQuantityDropdown = new BasePageElement(driver,
+                    selectQuantityDropdownListInMultiShipOptionsPage.getName() + "_" + i,
+                    String.format(selectQuantityDropdownListInMultiShipOptionsPage.getXPath(), i));
+            RetrySteps.runWithRetry("waitforQuantityToSelect", 3, 50,
+                    () -> {
+                        selectQuantityDropdown.click();
+                        quantityToSelectInMultiShipOptionsPage.clickAndWait(selectedQuantityToVerify);
+                        return true;
+                    }, false, null, Exception.class);
+        }
+    }
+
+    /**
+     * Method to verify if 'quantity' input is present or not.
+     * @return true if 'quantity' is present else return false.
+     */
+    public boolean isQuantityInputPresent() {
+        waitForPageToLoad();
+        return quantityInputs.isPresent();
+    }
+
+    /**
+     * Set quantity by text if it is an input.
+     * @param quantity quantity text.
+     */
+    public void updateQuantityBySetText(String quantity) {
+        quantityInputs.getElements().forEach(e -> e.setText(quantity));
+    }
+
+    /**
+     * Method to Delete a given 'asin' on Address Selection Page.
+     * @param asin to be deleted.
+     */
+    public void deleteItem(String asin) {
+        BasePageElement deleteButton = new BasePageElement(driver,
+                deleteItemButton.getName() + "-" + asin,
+                String.format(deleteItemButton.getXPath(), asin));
+        deleteButton.clickAndWaitForDisappear(deleteButton);
+    }
+
+    /**
+     * Add a new address from multi shipping address page.
+     * @param newAddress new Address to add.
+     * @param addNewAddressString ship to new address option to select
+     */
+    public void addNewAddress(Address newAddress, String addNewAddressString) {
+        waitForPageToLoad();
+        BasePageElement deliveryAddressItemToSelect = new BasePageElement(driver,
+                deliveryAddressItem.getName() + "_" + addNewAddressString,
+                String.format(deliveryAddressItem.getXPath(), addNewAddressString));
+        RetrySteps.runWithRetry("waitForAddressToBeSelected", 3, 1000,
+                () -> {
+                    selectAddressDropdownListInMultiShipOptions.clickAndWaitWithRetries(deliveryAddressItemToSelect);
+                    deliveryAddressItemToSelect.click();
+                    loadingSpinner.waitForElementToDisappear();
+                    waitForPageToLoad();
+                    return true;
+                }, false, null, Exception.class);
+        getAddressWidget().addOrEditAddress(newAddress);
+    }
+
+    /**
+     * Verify the address added from multi shipping address page.
+     * @param addressFullName address full name.
+     */
+    public void verifyAddressAdded(String addressFullName) {
+        BasePageElement deliveryAddressItemToSelect = new BasePageElement(driver,
+                deliveryAddressItem.getName() + "_" + addressFullName,
+                String.format(deliveryAddressItem.getXPath(), addressFullName));
+        selectAddressDropdownListInMultiShipOptions
+                .clickAndWaitWithRetries(deliveryAddressItemToSelect);
+    }
+
+    /**
+     * Get the product details (image, title, price, seller).
+     * @param asins test asins.
+     * @return ProductDetails list.
+     */
+    public List<ProductDetails> getProductDetails(String[] asins) {
+        List<ProductDetails> results = new ArrayList<>();
+        for (String asin : asins) {
+            ProductDetails details = new ProductDetails();
+            details.setImage(new BasePageElement(driver,
+                    productImage.getName() + "-" + asin,
+                    String.format(productImage.getXPath(), asin)));
+            details.setTitle(new BasePageElement(driver,
+                    productTitle.getName() + "-" + asin,
+                    String.format(productTitle.getXPath(), asin)).getText());
+            details.setPrice(new BasePageElement(driver,
+                    productPrice.getName() + "-" + asin,
+                    String.format(productPrice.getXPath(), asin)).getText());
+            details.setSeller(new BasePageElement(driver,
+                    productSeller.getName() + "-" + asin,
+                    String.format(productSeller.getXPath(), asin)).getText());
+            results.add(details);
+        }
+        return results;
+    }
+
+    /**
+     * Get Product Title By Index.
+     * @return product Title.
+     * @param indexNum order number of the product in the multi address page
+     */
+    public String getProductTitleByIndex(String indexNum) {
+        return new BasePageElement(driver,
+                productTitleByIndexNumber.getName(),
+                String.format(productTitleByIndexNumber.getXPath(), indexNum)).getText();
+    }
+
+    /**
+     * Get conditionOfUseLink element.
+     * @return conditionOfUseLink element.
+     */
+    public BasePageElement getConditionOfUseLink() {
+        return conditionOfUseLink;
+    }
+
+    /**
+     * Get privacyLink element.
+     * @return privacyLink element.
+     */
+    public BasePageElement getPrivacyLink() {
+        return privacyLink;
+    }
+
+    /**
+     * Click 'Continue' button.
+     */
+    public void clickContinueButton() {
+        continueButtonInMultiShipOptions.clickAndWaitForDisappear(continueButtonInMultiShipOptions);
+    }
+
+    /**
+     * Get AddEditAddressWidget instance.
+     * @return AddEditAddressWidget instance.
+     */
+    public AddEditAddressWidget getAddressWidget() {
+        if (addressWidget == null) {
+            addressWidget = new AddEditAddressWidget(driver);
+        }
+        return addressWidget;
+    }
+
+    /**
+     * Product details in Multiple Address Selection page.
+     */
+    @Data
+    public static class ProductDetails {
+        private BasePageElement image;
+        private String title;
+        private String price;
+        private String seller;
+    }
+
+}
