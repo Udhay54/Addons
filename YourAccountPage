@@ -1,0 +1,443 @@
+package com.amazon.aeeqa.ui.pagemodels.youraccount;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Your Account Page Model.
+ *
+ * @author tingyong
+ */
+@PageName("your_account")
+public class YourAccountPage extends BasePageModel {
+
+    @Locator("YOUR_ORDERS_CARD")
+    private static BasePageElement yourOrdersCard;
+
+    @Locator("MANAGE_SAVED_IDS_LINK")
+    private static BasePageElement manageSavedIDsLink;
+
+    @Locator("YOUR_ADDRESS_CARD")
+    private static BasePageElement yourAddressCard;
+
+    @Locator("YOUR_PAYMENTS_CARD")
+    private static BasePageElement yourPaymentsCard;
+
+    @Locator("GIFT_CARDS")
+    private static BasePageElement giftCards;
+
+    @Locator("GIFT_CARD_BALANCE_TEXT")
+    private static BasePageElement giftCardBalanceText;
+
+    @Locator("YOUR_EMAIL_SUBSCRIPTIONS_BREADCRUMB_HEADER")
+    private static BasePageElement yourEmailSubscriptionsBreadcrumbHeader;
+
+    @Locator(value = "SUBSCRIPTIONS_CARD_EMAIL_LINK", stringId = "ya_link_email_subscriptions_54888")
+    private static BasePageElement subscriptionsCardEmailLink;
+
+    @Locator(value = "TWITCH_ACCOUNT_SETTINGS_LINK", stringId = "ya-twitch-account-settings")
+    private static BasePageElement twitchAccountSettingsLink;
+
+    @Locator(value = "AMAZON_WEB_SERVICES_LINK", stringId = "webservices_account_54842")
+    private static BasePageElement amazonWebServicesLink;
+
+    @Locator(value = "SELLER_PROFILE_LINK", stringId = "css-your-seller-account_16566")
+    private static BasePageElement sellerProfileLink;
+
+    @Locator(value = "PROFILE_LINK", stringId = "gp-mr-your-profile_10983")
+    private static BasePageElement profileLink;
+
+    @Locator(value = "YOUR_LISTS_LINK")
+    private static BasePageElement yourListsLink;
+
+    @Locator(value = "ARCHIVED_ORDERS_LINK", stringId = "ya-archived-orders")
+    private static BasePageElement archivedOrdersLink;
+
+    @Locator(value = "DEFAULT_PURCHASE_SETTINGS_LINK", stringId = "ya-one-click-settings")
+    private static BasePageElement defaultPurchaseSettingsLink;
+
+    @Locator(value = "ADVERTISING_PREFERENCES_LINK", stringId = "ya_advertising_preferences_60456")
+    private static BasePageElement advertisingPreferencesLink;
+
+    @Locator(value = "COMMUNICATION_PREFERENCES_LINK", stringId = "ya-email-prefs-notifications_58002")
+    private static BasePageElement communicationPreferencesLink;
+
+    @Locator(value = "SMS_ALERT_PREFERENCES_LINK", stringId = "ya_texttrace_acct_settings")
+    private static BasePageElement smsAlertPreferencesLink;
+
+    @Locator(value = "MESSAGE_CENTER_LINK", stringId = "msg_center_ya_title")
+    private static BasePageElement messageCenterLink;
+
+    @Locator("ADD_MOBILE_NUMBER_LINK")
+    private static BasePageElement addMobileNumberLink;
+
+    @Locator("MESSAGE_CENTER_INBOX_TAB")
+    private static BasePageElement messageCenterInboxTab;
+
+    @Locator(value = "DIGITAL_CONTENT_AND_DEVICES_CARD_LINK", stringId = "nav-content-and-devices")
+    private static BasePageElement digitalContentAndDevicesCardLink;
+
+    @Locator ("PAYMENT_OPTIONS_CARD")
+    private static BasePageElement paymentOptionsCard;
+
+    @Locator ("ORDERING_AND_SHOPPING_PREFERENCES_CARD")
+    private static BasePageElement orderingAndShoppingPreferencesCard;
+
+    @Locator ("EMAIL_ALERTS_AND_MESSAGES_CARD")
+    private static BasePageElement emailAlertsAndMessagesCard;
+
+    @Locator ("DIGITAL_CONTENT_AND_DEVICES_CARD")
+    private static BasePageElement digitalContentAndDevicesCard;
+
+    @Locator ("LOGIN_AND_SECURITY_CARD")
+    private static BasePageElement loginAndSecurityCard;
+
+    @Locator ("OTHER_ACCOUNTS_CARD")
+    private static BasePageElement otherAccountsCard;
+
+    @Locator ("SUBSCRIPTION_CARD")
+    private static BasePageElement subscriptionCard;
+
+    @Locator ("YOUR_MESSAGES_CARD")
+    private static BasePageElement yourMessagesCard;
+
+    @Locator ("CONTACT_US_CARD")
+    private static BasePageElement contactUsCard;
+
+    @Locator ("AMAZON_MOBILE_APP_CARD")
+    private static BasePageElement amazonMobileAppCard;
+
+    @Locator(value = "GIFT_CARDS_HELP_LINK")
+    private static BasePageElement giftCardsHelpLink;
+
+    @Locator("TWO_STEP_VERIFICATION_SECTION")
+    private static BasePageElement twoStepVerificationSection;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public YourAccountPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(yourOrdersCard);
+        status.processStatus();
+    }
+
+    /**
+     * Click Your Orders card.
+     */
+    public void clickYourOrdersCard() {
+        yourOrdersCard.click();
+    }
+
+    /**
+     * Return whether the "Manage saved IDs" link exist or not.
+     * @return is the link present or not.
+     */
+    public boolean isManageSavedIDsLinkPresent() {
+        verifyCurrentPage();
+        return manageSavedIDsLink.isPresent();
+    }
+
+    /**
+     * Click Your Address card.
+     */
+    public void clickYourAddressCard() {
+        yourAddressCard.click();
+    }
+
+    /**
+     * Verify Gift Card Balance Text Present on the GC Page.
+     */
+    public void verifyGiftCardBalanceTextPresent() {
+        status.addIsDisplayed(giftCardBalanceText);
+        status.processStatus();
+    }
+
+    /**
+     * Click Gift Cards.
+     */
+    public void clickGiftCards() {
+        giftCards.clickAndWait(giftCardBalanceText);
+    }
+
+    /**
+     * Click email Link on the Subscription Cards.
+     */
+    public void clickSubcriptionsCardEmailLink() {
+        subscriptionsCardEmailLink.clickAndWait(yourEmailSubscriptionsBreadcrumbHeader);
+    }
+
+    /**
+     * Click twitch account settings link.
+     */
+    public void clickTwitchAccountSettingsLink() {
+        twitchAccountSettingsLink.click();
+    }
+
+    /**
+     * Click Amazon Web Services link.
+     */
+    public void clickAmazonWebServicesLink() {
+        amazonWebServicesLink.click();
+    }
+
+    /**
+     * Click Seller Profile link.
+     */
+    public void clickSellerProfileLink() {
+        sellerProfileLink.click();
+    }
+
+    /**
+     * Click Profile link.
+     */
+    public void clickProfileLink() {
+        profileLink.click();
+    }
+
+    /**
+     * Click Your Lists Card link in the Your Accounts Page.
+     */
+    public void clickYourListsLink() {
+        yourListsLink.click();
+    }
+
+    /**
+     * Click Archived Orders link.
+     */
+    public void clickArchivedOrdersLink() {
+        archivedOrdersLink.click();
+    }
+
+    /**
+     * Click Your Payments Card.
+     */
+    public void clickYourPaymentsCard() {
+        yourPaymentsCard.click();
+    }
+
+    /**
+     * Click Your Default Purchase Settings link.
+     */
+    public void clickDefaultPurchaseSettingsLink() {
+        defaultPurchaseSettingsLink.click();
+    }
+
+    /**
+     * Click Your advertising preferences link.
+     */
+    public void clickAdvertisingPreferencesLink() {
+        advertisingPreferencesLink.click();
+    }
+
+    /**
+     * Click communication preferences link.
+     */
+    public void clickCommunicationPreferencesLink() {
+        communicationPreferencesLink.click();
+    }
+
+    /**
+     * Click SMS Alert Preferences link.
+     */
+    public void clickSmsAlertPreferencesLink() {
+        smsAlertPreferencesLink.clickAndWait(addMobileNumberLink);
+    }
+
+    /**
+     * Click Message Center link and wait for the inbox tab displays.
+     */
+    public void clickMessageCenterLink() {
+        messageCenterLink.clickAndWait(messageCenterInboxTab);
+    }
+
+    /**
+     * Verify inbox Tab on Message Center Page displays when navigating from message center link.
+     */
+    public void verifyMessageCenterInboxTabPresent() {
+        status.addIsDisplayed(messageCenterInboxTab);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Add your mobile number link present when navigate to sms alert preference link.
+     */
+    public void verifyAddMobileNumberLinkPresent() {
+        status.addIsDisplayed(addMobileNumberLink);
+        status.processStatus();
+    }
+
+    /**
+     * Click Digital content & Device Forum link.
+     */
+    public void clickDigitalContentDeviceForumLink() {
+        digitalContentAndDevicesCardLink.click();
+    }
+
+    /**
+     * Method to verify your payment options card is present.
+     */
+    public void verifyPaymentOptionsCard() {
+        status.addIsDisplayed(paymentOptionsCard);
+        status.processStatus();
+    }
+
+    /**
+     *  Method to verify your Ordering And Shopping Preferences card is present.
+     */
+    public void verifyOrderingAndShoppingPreferencesCard() {
+        status.addIsDisplayed(orderingAndShoppingPreferencesCard);
+        status.processStatus();
+    }
+    /**
+     * Method to verify your email Alert And MessagesCard card is present.
+     */
+    public void verifyEmailAlertsAndMessagesCard() {
+        status.addIsDisplayed(emailAlertsAndMessagesCard);
+        status.processStatus();
+    }
+
+    /**
+     *  Method to verify Digital Content Card is present.
+     */
+    public void verifyDigitalContentAndDevicesCard() {
+        status.addIsDisplayed(digitalContentAndDevicesCard);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify your Login and Security card is present.
+     */
+    public void verifyLoginAndSecurityCard() {
+        status.addIsDisplayed(loginAndSecurityCard);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify other Accounts Card is present.
+     */
+    public void verifyOtherAccountsCard() {
+        status.addIsDisplayed(otherAccountsCard);
+        status.processStatus();
+    }
+
+     /**
+     * Method to verify  Subscription Card is present.
+     */
+    public void verifySubscriptionCard() {
+        status.addIsDisplayed(subscriptionCard);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Your Orders Card is Displayed.
+     */
+    public void verifyYourOrdersCard() {
+        status.addIsDisplayed(yourOrdersCard);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Your address Card is Displayed.
+     */
+    public void verifyYourAddressCard() {
+        status.addIsDisplayed(yourAddressCard);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Gift Card is Displayed.
+     */
+    public void verifyGiftCard() {
+        status.addIsDisplayed(giftCards);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Your Messages Card is Displayed.
+     */
+    public void verifyYourMessagesCard() {
+        status.addIsDisplayed(yourMessagesCard);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Contact Us Card is Displayed.
+     */
+    public void verifyContactUsCard() {
+        status.addIsDisplayed(contactUsCard);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Amazon Mobile App Card is Displayed.
+     */
+    public void verifyAmazonMobileAppCard() {
+        status.addIsDisplayed(amazonMobileAppCard);
+        status.processStatus();
+    }
+
+    /**
+     * Click your payment options card
+     */
+    public void clickPaymentOptionsCard() {
+        paymentOptionsCard.click();
+    }
+
+    /**
+     * Get the header text displayed in Your Lists Top Level Card.
+     * @return Your Lists text
+     */
+    public String getTextOFYourListsCard() {
+        return yourListsLink.getText();
+    }
+
+    /**
+     * Method to click the Login And Security Card
+     */
+    public void clickLoginAndSecurityCard() {
+        loginAndSecurityCard.click();
+    }
+
+    /**
+     * Click gift cards help Link in Gift card page.
+     * @param giftCardsHelpLinkString to Parameterized for xpath.
+     */
+    public void clickGiftCardsHelpLink(String giftCardsHelpLinkString) {
+        BasePageElement giftCardsHelpLinks =  new BasePageElement(driver,
+                giftCardsHelpLink.getName(),
+                String.format(giftCardsHelpLink.getXPath(), giftCardsHelpLinkString));
+        giftCardsHelpLinks.click();
+    }
+
+    /**
+     * Helps to identify 2-Step Verification Text is present.
+     * @param twoStepVerificationText to Parameterized for xpath.
+     * @return presence of 2-Step Verification section in Login and security page.
+     */
+    public boolean isTwoStepVerificationPresent(String twoStepVerificationText) {
+        return new BasePageElement(driver, twoStepVerificationSection.getName(),
+                String.format(twoStepVerificationSection.getXPath(), twoStepVerificationText)).isPresent();
+    }
+
+    /**
+     * Method to get Gift Card Balance on the GC Page.
+     * @return GC balance Amount
+     */
+    public String getGiftCardBalanceAmount() {
+        giftCardBalanceText.waitForTextNotBlank(5);
+        return giftCardBalanceText.getText();
+    }
+}
