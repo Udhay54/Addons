@@ -1,0 +1,92 @@
+package com.amazon.aeeqa.ui.pagemodels.customerreviews;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * This page contains all the elements in All Questions Page.
+ * You can Reach this page by clicking on "See All Questions about this product" in All Answers page.
+ */
+@PageName("all_questions_page")
+public class AllQuestionsPage extends BasePageModel {
+
+    @Locator("CUSTOMER_Q_AND_A_QUESTION_LINK")
+    private static BasePageElement customerQAndAQuestionLink;
+
+    @Locator("QUESTIONS_SEARCH_BAR")
+    private static BasePageElement questionsSearchBar;
+
+    @Locator("PRODUCT_TITLE_LINK")
+    private static BasePageElement productTitleLink;
+
+    @Locator("PRODUCT_IMAGE_LINK")
+    private static BasePageElement productImageLink;
+
+    /**
+     * Constructor with driver instance.
+     *
+     * @param driver the WebDriver instance.
+     */
+    public AllQuestionsPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Constructor with a driver instance and an ASIN url.
+     *
+     * @param driver  the WebDriver instance.
+     * @param asinUrl the ASIN url to navigate.
+     */
+    public AllQuestionsPage(WebDriver driver, String asinUrl) {
+        super(driver);
+        setPageurl(asinUrl);
+        navigateToPage();
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        verifyProductTitleLinkIsPresent();
+        verifyProductImageLinkIsPresent();
+        verifyQuestionLinkIsPresent();
+        verifyQuestionsSearchBarIsPresent();
+    }
+
+    /**
+     * Verify product title link Is present.
+     */
+    public void verifyProductTitleLinkIsPresent() {
+        status.addIsDisplayed(productTitleLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify product image link Is present.
+     */
+    public void verifyProductImageLinkIsPresent() {
+        status.addIsDisplayed(productImageLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Question Link is present.
+     */
+    public void verifyQuestionLinkIsPresent() {
+        status.addIsDisplayed(customerQAndAQuestionLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Questions Search Bar is present.
+     */
+    public void verifyQuestionsSearchBarIsPresent() {
+        status.addIsDisplayed(questionsSearchBar);
+        status.processStatus();
+    }
+}
