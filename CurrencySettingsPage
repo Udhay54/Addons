@@ -1,0 +1,173 @@
+package com.amazon.aeeqa.ui.pagemodels.currencysettings;
+
+import java.util.Random;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Currency Setting Page Model.
+ *
+ * @author mehalaak
+ */
+@PageName("currency_settings")
+public class CurrencySettingsPage extends BasePageModel {
+    private final Random random = new Random();
+    @Locator("CURRENCY_SETTINGS_HEADING")
+    private static BasePageElement currencySettingsHeading;
+
+    @Locator("CURRENCY_DROPDOWN")
+    private static BasePageElement currencyDropdown;
+
+    @Locator("CURRENCY_PREFERENCE_POPOVER")
+    private static BasePageElement currencyPreferencePopover;
+
+    @Locator("SAVE_CHANGES_BUTTON")
+    private static BasePageElement saveChangesButton;
+
+    @Locator("CANCEL_BUTTON")
+    private static BasePageElement cancelButton;
+
+    @Locator("CURRENCY_PREFERENCE_POPOVER_LIST")
+    private static BasePageElement currencyPreferencePopoverList;
+
+    @Locator("SELECTED_CURRENCY_PREFERENCE")
+    private static BasePageElement selectedCurrencyPreference;
+
+    @Locator("CURRENCY_CONVERSION_RATE")
+    private static BasePageElement currencyConversionRate;
+
+    @Locator("CURRENCY_PREFERENCE_POPOVER_LIST_BY_NAME")
+    private static BasePageElement currencyPreferencePopoverListByName;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+      public CurrencySettingsPage(WebDriver driver) {
+         super(driver);
+       }
+
+      /**
+       * Verify the page has all the expected fields.
+       */
+      @Override
+      public void verifyCurrentPage() {
+         status.addIsDisplayed(saveChangesButton);
+         status.processStatus();
+      }
+
+      /**
+       * Get currency setting page heading.
+       * @return currency setting page heading
+       */
+     public String getCurrencySettingsHeading() {
+         status.addIsDisplayed(currencySettingsHeading);
+         status.processStatus();
+         return currencySettingsHeading.getText();
+     }
+
+     /**
+      * Verify if currency preference dropdown is clickable.
+      */
+     public void verifyCurrencyDropdownClickable() {
+         currencyDropdown.clickAndWait(currencyPreferencePopover);
+     }
+
+     /**
+      * Get count of currency preference options.
+      * @return count of currency preference options
+      */
+     public int getCurrenciesCountInCurrencyDropdown() {
+        return currencyPreferencePopover.getElements().size();
+     }
+
+     /**
+      * Selects a random currency from currency preference dropdown and get the selected Value.
+      * @param sourceCountryCode is the MP for test
+      * @return selectedCurrency from currency preference dropdown.
+      */
+     public String getSelectedRandomCurrencyFromCurrencyPreferenceDropdown(String sourceCountryCode) {
+
+         int listNumber;
+         if (sourceCountryCode.equals("AE")) {
+             listNumber = random.nextInt(11);
+         } else if (sourceCountryCode.equals("AU")) {
+             listNumber = 1;
+         } else if (sourceCountryCode.equals("JP")) {
+             listNumber = random.nextInt(14);
+         } else if (sourceCountryCode.equals("SG")) {
+             listNumber = 1;
+         } else {
+             listNumber = random.nextInt(65);
+         }
+         BasePageElement currencyOptionInCurrencyPreferencePopoverList =
+              new BasePageElement(driver, currencyPreferencePopoverList.getName(),
+              String.format(currencyPreferencePopoverList.getXPath(), listNumber));
+         String selectedCurrency = currencyOptionInCurrencyPreferencePopoverList.getText();
+         currencyOptionInCurrencyPreferencePopoverList.click();
+         return selectedCurrency;
+     }
+
+    /**
+     * Selects currency by name from currency preference dropdown
+     * @param currencyName currency name to select from the drop down list.
+     */
+    public void selectCurrencyPreferenceDropdownByName(String currencyName) {
+        BasePageElement currencyOptionInCurrencyPreferencePopoverList =
+                new BasePageElement(driver, currencyPreferencePopoverListByName.getName(),
+                        String.format(currencyPreferencePopoverListByName.getXPath(), currencyName));
+        currencyOptionInCurrencyPreferencePopoverList.click();
+    }
+
+    /**
+      * Get selected currency code.
+      * @return selected currency code
+      */
+     public String getSelectedCurrencyPreference() {
+         return selectedCurrencyPreference.getText();
+     }
+
+     /**
+      * Get currency code in conversion rate.
+      * @return currency code in conversion rate
+      */
+     public String getSelectedCurrencyConversionRate() {
+         return currencyConversionRate.getText();
+     }
+
+     /**
+      * Verify Save changes button is present.
+      */
+     public void verifySaveChangesButtonPresent() {
+         status.addIsDisplayed(saveChangesButton);
+         status.processStatus();
+     }
+
+     /**
+      * Verify Cancel button is present.
+      */
+     public void verifyCancelButtonPresent() {
+         status.addIsDisplayed(cancelButton);
+         status.processStatus();
+     }
+
+     /**
+      * Method to Click Save changes button.
+      */
+     public void clickSaveChangesButton() {
+         saveChangesButton.clickAndWaitForDisappear(saveChangesButton);
+     }
+
+     /**
+      * Method to Click cancel button.
+      */
+     public void clickCancelButton() {
+         cancelButton.click();
+     }
+
+}
