@@ -1,0 +1,108 @@
+package com.amazon.aeeqa.ui.pagemodels.customerreviews;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * This page will contains all the elements in Single Review Page.
+ */
+@PageName("single_review")
+public class SingleReviewPage extends BasePageModel {
+
+    @Locator("PRODUCT_TITLE_LINK")
+    private static BasePageElement productTitleLink;
+
+    @Locator("PRODUCT_IMAGE_LINK")
+    private static BasePageElement productImageLink;
+
+    @Locator("PRODUCT_BYLINE_LINK")
+    private static BasePageElement productBylineLink;
+
+    @Locator(value = "SEE_ALL_BUYING_OPTIONS_BUTTON", stringId = "arp-see-all-buying-options")
+    private static BasePageElement seeAllBuyingOptionsButton;
+
+    @Locator("REVIEW_TITLE_LINK")
+    private static BasePageElement reviewTitleLink;
+
+    @Locator("REVIEW_BODY_TEXT")
+    private static BasePageElement reviewBodyText;
+
+    @Locator("REVIEW_HELPFUL_BUTTON")
+    private static BasePageElement reviewHelpfulButton;
+
+    /**
+     * Constructor with driver instance.
+     *
+     * @param driver the WebDriver instance.
+     */
+    public SingleReviewPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        verifyReviewTitleLinkIsPresent();
+        verifyReviewBodyTextIsPresent();
+        verifyReviewHelpfulButtonIsPresent();
+        verifyProductBylineLinkIsPresent();
+        verifyProductTitleAndImageLinksPresent();
+        verifySeeAllBuyingOptionsButtonIsPresent();
+    }
+
+    /**
+     * Verify product tile and image links Are present.
+     */
+    public void verifyProductTitleAndImageLinksPresent() {
+        status.addIsDisplayed(productTitleLink);
+        status.addIsDisplayed(productImageLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify product byline Link Is present.
+     */
+    public void verifyProductBylineLinkIsPresent() {
+        status.addIsDisplayed(productBylineLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify See All Buying Options button Is present.
+     */
+    public void verifySeeAllBuyingOptionsButtonIsPresent() {
+        status.addIsDisplayed(seeAllBuyingOptionsButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Review title Link Is present.
+     */
+    public void verifyReviewTitleLinkIsPresent() {
+        status.addIsDisplayed(reviewTitleLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Review Body Text Is present.
+     */
+    public void verifyReviewBodyTextIsPresent() {
+        status.addIsDisplayed(reviewBodyText);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Review Helpful Button Is present.
+     */
+    public void verifyReviewHelpfulButtonIsPresent() {
+        status.addIsDisplayed(reviewHelpfulButton);
+        status.processStatus();
+    }
+
+}
