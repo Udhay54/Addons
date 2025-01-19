@@ -1,0 +1,311 @@
+package com.amazon.aeeqa.ui.pagemodels.olp;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Offer Listing Page Model.
+ *
+ * @author mehalaak
+ */
+@PageName("olp")
+public class OLPPage extends BasePageModel {
+
+    @Locator("IMPORT_FEES_DEPOSIT_INCLUDED_TEXT")
+    private static BasePageElement importFeesDepositText;
+
+    @Locator("AMAZON_GLOBAL_STORE_FILTER")
+    private static BasePageElement amazonGlobalStoreFilter;
+
+    @Locator("POP_OVER_CLOSE_BUTTON")
+    private static BasePageElement popoverCloseButton;
+
+    @Locator("AMAZON_GLOBAL_SELLER_NAME")
+    private static BasePageElement amazonGlobalSellerName;
+
+    @Locator("PROMISE_MESSAGE")
+    private static BasePageElement promiseMessage;
+
+    @Locator("IMPORT_FEES_DEPOSIT_POPOVER_PRICE_DETAILS")
+    private static BasePageElement importFeesDepositPopoverPriceDetails;
+
+    @Locator("PRIME_BADGE_FOR_GLOBAL_STORE_OFFER")
+    private static BasePageElement primeBadgeForGlobalStoreOffer;
+
+    @Locator("FREE_INTERNATIONAL_DELIVERY_TEXT")
+    private static BasePageElement freeInternationalDeliveryText;
+
+    @Locator("PRIME_FILTER_IN_REFINE_BY")
+    private static BasePageElement primeFilterInRefineBy;
+
+    @Locator("AGS_OFFER_PRICE")
+    private static BasePageElement agsOfferPrice;
+
+    @Locator("SHIPPING_INFO")
+    private static BasePageElement shippingInfo;
+
+    @Locator("FAST_TRACK_PROMISE_MESSAGE")
+    private static BasePageElement fastTrackPromiseMessage;
+
+    @Locator("OLP_OFFERS")
+    private static BasePageElement olpOffers;
+
+    @Locator("AGS_DELIVERY_PRICE")
+    private static BasePageElement agsDeliveryPrice;
+
+    @Locator("ADD_TO_CART_BUTTON")
+    private static BasePageElement addToCartButtons;
+
+    @Locator("ADD_TO_CART_BUTTON_BY_SELLER_NAME")
+    private static BasePageElement addToCartButtonBySellerName;
+
+    @Locator("DELIVERY_PROMISE_MESSAGES")
+    private static BasePageElement deliveryPromiseMessages;
+
+    @Locator("SHOW_MORE_LINK")
+    private static BasePageElement showMoreLink;
+
+    @Locator("OLP_OFFER_SELLER_NAME")
+    private static BasePageElement olpOfferSellerName;
+
+    @Locator("OLP_OFFER_PRICE")
+    private static BasePageElement olpOfferPrice;
+
+    @Locator("OLP_PRODUCT_TITLE")
+    private static BasePageElement olpProductTitle;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public OLPPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has Import Fees Deposit Included text.
+     */
+    public void verifyImportFeesDepositTextPresent() {
+        status.addIsDisplayed(importFeesDepositText);
+        status.processStatus();
+    }
+
+    /**
+     * Click Import Fees Deposit Included text.
+     */
+    public void clickImportFeesDepositText() {
+        importFeesDepositText.click();
+        status.addIsDisplayed(popoverCloseButton);
+        status.processStatus();
+    }
+
+    /**
+     * Mouse over Import Fees Deposit Included text.
+     */
+    public void mouseOverImportFeesDepositText() {
+        importFeesDepositText.mouseOverAndWait(popoverCloseButton);
+    }
+
+    /**
+     * Verify the page has Amazon Global Store Filter.
+     */
+    public void verifyAmazonGlobalStoreFilterPresent() {
+        status.addIsDisplayed(amazonGlobalStoreFilter);
+        status.processStatus();
+    }
+
+    /**
+     * Verify the page has Amazon Global Store seller name.
+     * @param globalStoreSellerName in the target marketplace.
+     * @return Seller name
+     */
+    public boolean isAmazonGlobalStoreSellerNameTextIsPresent(String globalStoreSellerName) {
+        return new BasePageElement(driver, amazonGlobalSellerName.getName(),
+                String.format(amazonGlobalSellerName.getXPath(), globalStoreSellerName)).isPresent();
+    }
+
+    /**
+     * Click on the Amazon Global Store seller name and get page Title.
+     * @param globalStoreSellerName in the target marketplace.
+     * @return Page title
+     */
+    public String clickGlobalStoreSellerName(String globalStoreSellerName) {
+        new BasePageElement(driver, amazonGlobalSellerName.getName(),
+                String.format(amazonGlobalSellerName.getXPath(), globalStoreSellerName)).click();
+        String sellerProfilePageTitle = driver.getTitle();
+        driver.navigate().back();
+        return sellerProfilePageTitle;
+    }
+
+    /**
+     * Verify Promise message displayed for Global Store seller.
+     * @param sellerName of the global store under test.
+     * @return boolean of promise message's presence
+     */
+    public boolean verifyPromiseMessageIsPresent(String sellerName) {
+        return new BasePageElement(driver, promiseMessage.getName(),
+                String.format(promiseMessage.getXPath(), sellerName)).isPresent()
+                || new BasePageElement(driver, fastTrackPromiseMessage.getName(),
+                        String.format(fastTrackPromiseMessage.getXPath(), sellerName)).isPresent();
+    }
+
+    /**
+     * Method helps to Verify the inner details of the IFD Popover in the Olp Page.
+     * @param asin to Parameterized for xpath
+     * @param priceTagField this holds type of Field.
+     * @return Price of Individual fields in the IFD popover.
+     */
+    public String verifyOlpImportFeesDepositPopoverDetails(String asin, String priceTagField) {
+        new BasePageElement(driver, importFeesDepositText.getName(),
+                String.format(importFeesDepositText.getXPath(), asin))
+                .mouseOverAndWait(popoverCloseButton);
+        return new BasePageElement(driver, importFeesDepositPopoverPriceDetails.getName(),
+                String.format(importFeesDepositPopoverPriceDetails.getXPath(), priceTagField)).getText();
+    }
+
+    /**
+     * Verify Prime Badge present for Global Store offer.
+     * @param sellerName of the global store under test.
+     * @return boolean of prime badge's presence
+     */
+    public boolean verifyPrimeBadgeForGlobalStoreOfferIsPresent(String sellerName) {
+        return new BasePageElement(driver, primeBadgeForGlobalStoreOffer.getName(),
+                String.format(primeBadgeForGlobalStoreOffer.getXPath(), sellerName)).isPresent();
+    }
+
+    /**
+     * Verify 'FREE international delivery on Prime International orders over,
+     * $49' text for Global Store offer.
+     *
+     * @param sellerName of the global store under test.
+     * @return boolean of international delivery text's presence
+     */
+    public boolean verifyInternationalDeliveryTextIsPresent(String sellerName) {
+        return new BasePageElement(driver, freeInternationalDeliveryText.getName(),
+                String.format(freeInternationalDeliveryText.getXPath(), sellerName)).isPresent();
+    }
+
+    /**
+     * Verify price is present for Global Store offer.
+     * @param sellerName of the global store under test.
+     * @return boolean of price's presence
+     */
+    public boolean verifyPriceIsPresent(String sellerName) {
+        return new BasePageElement(driver, agsOfferPrice.getName(),
+                String.format(agsOfferPrice.getXPath(), sellerName)).isPresent();
+    }
+
+    /**
+     * Verify Prime filter in Refine By.
+     */
+    public void verifyPrimefilter() {
+        status.addIsDisplayed(primeFilterInRefineBy);
+        status.processStatus();
+    }
+
+    /**
+     * Verify the page has Shipping Info Text.
+     * @return the boolean value of Shipping Info Text
+     */
+    public boolean verifyShippingInfoTextPresent() {
+        return shippingInfo.isPresent();
+    }
+
+    /**
+     * Verify there are OLP offers.
+     */
+    public void verifyOLPOffersPresent() {
+        olpOffers.waitIsPresent();
+        status.addIsDisplayed(olpOffers);
+        status.processStatus();
+    }
+
+    /**
+     * Verify delivery price is present for Global Store offer.
+     * @param sellerName of the global store under test.
+     * @return boolean of delivery price's presence
+     */
+    public boolean verifyDeliveryPriceIsPresent(String sellerName) {
+        return new BasePageElement(driver, agsDeliveryPrice.getName(),
+                String.format(agsDeliveryPrice.getXPath(), sellerName)).isPresent();
+    }
+
+    /**
+     * Verify add to cart button is present and click on it based on the Seller Name.
+     * @param sellerName of the global store under test.
+     */
+    public void verifyAddToCartIsPresentAndClickable(String sellerName) {
+        BasePageElement agsOfferAddToCartButton = new BasePageElement(driver, addToCartButtonBySellerName.getName(),
+                String.format(addToCartButtonBySellerName.getXPath(), sellerName));
+        agsOfferAddToCartButton.isPresent();
+        agsOfferAddToCartButton.click();
+    }
+
+    /**
+     * Get offer listing offer numbers.
+     * @return offers count.
+     */
+    public int getOLPOffersCount() {
+        olpOffers.waitIsPresent();
+        return olpOffers.countElements();
+    }
+
+    /**
+     * Get all message lines for a given offer.
+     * @param offerIndex starting from 0.
+     * @return delivery promise messages per offer.
+     */
+    public List<String> getDeliveryPromiseMessages(final int offerIndex) {
+        return new BasePageElement(driver, deliveryPromiseMessages.getName(),
+                String.format(deliveryPromiseMessages.getXPath(), offerIndex + 1)).getElements().stream()
+                .map(PageElement::getText).map(String::trim).collect(Collectors.toList());
+    }
+
+    /**
+     * Method to get the OLP Offer Price Name by Index number on the OLP Page.
+     * @param index E.g. 0 to get the first element
+     * @return olp offer price
+     */
+    public String getOLPOfferPriceByIndex(int index) {
+        List<PageElement> availableOlpOfferPrice = olpOfferPrice.getElements();
+        return availableOlpOfferPrice.get(index).getText();
+    }
+
+    /**
+     * Method to get the OLP Offer Seller Name by Index number on the OLP Page.
+     * @param index E.g. 0 to get the first element
+     * @return olp offer seller name
+     */
+    public String getOLPOfferSellerNameByIndex(int index) {
+        if (showMoreLink.isPresent()) {
+            showMoreLink.click();
+        }
+        List<PageElement> availableOlpOfferSellerName = olpOfferSellerName.getElements();
+        return availableOlpOfferSellerName.get(index).getText();
+    }
+
+    /**
+     * Method to get the Product Title on the OLP Page.
+     * @return olp offer Product Title
+     */
+    public String getOLPProductTitle() {
+        return olpProductTitle.getText();
+    }
+
+    /**
+     * Method to Click the Add To Cart Button for the first OLP Offer on the OLP page.
+     * @param index e.g. 0 to click first olp offer
+     */
+    public void clickAddToCartButton(int index) {
+        List<PageElement> addToCartButton = addToCartButtons.getElements();
+        addToCartButton.get(index).click();
+    }
+}
