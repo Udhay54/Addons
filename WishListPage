@@ -1,0 +1,386 @@
+package com.amazon.aeeqa.ui.pagemodels.wishlist;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.utils.SleepUtil;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Wishlist Page Model.
+ *
+ * @author vllaks
+ */
+@PageName("wishlist")
+public class WishListPage extends BasePageModel {
+
+    @Locator("CREATE_LIST_BUTTON")
+    private static BasePageElement createListButton;
+
+    @Locator("ADD_NEW_VIEW_LIST_BUTTON")
+    private static BasePageElement addNewViewListButton;
+
+    @Locator("ADD_NEW_WISH_LIST_RADIO_BUTTON")
+    private static BasePageElement addNewWishListRadioButton;
+
+    @Locator("DELETE_BUTTON")
+    private static BasePageElement deleteButton;
+
+    @Locator("VIEW_LIST_BUTTON")
+    private static BasePageElement viewListButton;
+
+    @Locator("EXPORT_ELIGIBILITY_MESSAGE_TEXT")
+    private static BasePageElement exportEligibilityMessageText;
+
+    @Locator("YOUR_FRIENDS_TAB")
+    private static BasePageElement yourFriendsTab;
+
+    @Locator("SIGNIN_BUTTON")
+    private static BasePageElement signInButton;
+
+    @Locator("YOUR_LISTS_TAB")
+    private static BasePageElement yourListsTab;
+
+    @Locator("ADD_TO_CART_BUTTON")
+    private static BasePageElement addToCartButton;
+
+    @Locator("VIEW_LIST_BUTTON_IN_ADD_TO_YOUR_LIST_POPOVER")
+    private static BasePageElement viewListButtonInAddToYourListPopover;
+
+    @Locator("DELETE_LIST_BUTTON")
+    private static BasePageElement deleteListButton;
+
+    @Locator("MORE_MENU_POPOVER")
+    private static BasePageElement moreMenuPopover;
+
+    @Locator("MANAGE_LIST_LINK")
+    private static BasePageElement manageListLink;
+
+    @Locator("DELETE_LIST_CONFIRMATION_BUTTON")
+    private static BasePageElement deleteListConfirmationButton;
+
+    @Locator("WISH_LIST_TITLE")
+    private static BasePageElement wishListTitle;
+
+    @Locator("CREATE_LIST_SUBMIT_BUTTON")
+    private static BasePageElement createListSubmitButton;
+
+    @Locator("CREATE_LIST_LINK")
+    private static BasePageElement createListLink;
+
+    @Locator("ITEM_PRICE_IN_WISH_LIST_PAGE")
+    private static BasePageElement itemPriceInWishListPage;
+
+    @Locator("SEE_ALL_BUYING_OPTIONS_OR_ADD_TO_CART_BUTTON")
+    private static BasePageElement seeAllBuyingOptionsOrAddToCartButton;
+
+    @Locator("MANAGE_LIST_DESCRIPTION")
+    private static BasePageElement manageListDescription;
+
+    @Locator("MANAGE_LIST_EMAIL")
+    private static BasePageElement manageListEmail;
+
+    @Locator("MANAGE_LIST_SAVE_CHANGES_BUTTON")
+    private static BasePageElement manageListSaveChangesButton;
+
+    @Locator("YOUR_LISTS_DESCRIPTION")
+    private static BasePageElement yourListsDescription;
+
+    @Locator("MANAGE_LIST_HEADER")
+    private static BasePageElement manageListHeader;
+
+    @Locator("LISTS_PRESENT_IN_YOUR_LIST_TAB")
+    private static BasePageElement listsPresentInYourListTab;
+
+    @Locator("LIST_VIEW_TOGGLE")
+    private static BasePageElement listViewToggle;
+
+    @Locator("LISTS_PRESENT_IN_LIST_VIEW")
+    private static BasePageElement listsPresentInListView;
+
+    @Locator("GRID_VIEW_TOGGLE")
+    private static BasePageElement gridViewToggle;
+
+    @Locator("LISTS_PRESENT_IN_GRID_VIEW")
+    private static BasePageElement listsPresentInGridView;
+
+
+    @Locator("DEFAULT_LIST_CHECKBOX")
+    private static BasePageElement defaultListCheckbox;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public WishListPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Create New List from Detail Page.
+     * This method helps to create new list when we add any asin to list
+     * from detail page.
+     */
+    public void createAndNavigateToWishListFromDetailPage() {
+        if (createListSubmitButton.isPresent(5)) {
+            createListSubmitButton.clickAndWait(viewListButtonInAddToYourListPopover);
+            viewListButtonInAddToYourListPopover.clickAndWait(seeAllBuyingOptionsOrAddToCartButton);
+        } else {
+            viewListButton.clickAndWait(seeAllBuyingOptionsOrAddToCartButton);
+        }
+    }
+
+    /**
+     * Create new list from wishlist page.
+     */
+    public void createListFromWishListPage() {
+        //Adding Sleep here to handle the modal dialog window where the click is happening before it loads
+        SleepUtil.sleep(1000);
+        createListSubmitButton.clickAndWaitWithRetries(moreMenuPopover);
+    }
+
+    /**
+    * Get's the country eligible text for the item in WishList.
+    * @return country eligible text
+    */
+   public String getCountryEligibleText() {
+       return exportEligibilityMessageText.getText();
+   }
+
+   /**
+    * Delete items in WishList.
+    */
+   public void deleteItemsInWishList() {
+       int retryCount = 0;
+       while (deleteButton.isPresent(5) && retryCount <= 3) {
+           retryCount++;
+           deleteButton.click();
+           driver.navigate().refresh();
+           waitForPageToLoad();
+       }
+   }
+
+   /**
+    * Verify the item was added to the list.
+    */
+   public void verifyItemAddedToList() {
+       status.addIsEnabled(deleteButton);
+       status.processStatus();
+   }
+
+    /**
+     * Click "View your List" Button.
+     */
+    public void viewYourList() {
+        if (viewListButton.isPresent()) {
+            viewListButton.clickAndWait(deleteButton);
+        } else {
+            addNewViewListButton.clickAndWait(deleteButton);
+        }
+    }
+
+    /**
+     * Verify and Click Sign In Button on the Wish list page.
+     */
+    public void verifyAndClickSignInButton() {
+        status.addIsEnabled(signInButton);
+        status.processStatus();
+        signInButton.click();
+    }
+
+    /**
+     * Verify "Your Lists" tab is selected by default when we click create a List from Your account flyout.
+     * @return true if the your Lists tab is selected
+     */
+    public boolean verifyYourListsTabIsActive() {
+        yourListsTab.waitForElementToBeEnabled();
+        status.addIsEnabled(yourListsTab);
+        status.processStatus();
+        String tabActiveText = yourListsTab.getValue("class");
+        return tabActiveText.contains("active");
+    }
+
+    /**
+     * Verify "Your Friends" tab is selected by default when we click find a list from Your account flyout.
+     * @return true if the your friends tab is selected
+     */
+    public boolean verifyYourFriendsTabIsActive() {
+        yourFriendsTab.waitForElementToBeEnabled();
+        status.addIsEnabled(yourFriendsTab);
+        status.processStatus();
+        String tabActiveText = yourFriendsTab.getValue("class");
+        return tabActiveText.contains("active");
+    }
+
+    /**
+     * Click Add to Cart Button in the Wish List.
+     */
+    public void clickAddToCartButton() {
+        addToCartButton.waitForElementToBeEnabled();
+        addToCartButton.click();
+    }
+
+    /**
+     * Click Create List link inside Your List.
+     */
+    public void clickCreateListLink() {
+        createListLink.waitForElementToBeEnabled();
+        createListLink.clickAndWaitWithRetries(createListSubmitButton);
+    }
+
+    /**
+     * Click Create List Button from the Wish List Page.
+     */
+    public void clickCreateListButton() {
+        createListButton.waitForElementToBeEnabled();
+        createListButton.clickAndWaitWithRetries(createListSubmitButton);
+    }
+
+    /**
+     * Method to Select Manage List Link mouse hovering More menu.
+     */
+    public void navigateToManageListSettings() {
+        waitForPageToLoad();
+        moreMenuPopover.clickAndWaitWithRetries(manageListLink);
+        manageListLink.clickAndWaitWithRetries(deleteListButton);
+    }
+
+    /**
+     * Method to delete List.
+     */
+    public void deleteList() {
+        //Adding Sleep here to handle the modal dialog window where the click is happening before it loads
+        SleepUtil.sleep(1000);
+        deleteListButton.clickAndWaitWithRetries(deleteListConfirmationButton);
+        SleepUtil.sleep(2000);
+        deleteListConfirmationButton.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method to get available wish list on the wish list page.
+     * @return returns total wish list count
+     */
+    public int getWishListCount() {
+        return wishListTitle.countElements();
+    }
+
+    /**
+     * Verify "Create List" button is present on the create list page.
+     * @return true when the Create list button present
+     */
+    public boolean verifyCreateListButtonPresent() {
+        return createListButton.isPresent();
+    }
+
+    /**
+     * Method to get item price in wishlist page
+     * @return item price
+     */
+    public String getItemPriceInWishListPage() {
+        return itemPriceInWishListPage.getText();
+    }
+
+    /**
+     * Verify "Create List" link is present on the list page for users with existing list.
+     * @return true when the Create list link present
+     */
+    public boolean isCreateListLinkPresent() {
+        return createListLink.isPresent();
+    }
+
+    /**
+     * Method to add/modify description in the manage list page
+     * @param description text to be entered in the manage list page
+     */
+    public void addDescriptionInManageList(String description) {
+        manageListDescription.setText(description);
+    }
+
+    /**
+     * Method to click save changes button present in the manage list page.
+     */
+    public void clickSaveChangesButtonInManageList() {
+        manageListSaveChangesButton.clickAndWaitForDisappear(manageListHeader);
+    }
+
+    /**
+     * Method to get list description present in the wishlist page
+     * @return wish list description
+     */
+    public String getSelectedWishListDescription() {
+        return yourListsDescription.getText();
+    }
+
+    /**
+     * Method to verify whether email field in manage list page is present or not.
+     * @return true when email field is present
+     */
+    public boolean isEmailPresentInManageList() {
+        return manageListDescription.isPresent();
+    }
+
+    /**
+     * Verify Sign In Button in the Wish list page is present or not.
+     * @return true when the sign-in button is present in the wish list page
+     */
+    public boolean isSignInButtonPresent() {
+        return signInButton.isPresent();
+    }
+
+    /**
+     * Method to verify whether the created list is present in the 'Your Lists' tab or not.
+     * @return true when list of items present in the wishlist
+     */
+    public boolean isListCreatedPresentInYourListTab() {
+        return listsPresentInYourListTab.isPresent();
+    }
+
+    /**
+     * Click Your Friends tab in the Wish List page.
+     */
+    public void goToYourFriendsTab() {
+        yourFriendsTab.waitForElementToBeEnabled();
+        yourFriendsTab.click();
+    }
+
+    /**
+     * Click Your List View Toggle button
+     */
+    public void clickListViewToggle() {
+        listViewToggle.waitIsPresent();
+        listViewToggle.click();
+    }
+    /**
+     * Click Your Grid View Toggle button
+     */
+    public void clickGridViewToggle() {
+        gridViewToggle.waitIsPresent();
+        gridViewToggle.click();
+    }
+    /**
+     * Method to verify whether Lists are displayed/present in the grid view format.
+     * @return true when Lists present in grid view.
+     */
+    public boolean isListsPresentInGridView() {
+        return listsPresentInGridView.isPresent();
+    }
+    /**
+     * Method to verify whether Lists are displayed/present in the list view format.
+     * @return true when Lists present in list view.
+     */
+    public boolean isListsPresentInListView() {
+        return listsPresentInListView.isPresent();
+    }
+
+    /**
+     * Method to verify whether default list checkbox present or not.
+     * @return true when default list checkbox present in the Manage list page
+     */
+    public boolean isDefaultListCheckboxPresent() {
+        return defaultListCheckbox.isPresent();
+    }
+
+}
