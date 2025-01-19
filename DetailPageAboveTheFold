@@ -1,0 +1,2014 @@
+package com.amazon.aeeqa.ui.pagemodels.detail;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.amazon.aeeqa.ui.pagemodels.help.HelpPage;
+import com.amazon.aeeqa.utils.SleepUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Detail Page Above The Fold Model.
+ *
+ * @author sresgm
+ */
+@PageName("detail")
+public class DetailPageAboveTheFold extends BasePageModel {
+
+    @Locator("MAIN_PRODUCT_IMAGE")
+    private static BasePageElement mainProductImage;
+
+    @Locator("ZOOMED_IN_IMAGE")
+    private static BasePageElement zoomedInImage;
+
+    @Locator("IMAGE_CAPTION")
+    private static BasePageElement imageCaption;
+
+    @Locator("VIDEO_THUMBNAIL_IN_ALT_IMAGE_BLOCK")
+    private static BasePageElement videoThumbnailInAltImageBlock;
+
+    @Locator("IMAGE_THUMBNAIL_IN_ALT_IMAGE_BLOCK")
+    private static BasePageElement imageThumbnailInAltImageBlock;
+
+    @Locator("IMAGES_IN_MAIN_IMAGE_BLOCK")
+    private static BasePageElement imagesInMainImageBlock;
+
+    @Locator("MAIN_IMAGE_ON_HOVERING_COLOR_VARIATION")
+    private static BasePageElement mainImageOnHoveringColorVariation;
+
+    @Locator("BRAND_BYLINE_BELOW_TITLE")
+    private static BasePageElement brandBylineBelowTitle;
+
+    @Locator("BRAND_BYLINE_ABOVE_TITLE")
+    private static BasePageElement brandBylineAboveTitle;
+
+    @Locator("VARIATIONS_IN_IMAGE_POPUP")
+    private static BasePageElement variationsInImagePopup;
+
+    @Locator("PRODUCT_TITLE_IN_IMAGE_POPUP")
+    private static BasePageElement productTitleInImagePopup;
+
+    @Locator("ALT_IMAGES_IN_IMAGE_POPUP")
+    private static BasePageElement altImagesInImagePopup;
+
+    @Locator("MAIN_IMAGE_IN_IMAGE_POPUP")
+    private static BasePageElement mainImageInImagePopup;
+
+    @Locator("BREADCRUMB_CATEGORIES")
+    private static BasePageElement breadcrumbCategories;
+
+    @Locator("BACK_TO_RESULTS_BREADCRUMB")
+    private static BasePageElement backToResultsBreadcrumb;
+
+    @Locator("PRODUCT_TITLE_UNDER_VIDEO_BLOCK")
+    private static BasePageElement productTitleUnderVideoBlock;
+
+    @Locator("PRODUCT_TITLE_NEAR_VIDEO_THUMBNAIL")
+    private static BasePageElement productTitleNearVideoThumbnail;
+
+    @Locator("BYLINE_INFO")
+    private static BasePageElement byLineInfo;
+
+    @Locator("VIDEO_SLATE_IMAGE_IN_MAIN_IMAGE_BLOCK")
+    private static BasePageElement videoSlateImageInMainImageBlock;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_ICON_POPUP")
+    private static BasePageElement customerReviewIconPopup;
+
+    @Locator("CUSTOMER_REVIEW_HISTOGRAM_NEAR_TITLE")
+    private static BasePageElement customerReviewHistogramNearTitle;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_STAR_RATINGS_POPUP")
+    private static BasePageElement customerReviewStarRatingsInPopup;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEW_NUMBER_OF_RATINGS_POPUP")
+    private static BasePageElement customerReviewNumberOfRatingsInPopup;
+
+    @Locator("SHOW_MORE_BUTTON")
+    private static BasePageElement showMoreButton;
+
+    @Locator("SHOW_MORE_BULLETS_LIST")
+    private static BasePageElement showMoreBulletsList;
+
+    @Locator("AUTHOR_NAME_IN_BYLINE")
+    private static BasePageElement authorNameInByline;
+
+    @Locator("CONTRIBUTOR_ROLE_IN_BYLINE")
+    private static BasePageElement contributorRoleInByline;
+
+    @Locator("PLATFORM_IN_BYLINE")
+    private static BasePageElement platformInByline;
+
+    @Locator("AGE_RATING_IN_BYLINE")
+    private static BasePageElement ageRatingInByline;
+
+    @Locator("SEE_SIMILAR_ITEMS_BUTTON")
+    private static BasePageElement seeSimilarItemsButton;
+
+    @Locator("SIMILAR_ITEMS_SHIPPING_TO_COUNTRY_NAME_TEXT")
+    private static BasePageElement similarItemsShippingToCountryNameText;
+
+    @Locator("EXPORT_ALTERNATIVE_WIDGET_TABLE_CONTENT_DETAILS")
+    private static BasePageElement exportAlternativeWidgetTableContentDetails;
+
+    @Locator("EXPORT_ALTERNATIVE_WIDGET_ADD_TO_CART_BUTTON")
+    private static BasePageElement exportAlternativeWidgetAddToCartButton;
+
+    @Locator("EXPORT_ALTERNATIVE_WIDGET_PRODUCT_TITLE")
+    private static BasePageElement exportAlternativeWidgetProductTitle;
+
+    @Locator("EXPORT_ALTERNATIVE_WIDGET_PRODUCT_IMAGE")
+    private static BasePageElement exportAlternativeWidgetProductImage;
+
+    @Locator("EXPORT_ALTERNATIVE_WIDGET_RATINGS_STAR_LINK")
+    private static BasePageElement exportAlternativeWidgetRatingsStarink;
+
+    @Locator("SUBSCRIBE_AND_SAVE_SECTION")
+    private static BasePageElement subscribeAndSaveSection;
+
+    @Locator("ATTACH_COVERAGE_NO_THANKS_BUTTON")
+    private static BasePageElement attachCoverageNoThanksButton;
+
+    @Locator("RECOMMENDED_WITH_DEVICE_NO_THANKS_BUTTON")
+    private static BasePageElement recommendWithDeviceNoThanksButton;
+
+    @Locator("UDM_MESSAGE")
+    private static BasePageElement udmMessage;
+
+    @Locator("BUYBOX_BUY_NOW_BUTTON_TEXT")
+    private static BasePageElement buyNowButtonText;
+
+    @Locator("MEDIA_MATRIX_UNSELECTED_BINDING")
+    private static BasePageElement mediaMatrixUnselectedBinding;
+
+    @Locator("MEDIA_MATRIX_SELECTED_BINDING")
+    private static BasePageElement mediaMatrixSelectedBinding;
+
+    @Locator("ADD_TO_CART_BUTTON_POPOVER")
+    private static BasePageElement addToCartButtonPopOver;
+
+    @Locator("MEDIA_MATRIX_SELECTED_BINDING_PRICE")
+    private static BasePageElement mediaMatrixSelectedBindingPrice;
+
+    @Locator("BUYBOX_PRICE")
+    private static BasePageElement buyBoxPrice;
+
+    @Locator("MANUFACTURER_WARRANTY_TEXT_INSIDE_AMAZON_GLOBAL_STORE_POPOVER")
+    private static BasePageElement manufacturerWarrentyTextInsideAmazonGlobalStorePopover;
+
+    // MBC Widget: "More Buying Choices" or "Other Sellers on Amazon"
+    @Locator("MBC_OFFER_SHIPPING_MESSAGE_BY_INDEX")
+    private static BasePageElement mbcOfferShippingMessageByIndex;
+
+    // when DP image is clicked and Image opens in Immersive view.
+    @Locator("DETAIL_PAGE_IMAGE_IMMERSIVE_VIEW_CONTAINER")
+    private static BasePageElement detailPageImageImmersiveViewContainer;
+
+    // Immersive Image view has close button.
+    @Locator("DETAIL_PAGE_IMAGE_IMMERSIVE_VIEW_CLOSE_BUTTON")
+    private static BasePageElement detailPageImageImmersiveViewCloseButton;
+
+    @Locator("MBC_OFFER_SELLER_NAME_TEXT_BY_INDEX")
+    private static BasePageElement mbcOfferSellerNameTextByIndex;
+
+    @Locator("SEE_ALL_BUYING_CHOICES_BUTTON")
+    private static BasePageElement seeAllBuyingChoicesButton;
+
+    @Locator("BUYBOX_STOCK_AVAILABILITY_MESSAGE")
+    private static BasePageElement buyBoxStockAvailabilityMessage;
+
+    @Locator(value = "DATE_FIRST_AVAILABLE_LABEL", stringId = "dp-date-first-available")
+    private static BasePageElement dateFirstAvailableLabel;
+
+    @Locator("DELIVER_TO_ADDRESS_NAME_AND_LOCATION_IN_BUYBOX")
+    private static BasePageElement deliverToAddressNameAndLocationInBuybox;
+
+    @Locator("ADD_TO_WISH_LIST_BUTTON_IN_BUYBOX")
+    private static BasePageElement addToWishListButtonInBuybox;
+
+    @Locator("AOD_LINK_PRICE_UNDER_DETAIL_PAGE_CENTER")
+    private static BasePageElement aodLinkPriceUnderDetailPageCenter;
+
+    @Locator("AOD_LINK_PRICE_UNDER_BUYBOX")
+    private static BasePageElement aodLinkPriceUnderBuybox;
+
+    @Locator("MBC_GLOBAL_STORE_BADGE")
+    private static BasePageElement mbcGlobalStoreBadge;
+
+    @Locator("AGS_MBC_SHIPPING_FEE_OR_FREE_DELIVERY_MESSAGE")
+    private static BasePageElement agsMBCShippingFeeOrFreeDeliveryMessage;
+
+    @Locator("MBC_IMPORT_FEES_DEPOSIT_TEXT")
+    private static BasePageElement mbcImportFeesDepositText;
+
+    @Locator("FREE_RETURNS_MESSAGE_IN_PRICE_BLOCK")
+    private static BasePageElement freeReturnsMessageInPriceBlock;
+
+    @Locator("FREE_RETURNS_MESSAGE_IN_BUYBOX")
+    private static BasePageElement freeReturnsMessageInBuybox;
+
+    @Locator("FREE_RETURNS_BADGE_POPOVER")
+    private static BasePageElement freeReturnsBadgePopover;
+
+    @Locator("FREE_RETURNS_BADGE_POPOVER_CONTENT")
+    private static BasePageElement freeReturnsBadgePopoverContent;
+
+    @Locator("FREE_RETURNS_BADGE_POPOVER_CONTENT_EXPANDER_TITLE")
+    private static BasePageElement freeReturnsBadgePopoverContentExpanderTitle;
+
+    @Locator("FREE_RETURNS_BADGE_POPOVER_CONTENT_EXPANDER_INSTRUCTIONS")
+    private static BasePageElement freeReturnsBadgePopoverContentExpanderInstructions;
+
+    @Locator("FREE_RETURNS_BADGE_POPOVER_CONTENT_URL")
+    private static BasePageElement freeReturnsBadgePopoverContentUrl;
+
+    @Locator("EXPORTS_UNDELEVERABLE_MESSAGE_IN_BUYBOX")
+    private static BasePageElement exportsUndeliverableMessageInBuyBox;
+
+    @Locator("ITEM_QUANTITY_DROPDOWN")
+    private static BasePageElement itemQuantityDropdown;
+
+    @Locator("ACCORDION_BUYBOX")
+    private static BasePageElement accordionBuyBox;
+
+    @Locator("BUYBOX_BUY_NEW_OPTION")
+    private static BasePageElement buyBoxNewOption;
+
+    @Locator("BUYBOX_BUY_USED_OPTION")
+    private static BasePageElement buyBoxUsedOption;
+
+    @Locator("ELIGIBILITY_MESSAGE_ON_BUYBOX")
+    private static BasePageElement eligibilityMessageOnBuybox;
+
+    @Locator("FREE_SHIPPING_MESSAGE_IN_BUYBOX")
+    private static BasePageElement freeShippingMessageInBuyBoxInNonUSMP;
+
+    @Locator("FREE_SHIPPING_MESSAGE_IN_MAIN_PRICE_SECTION")
+    private static BasePageElement freeShippingMessageInMainSectionInNonUSMP;
+
+    @Locator("CREATE_LIST_BUTTON_IN_DETAIL_PAGE")
+    private static BasePageElement createListButton;
+
+    @Locator("ITEM_ADDED_TO_WISHLIST_POPUP_MESSAGE")
+    private static BasePageElement messageInDefaultWishlistPopup;
+
+    @Locator("ITEM_ADDED_TO_NEW_WISHLIST_POPUP_MESSAGE")
+    private static BasePageElement messageInNewWishlistPopup;
+
+    @Locator("LIST_PRICE_VALUE")
+    private static BasePageElement listPrice;
+
+    @Locator("SAVE_PRICE_VALUE")
+    private static BasePageElement savePrice;
+
+    @Locator("LIST_PRICE_LABEL")
+    private static BasePageElement listPriceLabel;
+
+    @Locator("SAVE_PRICE_LABEL")
+    private static BasePageElement savePriceLabel;
+
+    @Locator("SAVE_PERCENTAGE_VALUE")
+    private static BasePageElement savePercentageValue;
+
+    @Locator("BUY_BOX_AMAZON_GLOBAL_STORE_IMPORTS_TEXT")
+    private static BasePageElement buyboxAGSImportsText;
+
+    @Locator("BUY_BOX_AGS_ADDITIONAL_TERMS_LINK")
+    private static BasePageElement buyboxAdditionalTermsLink;
+
+    @Locator("INTERNATIONAL_PRODUCT_LINK_INSIDE_MBC_POPOVER")
+    private static BasePageElement internationalProductInsideMBCPopover;
+
+    @Locator("SOLD_BY_SELLER_NAME_IN_MBC_POPOVER")
+    private static BasePageElement soldBySellerNameInMBCPopover;
+
+    @Locator("DELIVERY_SPEED_LINK_IN_GS_LANDING_PAGE")
+    private static BasePageElement deliverySpeedLinkInGsLandingPage;
+
+    @Locator("SHIPPING_RATE_LINK_IN_MBC")
+    private static BasePageElement shippingRateLinkInMBC;
+
+    @Locator("RETURN_POLICY_LINK_IN_MBC")
+    private static BasePageElement returnPolicyLinkInMBC;
+
+    @Locator("GLOBAL_STORE_TERMS_AND_CONDITIONS_LINK_IN_MBC")
+    private static BasePageElement globalStoreTermsAndCOnditionsLinkInMBC;
+
+    @Locator("ABOUT_IFD_LINK_GS_LANDING_PAGE")
+    private static BasePageElement ifdLinkInGsLandingPage;
+
+    @Locator("RETURNS_SUPPORT_GS_LANDING_PAGE")
+    private static BasePageElement returnSupportLinkInGsLandingPage;
+
+    @Locator("CONDITION_OF_SALE_GS_LANDING_PAGE")
+    private static BasePageElement conditionOfSaletLinkInGsLandingPage;
+
+    @Locator("DEEP_CHECK_PROMISE_INFO_DEBUG_MSG")
+    private static BasePageElement deepCheckPromiseInfoDebugMsg;
+
+    @Locator("AGS_HOLIDAY_MESSAGE")
+    private static BasePageElement agsHolidayMessage;
+
+    @Locator("IFD_LINK_IN_MBC")
+    private static BasePageElement ifdLinkInMBC;
+
+    @Locator("PRIME_FREE_TRIAL_MESSAGE_IN_BUYBOX")
+    private static BasePageElement primefreetrialmessageinbuybox;
+
+    @Locator("PRIME_BADGE_IN_COMPARE_WITH_SIMILAR_ITEMS")
+    private static BasePageElement primeBadgeInCompareWithSimilarItems;
+
+    @Locator("PRIME_BADGE_IN_VARIATIONS")
+    private static BasePageElement primeBadgeInVariations;
+
+    @Locator("PRIME_BADGE_IN_MBCBLOCK")
+    private static BasePageElement primeBadgeInMbcblock;
+
+    @Locator("DP_SHARE_ICON")
+    private static BasePageElement dpShareIcon;
+
+    @Locator("DP_SHARE_FACEBOOK_ICON")
+    private static BasePageElement dpShareFacebookIcon;
+
+    @Locator("DP_SHARE_TWITTER_ICON")
+    private static BasePageElement dpShareTwitterIcon;
+
+    @Locator("DP_SHARE_PINTEREST_ICON")
+    private static BasePageElement dpSharePinterestIcon;
+
+    @Locator("BUYBOX_DEAL_PRICE_WIDGET")
+    private static BasePageElement buyboxDealPriceWidget;
+
+    @Locator("BUYBOX_REGULAR_PRICE_WIDGET_RADIO_BUTTON")
+    private static BasePageElement buyboxRegularPriceRadioButton;
+
+    @Locator("EAW_DATA_ASIN")
+    private static BasePageElement eawDataAsin;
+
+    @Locator("SELECTED_COLOR_NAME")
+    private static BasePageElement selectedColorName;
+
+    @Locator("AGS_DEEP_CHECK_PROMISE_PRIMARY_DELIVERY_DATE")
+    private static BasePageElement deepCheckPromisePrimaryDeliveryDate;
+
+    @Locator ("AGS_DEEP_CHECK_PROMISE_SECONDARY_DELIVERY_DATE")
+    private static BasePageElement deepCheckPromiseSecondaryDeliveryDate;
+
+    @Locator("SHIP_FROM_TEXT")
+    private static BasePageElement shipFromText;
+
+    @Locator("SOLD_BY_TEXT")
+    private static BasePageElement soldByText;
+
+    @Locator("SELLER_FULFILLMENT_MESSAGE_DETAIL_PAGE")
+    private static BasePageElement sellerFulfillmentMessageDetailPage;
+
+    @Locator("SHIP_FROM_SELLER_NAME")
+    private static BasePageElement shipFromSellerName;
+
+    @Locator("SOLD_BY_SELLER_NAME")
+    private static BasePageElement soldBySellerName;
+
+    @Locator("DELIVERY_PRICE_IN_DETAILPAGE_FOR_GS_OFFER")
+    private static BasePageElement deliveryPriceInDetailPageForGSOffer;
+
+    @Locator("BRAND_SHOWCASE_BAR")
+    private static BasePageElement brandShowcaseBar;
+
+
+    @Locator("EXPORTS_UNDELEVERABLE_MESSAGE_IN_PRICE_BLOCK")
+    private static BasePageElement exportsUndeliverableMessageInPriceBlock;
+
+    @Locator("ASIN_AVAILABILITY_TEXT")
+    private static BasePageElement asinAvailabilityText;
+
+    private DetailPage detailPage;
+
+    private HelpPage helpPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public DetailPageAboveTheFold(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Constructor with a driver instance and an ASIN url.
+     * @param driver the WebDriver instance.
+     * @param asinUrl the ASIN url to navigate.
+     */
+    public DetailPageAboveTheFold(WebDriver driver, String asinUrl) {
+        super(driver);
+        setPageurl(asinUrl);
+        navigateToPage();
+    }
+
+    /**
+     * Verify the page has all the expected fields
+     */
+    @Override
+    public void verifyCurrentPage() {
+    }
+
+    /**
+     * Get DetailPage model.
+     * @return DetailPage instance.
+     *
+     */
+    public DetailPage getDetailPage() {
+        if (detailPage == null) {
+            detailPage = new DetailPage(driver);
+        }
+        return detailPage;
+    }
+
+    /**
+     * Get HelpPage model.
+     * @return HelpPage instance.
+     *
+     */
+    public HelpPage getHelpPage() {
+        if (helpPage == null) {
+            helpPage = new HelpPage(driver);
+        }
+        return helpPage;
+    }
+
+    /**
+     * Verify and get brand byline below title info text.
+     * @return Brand Byline info text
+     */
+    public String getBrandBylineBelowTitleText() {
+        status.addIsDisplayed(brandBylineBelowTitle);
+        status.processStatus();
+        return brandBylineBelowTitle.getText();
+    }
+
+    /**
+     * Verify brand byline presence below title
+     * @return the presence
+     */
+    public boolean isBrandBylineBelowTitlePresent() {
+        return brandBylineBelowTitle.isPresent();
+    }
+
+    /**
+     * Verify Multiple brand byline presence below title
+     * @return the presence
+     */
+    public boolean isBrandByLineLinkPresent() {
+        if (byLineInfo.isPresent()) {
+            return true;
+        } else if (brandBylineBelowTitle.isPresent()) {
+            return true;
+        } else if (brandBylineAboveTitle.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Verify brand byline presence above title
+     * @return the presence
+     */
+    public boolean isBrandBylineAboveTitlePresent() {
+        return brandBylineAboveTitle.isPresent();
+    }
+
+    /**
+     * click "Brand Byline Below Title" link.
+     */
+    public void clickBrandBylineBelowTitle() {
+        brandBylineBelowTitle.waitForElementToBeEnabled();
+        brandBylineBelowTitle.click();
+    }
+
+    /**
+     * Verify and get brand byline above title info text.
+     * @return Brand Byline info text
+     */
+    public String getBrandBylineAboveTitleText() {
+        status.addIsDisplayed(brandBylineAboveTitle);
+        status.processStatus();
+        return brandBylineAboveTitle.getText();
+    }
+
+    /**
+     * click "Brand Byline Above Title" link.
+     */
+    public void clickBrandBylineAboveTitle() {
+        brandBylineAboveTitle.waitForElementToBeEnabled();
+        brandBylineAboveTitle.click();
+    }
+
+    /**
+     * Hover Main Product Image
+     */
+    public void hoverMainProductImage() {
+        mainProductImage.waitIsPresent();
+        mainProductImage.mouseOver();
+    }
+
+    /**
+     * Verify zoomed in Image present
+     * @return zoomed-in image presence
+     */
+    public boolean isZoomedInImagePresent() {
+        return zoomedInImage.isPresent();
+    }
+
+    /**
+     * get image caption text
+     * @return Image Caption text
+     */
+    public String getImageCaptionText() {
+        return imageCaption.getText();
+    }
+
+    /**
+     * Verify Video thumbnail in Alt image block is present.
+     * @return video thumbnail's presence
+     */
+    public boolean isVideoInAltImageBlockPresent() {
+        return videoThumbnailInAltImageBlock.isPresent();
+    }
+
+    /**
+     * Get image thumbnails from Alt Image block.
+     * @return a list of image thumbnails from Alt Image block.
+     */
+    public List<PageElement> getImageThumbnailFromAltImageBlock() {
+        List<PageElement> imageThumbnailList = imageThumbnailInAltImageBlock.getElements();
+        return imageThumbnailList;
+    }
+
+    /**
+     * Hover on image thumbnail from Alt Image block.
+     * @param imageIndex position of alt image thumbnail.
+     */
+    public void hoverOnImageThumbnailFromAltImageBlock(int imageIndex) {
+        status.addIsDisplayed(getImageThumbnailFromAltImageBlock().get(imageIndex));
+        status.processStatus();
+        getImageThumbnailFromAltImageBlock().get(imageIndex).mouseOver();
+    }
+
+    /**
+     * verify image is selected in image thumbnail.
+     * @param imageIndex position of alt image thumbnail.
+     * @return boolean value as per selection of image thumbnail.
+     */
+    public boolean verifyImageThumbnailFromAltImageBlockIsSelected(int imageIndex) {
+        return getImageThumbnailFromAltImageBlock().get(imageIndex).getElement()
+                .getAttribute("class").contains("a-button-selected");
+    }
+
+    /**
+     * Get selected image count from Main image block.
+     * @return count of selected image from Main image block.
+     */
+    public int getSelectedImageCountFromMainImageBlock() {
+        int selectedImageCount = 0;
+        for (int i = 0; i < getImageThumbnailFromAltImageBlock().size(); i++) {
+            BasePageElement mainImageItemByIndex = new BasePageElement(driver,
+                    imagesInMainImageBlock.getName() + "_BY_INDEX_" + i,
+                    String.format(imagesInMainImageBlock.getXPath(), i));
+            if (mainImageItemByIndex.isPresent() &&
+                    (StringUtils.contains(mainImageItemByIndex.getElement().getAttribute("class"),
+                            "selected"))) {
+                selectedImageCount++;
+            }
+        }
+        return selectedImageCount;
+    }
+
+    /**
+     * verify image is selected in Main image block.
+     * @param imageIndex position of Main image.
+     * @return boolean value as per selection of Main image.
+     */
+    public boolean verifyImageFromMainImageBlockIsSelected(int imageIndex) {
+        BasePageElement mainImageItemByIndex = new BasePageElement(driver,
+                imagesInMainImageBlock.getName() + "_BY_INDEX_" + imageIndex,
+                String.format(imagesInMainImageBlock.getXPath(), imageIndex));
+        return mainImageItemByIndex.getElement().getAttribute("class").contains("selected");
+    }
+
+    /**
+     * Get border color of selected image thumbnail.
+     * @param imageIndex position of alt image thumbnail.
+     * @return border color of selected image thumbnail.
+     */
+    public String getImageBorderColorFromAltImageBlock(int imageIndex) {
+        return getImageThumbnailFromAltImageBlock().get(imageIndex).getElement().getCssValue("border-color");
+    }
+
+    /**
+     * Get image link of selected Main image.
+     * @param imageIndex position of Main image.
+     * @return image link of selected Main image.
+     */
+    public String getImageLinkFromMainImageBlock(int imageIndex) {
+        BasePageElement mainImageItemByIndex = new BasePageElement(driver,
+                imagesInMainImageBlock.getName() + "_BY_INDEX_" + imageIndex,
+                String.format(imagesInMainImageBlock.getXPath(), imageIndex) + "//img");
+        return mainImageItemByIndex.getElement().getAttribute("src");
+    }
+
+    /**
+     * verify Main image is selected on hovering color variation.
+     * @return boolean value as per selection of Main image on hovering color variation.
+     */
+    public boolean verifyMainImageOnHoveringColorVariationIsSelected() {
+        return mainImageOnHoveringColorVariation.getElement().getAttribute("class").contains("selected");
+    }
+
+    /**
+     * Get Main Image Link On Hovering Color Variation.
+     * @return image link of main image on hovering color variation.
+     */
+    public String getMainImageLinkOnHoveringColorVariation() {
+        BasePageElement mainImageOnHoveringColor = new BasePageElement(driver,
+                mainImageOnHoveringColorVariation.getName(),
+                mainImageOnHoveringColorVariation.getXPath() + "//img");
+        return mainImageOnHoveringColor.getElement().getAttribute("src");
+    }
+
+    /**
+     * Get Color Variation Index By Availability.
+     * @param availability of color variation.
+     * @return index of color variation By availability.
+     */
+    public int getColorVariationIndexByAvailability(String availability) {
+        int colorVariationIndex = -1;
+        for (int i = 0; i < getDetailPage().getColorNames().countElements(); i++) {
+            PageElement colorVariation = getDetailPage().getColorNames().getElements().get(i);
+            if (StringUtils.equals(availability, "available") &&
+                    StringUtils.equals(colorVariation.getElement().getAttribute("class"), "swatchAvailable")) {
+                colorVariationIndex = i;
+                break;
+            } else if (StringUtils.equals(availability, "unavailable") &&
+                    StringUtils.equals(colorVariation.getElement().getAttribute("class"), "swatchUnavailable")) {
+                colorVariationIndex = i;
+                break;
+            }
+        }
+        return colorVariationIndex;
+    }
+
+    /**
+     * Click main product image.
+     */
+    public void clickMainProductImage() {
+        mainProductImage.waitIsPresent();
+        mainProductImage.click();
+    }
+
+    /**
+     * Verify Alt Images is displayed in the image popup.
+     */
+    public void verifyAltImagesPresentInImagePopup() {
+        status.addIsDisplayed(altImagesInImagePopup);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Main Image is displayed in the image popup.
+     */
+    public void verifyMainImagePresentInImagePopup() {
+        status.addIsDisplayed(mainImageInImagePopup);
+        status.processStatus();
+    }
+
+    /**
+     * Verify variations is displayed in the image popup.
+     */
+    public void verifyVariationsPresentInImagePopup() {
+        status.addIsDisplayed(mainImageInImagePopup);
+        status.processStatus();
+    }
+
+    /**
+     * Get Product Title from the image popup.
+     * @return product title text from image popup.
+     */
+    public String getProductTitleTextFromImagePopup() {
+        status.addIsDisplayed(productTitleInImagePopup);
+        status.processStatus();
+        productTitleInImagePopup.waitForTextNotBlank(5);
+        return productTitleInImagePopup.getText();
+    }
+
+    /**
+     * Get Image count from Alt Images block.
+     * @return count value of alt images.
+     */
+    public int getImageCountFromAltImageBlock() {
+        int imageCount = getImageThumbnailFromAltImageBlock().size();
+        if (isVideoInAltImageBlockPresent()) {
+            imageCount += videoThumbnailInAltImageBlock.countElements();
+        }
+        return imageCount;
+    }
+
+    /**
+     * Verify back to results breadcrumb is displayed and clickable.
+     */
+    public void verifyBackToResultsBreadcrumbIsClickable() {
+        status.addIsEnabled(backToResultsBreadcrumb);
+        status.processStatus();
+    }
+
+    /**
+     * Get Back to results Breadcrumb text.
+     * @return text of back to results breadcrumb.
+     */
+    public String getBackToResultsBreadcrumbText() {
+        return backToResultsBreadcrumb.getText();
+    }
+
+    /**
+     * Get breadcrumb items count .
+     * @return count value of items in breadcrumb .
+     */
+    public int getBreadcrumbItemsCount() {
+        status.addIsDisplayed(breadcrumbCategories);
+        status.processStatus();
+        return breadcrumbCategories.countElements();
+    }
+
+    /**
+     * Get breadcrumb divider text.
+     * @param dividerIndex index of breadcrumb divider
+     * @return text value of breadcrumb divider.
+     */
+    public String getBreadcrumbDividerTextByIndex(int dividerIndex) {
+        return breadcrumbCategories.getElements().get(dividerIndex).getText();
+    }
+
+    /**
+     * Verify Breadcrumb Categories is displayed and clickable.
+     * @param categoryIndex index of breadcrumb categories
+     */
+    public void verifyBreadcrumbCategoriesIsClickable(int categoryIndex) {
+        status.addIsEnabled(breadcrumbCategories.getElements().get(categoryIndex));
+        status.processStatus();
+    }
+
+    /**
+     * click Video thumbnail in alt image block.
+     */
+    public void clickVideoThumbnailInAltImageBlock() {
+        videoThumbnailInAltImageBlock.waitForElementToBeEnabled();
+        videoThumbnailInAltImageBlock.clickAndWait(productTitleUnderVideoBlock);
+    }
+
+    /**
+     * Get Product Title under video section.
+     * @return product title text under video section.
+     */
+    public String getproductTitleUnderVideoSection() {
+        return productTitleUnderVideoBlock.getText();
+    }
+
+    /**
+     * Get videos count of the asin.
+     * @return count of total videos present.
+     */
+    public int getVideosCount() {
+        return productTitleNearVideoThumbnail.countElements();
+    }
+
+    /**
+     * Select video and get Product Title near video thumbnail.
+     * @param videoIndex index of video to be selected.
+     * @return product title text near video thumbnail.
+     */
+    public String selectVideoByIndexAndGetProductTitleNearVideoThumbnail(int videoIndex) {
+        productTitleNearVideoThumbnail.getElements().get(videoIndex).clickAndWait(productTitleUnderVideoBlock);
+        return productTitleNearVideoThumbnail.getElements().get(videoIndex).getText();
+    }
+
+    /**
+     * Verify and get byline info text.
+     * @return Brand Byline info text
+     */
+    public String getBylineText() {
+        status.addIsDisplayed(byLineInfo);
+        status.processStatus();
+        return byLineInfo.getText();
+    }
+
+    /**
+     * Get Brand name text from byline info.
+     * @param byLinePosition Byline info position with respect to title.
+     * 'byLinePosition' parameter can be null if the position of byline is irrelevant to the testcase.
+     * @return Brand Name text.
+     */
+    public String getBrandNameFromByline(String byLinePosition) {
+        String brandName = "";
+        if (byLinePosition != null && byLinePosition.equals("above title")) {
+            brandName = getBrandBylineAboveTitleText().split(":")[1].trim();
+        } else if (byLinePosition != null && byLinePosition.equals("below title")) {
+            brandName = getBrandBylineBelowTitleText().split(":")[1].trim();
+        } else {
+            brandName = getBylineText().split(":")[1].trim();
+        }
+        return brandName;
+    }
+
+    /**
+     * Click image thumbnail from Alt Image block.
+     * @param imageIndex position of alt image thumbnail.
+     */
+    public void clickImageThumbnailFromAltImageBlock(int imageIndex) {
+        status.addIsDisplayed(getImageThumbnailFromAltImageBlock().get(imageIndex));
+        status.processStatus();
+        getImageThumbnailFromAltImageBlock().get(imageIndex).click();
+    }
+
+    /**
+     * Hover on video thumbnail from Alt Image block.
+     */
+    public void hoverOnVideoThumbnailFromAltImageBlock() {
+        status.addIsDisplayed(videoThumbnailInAltImageBlock);
+        status.processStatus();
+        videoThumbnailInAltImageBlock.mouseOver();
+    }
+
+    /**
+     * verify video thumbnail is selected in alt image block.
+     * @return boolean value as per selection of video thumbnail.
+     */
+    public boolean verifyVideoThumbnailFromAltImageBlockIsSelected() {
+        return videoThumbnailInAltImageBlock.getElement().getAttribute("class").contains("a-button-selected");
+    }
+
+    /**
+     * Verify Video slate image is displayed in main Image block.
+     * @return boolean value based on video slate image displayed.
+     */
+    public boolean isVideoSlateImagePresentInMainImageBlock() {
+        status.addIsDisplayed(videoSlateImageInMainImageBlock);
+        status.processStatus();
+        return StringUtils.contains(videoSlateImageInMainImageBlock.getElement().getAttribute("style"),
+                "z-index: 2");
+    }
+
+    /**
+     * Get position of alt image thumbnail.
+     * @param imageIndex index of image thumbnail.
+     * @return position of the image thumbnail.
+     */
+    public int[] getAltImagePositionByIndex(int imageIndex) {
+        return getElementPosition(getImageThumbnailFromAltImageBlock().get(imageIndex));
+    }
+
+    /**
+     * Get dimension of alt image thumbnail.
+     * @param imageIndex index of image thumbnail.
+     * @return dimension of the image thumbnail.
+     */
+    public int[] getAltImageDimensionByIndex(int imageIndex) {
+        return getElementDimension(getImageThumbnailFromAltImageBlock().get(imageIndex));
+    }
+
+    /**
+     * Get position of main image block.
+     * @param imageIndex index of main image block.
+     * @return position of the main image block.
+     */
+
+    public int[] getMainImagePositionByIndex(int imageIndex) {
+        BasePageElement mainImageItemByIndex = new BasePageElement(driver,
+                imagesInMainImageBlock.getName() + "_BY_INDEX_" + imageIndex,
+                String.format(imagesInMainImageBlock.getXPath(), imageIndex));
+        return getElementPosition(mainImageItemByIndex);
+    }
+
+    /**
+     * Get dimension of main image block.
+     * @param imageIndex index of main image block.
+     * @return dimension of the main image block.
+     */
+
+    public int[] getMainImageDimensionByIndex(int imageIndex) {
+        BasePageElement mainImageItemByIndex = new BasePageElement(driver,
+                imagesInMainImageBlock.getName() + "_BY_INDEX_" + imageIndex,
+                String.format(imagesInMainImageBlock.getXPath(), imageIndex));
+        return getElementDimension(mainImageItemByIndex);
+    }
+
+    /**
+     * Is color select present or not.
+     * @return is color select present or not.
+     */
+    public boolean isColorSelectPresent() {
+        return getDetailPage().getColorNames().isPresent();
+    }
+
+    /**
+     * Verify Color Variation is selected for given index.
+     * @param colorIndex of color variation.
+     * @return boolean value as per color variation selection.
+     */
+    public boolean isColorVariationSelectedByIndex(int colorIndex) {
+        PageElement colorVariation = getDetailPage().getColorNames().getElements().get(colorIndex);
+        return StringUtils.contains(colorVariation.getElement().getAttribute("class"), "swatchSelect");
+    }
+
+    /**
+     * Get total count of Color Variation.
+     * @return count of color variation .
+     */
+    public int getColorVariationCount() {
+        return getDetailPage().getColorNames().countElements();
+    }
+
+    /**
+     * Common method to get position of given element.
+     * @param element input element.
+     * @return position of the given element.
+     */
+    public int[] getElementPosition(PageElement element) {
+        int[] elementPosition = new int[2];
+        elementPosition[0] = element.getElement().getLocation().getX();
+        elementPosition[1] = element.getElement().getLocation().getY();
+        return elementPosition;
+    }
+
+    /**
+     * Common method to get dimension of given element.
+     * @param element input element.
+     * @return dimension of the given element.
+     */
+    public int[] getElementDimension(PageElement element) {
+        int[] elementDimension = new int[2];
+        elementDimension[0] = element.getElement().getSize().getHeight();
+        elementDimension[1] = element.getElement().getSize().getWidth();
+        return elementDimension;
+    }
+
+    /**
+     * Get the Jumpin free shipping message in buybox in Non US MP
+     * @return the text.
+     */
+    public String getFreeShippingMessageOnBuyboxInNonUSMP() {
+        return freeShippingMessageInBuyBoxInNonUSMP.getText();
+    }
+
+    /**
+     * Get the Jumpin free shipping message in Main Price Section in Non US MP
+     * @return the text.
+     */
+    public String getFreeShippingMessageInMainPriceSectionInNonUSMP() {
+        return freeShippingMessageInMainSectionInNonUSMP.getText();
+    }
+
+    /**
+     * Get the TLC message / CountryEligibleLabel presence in buybox
+     * @return the presence.
+     */
+    public boolean isCountryEligibleLabelOnBuyboxPresent() {
+        return getDetailPage().getCountryEligibleLabelOnBuybox().isPresent();
+    }
+
+    /**
+     * Get the CountryEligibleLabel presence next to main price
+     * @return the presence.
+     */
+    public boolean isCountryEligibleLabelNextToPricePresent() {
+        return getDetailPage().getCountryEligibleLabelNextToPrice().isPresent();
+    }
+
+    /**
+     * Click show more button in bullets
+     */
+    public void clickShowMoreButton() {
+        showMoreButton.click();
+    }
+
+    /**
+     * Get 'show more' bullets points
+     * @return list of bullets
+     */
+    public List<String> getShowMoreBulletsList() {
+        List<String> bulletsList = new ArrayList<String>();
+        for (PageElement row : showMoreBulletsList.getElements()) {
+            bulletsList.add(row.getText());
+        }
+        return bulletsList;
+    }
+
+    /**
+     * Get the list rows in histogram displayed in customer review popover near title
+     * @return the list of rows displayed in histogram
+     */
+    public List<String> getCustomerReviewHistogramNearTitle() {
+        customerReviewIconPopup.clickAndWait(customerReviewHistogramNearTitle);
+        List<String> histogramRow = new ArrayList<String>();
+        for (PageElement row : customerReviewHistogramNearTitle.getElements()) {
+            histogramRow.add(row.getElement().getText());
+        }
+        return histogramRow;
+    }
+
+    /**
+     * Get text of Customer Review Star Ratings In Popup
+     * @return text
+     */
+    public String getCustomerReviewStarRatingsInPopupText() {
+        customerReviewIconPopup.clickAndWait(customerReviewStarRatingsInPopup);
+        return customerReviewStarRatingsInPopup.getText();
+    }
+
+    /**
+     * Get text of Customer Review Number of Ratings In Popup
+     * @return text
+     */
+    public String getCustomerReviewNumberOfRatingsInPopupText() {
+        customerReviewIconPopup.clickAndWait(customerReviewNumberOfRatingsInPopup);
+        return customerReviewNumberOfRatingsInPopup.getText();
+    }
+
+    /**
+     * click Byline link.
+     */
+    public void clickBylineInfo() {
+        byLineInfo.waitForElementToBeEnabled();
+        byLineInfo.click();
+    }
+
+    /**
+     * Verify author is present and get number of authors in Byline.
+     * @return count of authors.
+     */
+    public int verifyAuthorPresenceAndGetAuthorCountFromByline() {
+        status.addIsDisplayed(authorNameInByline);
+        status.processStatus();
+        return authorNameInByline.countElements();
+    }
+
+    /**
+     * Get name of Author in byline
+     * @param authorIndex index of author position.
+     * @return Author name
+     */
+    public String getAuthorNameInByline(int authorIndex) {
+        return authorNameInByline.getElements().get(authorIndex).getText();
+    }
+
+    /**
+     * Get contributor role in byline.
+     * @param contributorIndex index of contributor position.
+     * @return contributor role text.
+     */
+    public String getContributorRoleInByline(int contributorIndex) {
+        String contributorRole = contributorRoleInByline.getElements().get(contributorIndex).getText();
+        return StringUtils.substringBetween(contributorRole, "(", ")");
+    }
+
+    /**
+     * Verify Platform is present and get Platform in Byline.
+     * @return platform text.
+     */
+    public String verifyPlatformPresenceAndGetPlatformFromByline() {
+        status.addIsDisplayed(platformInByline);
+        status.processStatus();
+        return platformInByline.getText();
+    }
+
+    /**
+     * Verify See Similar Items button is present in the detail page for ineligible items.
+     */
+    public void verifySeeSimilarItemsButtonPresent() {
+        seeSimilarItemsButton.waitForElementToBeEnabled();
+        status.addIsDisplayed(seeSimilarItemsButton);
+        status.addIsEnabled(seeSimilarItemsButton);
+        status.processStatus();
+    }
+
+    /**
+     * Return if See Similar Items button is present in the detail page for ineligible items.
+     * @return presence
+     */
+    public boolean isSeeSimilarItemsButtonPresent() {
+        return seeSimilarItemsButton.isPresent();
+    }
+
+    /**
+     * Verify export alternative widget content (Title, image, cart button) present.
+     */
+    public void verifyExportAlternativeWidgetContent() {
+        status.addIsDisplayed(exportAlternativeWidgetAddToCartButton);
+        status.addIsEnabled(exportAlternativeWidgetAddToCartButton);
+        status.addIsDisplayed(exportAlternativeWidgetProductImage);
+        status.addIsDisplayed(exportAlternativeWidgetProductTitle);
+        status.addIsDisplayed(exportAlternativeWidgetRatingsStarink);
+        status.processStatus();
+    }
+
+    /**
+     * Get currency text of the AOD link in Detail Page Buybox or Detail Page Center under Product description
+     * @return the aod currency text
+     */
+    public String getCurrencyTextFromAODLinkAODLink() {
+        if (aodLinkPriceUnderDetailPageCenter.isPresent()) {
+            String aodLinkCurrencyText = aodLinkPriceUnderDetailPageCenter.getText();
+            return getSelectedCurrency(aodLinkCurrencyText);
+        } else if (aodLinkPriceUnderBuybox.isPresent()) {
+            String aodLinkCurrencyText = aodLinkPriceUnderBuybox.getText();
+            return getSelectedCurrency(aodLinkCurrencyText);
+        } else {
+            throw new NoSuchElementException("AOD link is not found in DetailPage");
+        }
+    }
+
+    /**
+     * Return AOD/OLP link presence
+     * @return the presence
+     */
+    public boolean isAODLinkPresent() {
+        return getDetailPage().getAODLink().isPresent();
+    }
+
+    /**
+     * Get currency of the passed text
+     * @param priceText input element.
+     * @return the currency
+     */
+    public String getSelectedCurrency(String priceText) {
+        return priceText.replaceAll("[0-9,.\\s]", "");
+    }
+
+    /**
+     * Get Manufacturer warranty Text in Amazon Global store section
+     * @return Manufacturer warranty text
+     */
+    public String getManufacturerWarrentyTextPresent()  {
+        return manufacturerWarrentyTextInsideAmazonGlobalStorePopover.getText();
+    }
+
+    /**
+     * Click See Similar Items button.
+     */
+    public void clickSeeSimilarItemsButton() {
+        seeSimilarItemsButton.waitForElementToBeEnabled();
+        seeSimilarItemsButton.clickAndWait(exportAlternativeWidgetAddToCartButton);
+    }
+
+    /**
+     * verify Similar Items Popover Heading.
+     * @param countryName countryName.
+     */
+    public void verifySimilarItemsPopoverHeading(String countryName) {
+        BasePageElement similarItemsShippingToText = new BasePageElement(driver,
+                similarItemsShippingToCountryNameText.getName() + "_BY_COUNTRY_NAME_" + countryName,
+                String.format(similarItemsShippingToCountryNameText.getXPath(), countryName));
+        status.addIsDisplayed(similarItemsShippingToText);
+        status.processStatus();
+    }
+
+    /**
+     * Click Add to Cart Button Inside Alternative Widget.
+     */
+    public void clickAddToCartButtonInsideExportAlternativeWidget() {
+        exportAlternativeWidgetAddToCartButton.waitForElementToBeEnabled();
+        exportAlternativeWidgetAddToCartButton.clickAndWaitForDisappear(exportAlternativeWidgetAddToCartButton);
+    }
+
+    /**
+     * Get Alternative Widget Content Data.
+     * @param colName here col name can be currency symbol or reviews.
+     * @param rowName row name e.g. shipping fee or price
+     * @return  popover data alternative widget popover data
+     */
+    public String getExportAlternativeWidgetData(String rowName, String colName) {
+        BasePageElement popoverContent = new BasePageElement(driver, "fieldName:" + rowName + "_colName:" + colName,
+                String.format(exportAlternativeWidgetTableContentDetails.getXPath(), rowName, colName));
+        return popoverContent.getText();
+    }
+
+    /**
+     * Get Unified Delivery Message
+     * @return udm delivery message
+     */
+    public String getUDMMessage() {
+        return udmMessage.getText();
+    }
+
+    /**
+     * Verify if Unified Delivery Message is present
+     * @return udm delivery message presence
+     */
+    public boolean isUDMMessagePresent() {
+        return udmMessage.isPresent();
+    }
+
+    /**
+     * Verify SNS Option is disabled.
+     */
+    public void verifySubscribeAndSaveOptionIsDisabled() {
+        status.addIsDisabled(subscribeAndSaveSection);
+        status.processStatus();
+    }
+
+    /**
+     * click No Thanks button in Attach Coverage flyout
+     */
+    public void clickNoThanksButtonInAttachCoverageFlyOut() {
+        attachCoverageNoThanksButton.waitForElementToBeEnabled();
+        attachCoverageNoThanksButton.clickAndWaitForDisappear(getDetailPage().getAddToCartButton());
+    }
+
+    /**
+     * click No Thanks button in Recommend With Device flyout
+     */
+    public void clickNoThanksButtonInRecommendWithDeviceFlyOut() {
+        recommendWithDeviceNoThanksButton.waitForElementToBeEnabled();
+        recommendWithDeviceNoThanksButton.click();
+    }
+
+    /**
+     * Verify attach coverage flyout is present.
+     * @return boolean value based on attach coverage flyout presence.
+     */
+    public boolean isAttachCoverageFlyoutPresent() {
+        return attachCoverageNoThanksButton.isPresent(5);
+    }
+
+    /**
+     * Verify Recommend with Device flyout is present.
+     * @return boolean value based on Recommend with Device flyout presence.
+     */
+    public boolean isRecommendWithDeviceFlyoutPresent() {
+        return recommendWithDeviceNoThanksButton.isPresent(5);
+    }
+
+    /**
+     * Verify age rating in Byline is present.
+     * @return boolean value based on age raing presence.
+     */
+    public boolean isAgeRatingInBylinePresent() {
+        return ageRatingInByline.isPresent();
+    }
+
+    /**
+     *  Verify BuyBox BuyNow ButtonText is present or not.
+     *  @return String value based on BuyNow button text presence.
+     */
+    public String getBuyNowButtonText() {
+        return buyNowButtonText.getText();
+    }
+
+    /**
+     *  Verify Media Matrix unselected binding is present or not.
+     *  @return String value based Media Matrix unselected binding presence.
+     */
+    public boolean isMediaMatrixUnselectedBindingPresent() {
+        return mediaMatrixUnselectedBinding.isPresent();
+    }
+
+    /**
+     *  Verify Media Matrix selected binding is present or not.
+     *  @return String value based Media Matrix selected binding presence.
+     */
+    public boolean isMediaMatrixSelectedBindingPresent() {
+        return mediaMatrixSelectedBinding.isPresent();
+    }
+
+    /**
+     * Verify AddToCart button popover is present.
+     * @return string value based on popover content presence.
+     */
+    public String getAddToCartPopOverText() {
+        addToCartButtonPopOver.waitForElementToBeEnabled();
+        return addToCartButtonPopOver.getText();
+    }
+
+    /**
+     * Verify MediaMatrix Binding Price is present.
+     * @return string value based on MediaMatrix Binding Price presence.
+     */
+    public String getMediaMatrixBindingPrice() {
+        return mediaMatrixSelectedBindingPrice.getText();
+    }
+
+    /**
+     * Verify BuyBox Price is present.
+     * @return string value based on BuyBox Price presence.
+     */
+    public String getBuyBoxPrice() {
+        return buyBoxPrice.getText();
+    }
+
+    /**
+     * Verify if Shipping Message is Present On MBC Widget- By Index.
+     * @param index of mbc offers as an integer value. (starting with 1, max supported 3 as of 10/17/2021).
+     * @return true if present else returns false.
+     */
+    public boolean isShippingMessagePresentOnMBCByIndex(int index) {
+        mbcOfferShippingMessageByIndex.waitIsPresent();
+        return new BasePageElement(driver,
+                String.format(mbcOfferShippingMessageByIndex.getName() + index),
+                String.format(mbcOfferShippingMessageByIndex.getXPath(), index)
+        ).isPresent();
+    }
+
+    /**
+     * Verify if Image is displayed in immersive view.
+     * @return true if present else returns false.
+     */
+    public boolean isImageImmersiveViewPresent() {
+        return detailPageImageImmersiveViewContainer.isPresent();
+    }
+
+    /**
+     * Verify Clicking close button in immersive view.
+     */
+    public void clickImageImmersiveCloseButton() {
+        detailPageImageImmersiveViewCloseButton.waitForElementToBeEnabled();
+        detailPageImageImmersiveViewCloseButton.click();
+    }
+    /**
+     * Method to Click promise message details link on MBC offer by index.
+     * @param index of mbc offers as an integer value. (starting with 1, max supported 3 as of 10/21/2021).
+     */
+    public void clickDetailsLinkOnMBCOfferByIndex(int index) {
+        new BasePageElement(driver,
+                String.format(mbcOfferShippingMessageByIndex.getName() + index),
+                String.format(mbcOfferShippingMessageByIndex.getXPath(), index) + "/a"
+        ).click();
+    }
+
+    /**
+     * Get Text for Seller Name Text in MBC Offers By Given Index.
+     * @param index of mbc offers as an integer value. (starting with 1, max supported 3 as of 10/21/2021).
+     * @return SoldBy- 'Seller' Text as 'String'
+     */
+    public String getSellerNameTextOnMBCOfferByIndex(int index) {
+        mbcOfferSellerNameTextByIndex.waitIsPresent();
+        return new BasePageElement(driver,
+                String.format(mbcOfferSellerNameTextByIndex.getName() + index),
+                String.format(mbcOfferSellerNameTextByIndex.getXPath(), index)
+        ).getText();
+    }
+
+    /**
+     * Verify 'SellAllBuyingChoices' button present.
+     */
+    public void verifySeeAllBuyingChoicesButtonPresent() {
+        status.addIsDisplayed(seeAllBuyingChoicesButton);
+        status.processStatus();
+    }
+
+    /**
+     * Check if 'SellAllBuyingChoices' button present.
+     * @return presence
+     */
+    public boolean isSeeAllBuyingChoicesButtonPresent() {
+        return seeAllBuyingChoicesButton.isPresent();
+    }
+
+    /**
+     * Click 'SellAllBuyingChoices' button.
+     */
+    public void clickSeeAllBuyingChoicesButton() {
+        seeAllBuyingChoicesButton.click();
+    }
+
+    /**
+     * Check if Stock Availability Message present in buybox.
+     * @return boolean: presence of Stock available status.
+     */
+    public boolean isBuyBoxStockAvailabilityMessagePresent() {
+        return buyBoxStockAvailabilityMessage.isPresent();
+    }
+
+    /**
+     * Gets Text from BuyBox Stock available status.
+     * @return String: Stock available status.
+     */
+    public String getBuyBoxStockAvailabilityMessage() {
+        return buyBoxStockAvailabilityMessage.getElement().getText();
+    }
+
+    /**
+     * Check if Date First Available Label present in product information.
+     * @return boolean: presence of Date First Available Label.
+     */
+    public boolean isDateFirstAvailableLabelPresent() {
+        return dateFirstAvailableLabel.isPresent();
+    }
+
+    /**
+     * Get Date First Available Value from product information.
+     * @return date first available value text.
+     */
+    public String getDateFirstAvailableValue() {
+        return new BasePageElement(driver, "DATE_FIRST_AVAILABLE_VALUE",
+                String.format(dateFirstAvailableLabel.getXPath() + "/following-sibling::*")).getText();
+    }
+
+    /**
+     * Get 'Deliver To Address Name And Location' text from Buybox section
+     * @return address name and location text.
+     */
+    public String getDeliverToAddressNameAndLocationTextFromBuybox() {
+        deliverToAddressNameAndLocationInBuybox.waitIsPresent();
+        return deliverToAddressNameAndLocationInBuybox.getText();
+    }
+
+    /**
+     * Verify the presence of 'Add to Wish List' button in buybox.
+     */
+    public void verifyAddToWishListButtonIsPresentInBuybox() {
+        status.addIsDisplayed(addToWishListButtonInBuybox);
+        status.processStatus();
+    }
+
+    /**
+     * Verify if Global Store Badge is present in MBC Block
+     * @return true if present else returns false.
+     */
+    public boolean isMbcGlobalStoreBadgePresent() {
+        scrollToElement(mbcGlobalStoreBadge);
+        return mbcGlobalStoreBadge.isPresent();
+    }
+
+    /**
+     * Verify if shipping message is displayed in MBC Block.
+     * @return true if present else returns false.
+     */
+    public boolean isAgsMbcShippingMessageFeeOrFreeDeliveryMessagePresent() {
+        scrollToElement(agsMBCShippingFeeOrFreeDeliveryMessage);
+        return agsMBCShippingFeeOrFreeDeliveryMessage.isPresent();
+    }
+
+    /**
+     * Verify if IFD message is displayed in MBC Block.
+     * @return true if present else returns false.
+     */
+    public boolean isMbcAGSImportFeesDepositTextPresent() {
+        return mbcImportFeesDepositText.isPresent();
+    }
+
+    /**
+     * Verify AGS MBC offers present
+     * @return true if present else returns false.
+     */
+    public boolean isAGSMbcOffersPresent() {
+        scrollToElement(agsMBCShippingFeeOrFreeDeliveryMessage);
+        return agsMBCShippingFeeOrFreeDeliveryMessage.isPresent();
+    }
+
+    /**
+     * Verify free returns message is present near price block in detail page.
+     * @return presence of free returns message near price block in DP.
+     */
+    public boolean isFreeReturnsMessageInPriceBlockPresent() {
+        return freeReturnsMessageInPriceBlock.isPresent();
+    }
+
+    /**
+     * Verify free returns message is present in buybox of detail page.
+     * @return presence of free return message in buybox of DP.
+     */
+    public boolean isFreeReturnsMessageInBuyBoxPresent() {
+        return freeReturnsMessageInBuybox.isPresent();
+    }
+
+    /**
+     * Click "Free Returns" Badge in Main price section
+     */
+    public void clickFreeReturnsMessageInPriceBlock() {
+        freeReturnsMessageInPriceBlock.clickAndWaitWithRetries(freeReturnsBadgePopover);
+    }
+
+    /**
+     * Click "Free Returns" Badge in Buybox
+     */
+    public void clickFreeReturnsMessageInBuyBox() {
+        freeReturnsMessageInBuybox.clickAndWait(freeReturnsBadgePopover);
+    }
+
+    /**
+     * Verify free returns popover is shown by verifying hidden tag is false
+     * @return presence of free returns popover
+     */
+    public boolean isFreeReturnsBadgePopoverPresent() {
+        return freeReturnsBadgePopover.getElement().getAttribute("aria-hidden").contains("false");
+    }
+
+    /**
+     * Gets free returns popover content
+     * @return list of content in the order: Main content, help page url, Instructions Expander Title and steps
+     * for instructions.
+     */
+    public List<String> getFreeReturnsBadgePopoverContent() {
+        List<String> freeReturnsPopoverContent = new ArrayList<String>();
+        freeReturnsPopoverContent.add(freeReturnsBadgePopoverContent.getText());
+        freeReturnsPopoverContent.add(freeReturnsBadgePopoverContentUrl.getText());
+        freeReturnsPopoverContent.add(freeReturnsBadgePopoverContentExpanderTitle.getText());
+        freeReturnsBadgePopoverContentExpanderTitle
+                .clickAndWaitWithRetries(freeReturnsBadgePopoverContentExpanderInstructions);
+        for (int i = 1; i <= freeReturnsBadgePopoverContentExpanderInstructions.countElements(); i++) {
+        freeReturnsPopoverContent.add(new BasePageElement(driver,
+                freeReturnsBadgePopoverContentExpanderInstructions.getName() + "_BY_INDEX_" + i,
+                String.format(freeReturnsBadgePopoverContentExpanderInstructions.getXPath() + '[' + i + ']'))
+                .getText());
+        }
+        return freeReturnsPopoverContent;
+    }
+
+    /**
+     * Verify undeliverable message is present in buybox of detail page.
+     * @return presence of free return message in buybox of DP.
+     */
+    public boolean isUndeliverableMessageInBuyBoxPresent() {
+        return exportsUndeliverableMessageInBuyBox.isPresent();
+    }
+
+   /**
+    * Verify item quantity drop-down is present in buybox.
+    * @return item quantity drop-down is present.
+    */
+   public boolean isItemQuantityDropdownPresent() {
+       return itemQuantityDropdown.isPresent();
+   }
+
+    /**
+     * Check if accordion buybox is present
+     * @return presence
+     */
+    public boolean isAccordionBuyboxPresent() {
+        return accordionBuyBox.isPresent();
+    }
+
+    /**
+     * Click the "buy new" option in buy box
+     */
+    public void clickBuyBoxNewOption() {
+        buyBoxNewOption.click();
+    }
+
+   /**
+    * Verify used option in buy box is disabled for international customers.
+    */
+   public void verifyBuyboxUsedOptionDisabled() {
+       status.addIsDisabled(buyBoxUsedOption);
+       status.processStatus();
+   }
+
+   /**
+    * Get Eligibility Message "This Item Ships to XX country" text from Buybox section
+    * @return Eligibility Message text.
+    */
+   public String getEligibilityMessageOnBuybox() {
+       eligibilityMessageOnBuybox.waitIsPresent();
+       return eligibilityMessageOnBuybox.getText();
+   }
+
+    /**
+     * Return if Eligibility Message "This Item Ships to XX country" text from Buybox section is present
+     * @return Eligibility Message text.
+     */
+    public boolean isEligibilityMessageOnBuyBoxPresent() {
+        return eligibilityMessageOnBuybox.isPresent();
+    }
+
+   /**
+    * Get 'exports Ineligible message' text from Buybox section
+    * @return 'exports Ineligible message' text.
+    */
+   public String getExportsIneligibleMessageFromBuybox() {
+       exportsUndeliverableMessageInBuyBox.waitIsPresent();
+       return exportsUndeliverableMessageInBuyBox.getText();
+   }
+
+   /**
+    * Method helps to verify if create list button present in detail page.
+    * @return create list button present or not.
+    */
+   public boolean isCreateListButtonPresent() {
+      return createListButton.isPresent(5);
+   }
+
+   /**
+    * Method helps to click and add item to new wish list from detail page.
+    */
+   public void clickAndAddItemToNewList() {
+      createListButton.clickAndWaitForDisappear(createListButton);
+      waitForPageToLoad();
+   }
+
+   /**
+    * Get Message from default 'Add to Wish List' popup.
+    * @return Message from default 'Add to Wish List' popup.
+    */
+   public String getMessageInDefaultWishlistPopup() {
+       status.addIsDisplayed(messageInDefaultWishlistPopup);
+       status.processStatus();
+       messageInDefaultWishlistPopup.waitForTextNotBlank(5);
+       return messageInDefaultWishlistPopup.getText();
+   }
+
+   /**
+    * Get Message from new 'Add to Wish List' popup.
+    * @return Message from new 'Add to Wish List' popup.
+    */
+   public String getMessageInNewWishlistPopup() {
+       messageInNewWishlistPopup.waitForElementToBeEnabled();
+       status.addIsDisplayed(messageInNewWishlistPopup);
+       status.processStatus();
+       messageInNewWishlistPopup.waitForTextNotBlank(5);
+       return messageInNewWishlistPopup.getText();
+   }
+
+    /**
+     * Verify List Price Value, Label and Save Price Value and Label Presents
+     *
+     */
+    public void verifyListPriceAndSavePriceContents() {
+        status.addIsDisplayed(listPrice);
+        status.addIsDisplayed(listPriceLabel);
+        status.addIsDisplayed(savePrice);
+        status.addIsDisplayed(savePriceLabel);
+        status.addIsDisplayed(savePercentageValue);
+        status.processStatus();
+    }
+
+    /**
+     * Check if AGS Imports Text is Present in Buybox.
+     * @return boolean: presence of AGS Imports Text status.
+     */
+    public boolean verifyBuyBoxAGSImportsTextPresent() {
+        buyboxAGSImportsText.waitForElementToBeEnabled();
+        return buyboxAGSImportsText.isPresent();
+    }
+
+    /**
+     * click Additional "Terms" link in Buybox.
+     */
+    public void clickAGSAdditionalTermsLink() {
+        buyboxAdditionalTermsLink.waitForElementToBeEnabled();
+        buyboxAdditionalTermsLink.click();
+    }
+
+    /**
+     * click "International Product" link inside MBC popover.
+     */
+    public void clickInternationalProductLinkInMBC() {
+        scrollToElement(mbcImportFeesDepositText);
+        mbcImportFeesDepositText.click();
+        internationalProductInsideMBCPopover.click();
+    }
+
+    /**
+     * click Sold by Seller name in MBC popover.
+     */
+    public void clickSellerNameLinkInMBCPopover() {
+        scrollToElement(mbcImportFeesDepositText);
+        mbcImportFeesDepositText.click();
+        soldBySellerNameInMBCPopover.click();
+    }
+
+   /**
+    * Click delivery speed link in GS landing page
+    */
+   public void clickdeliverySpeedLinkInGsLandingPage() {
+       deliverySpeedLinkInGsLandingPage.waitForElementToBeEnabled();
+       scrollToElement(deliverySpeedLinkInGsLandingPage);
+       deliverySpeedLinkInGsLandingPage.click();
+   }
+
+   /**
+    * Method helps to click the shipping rate link in MBC
+    */
+   public void clickShippingRateLinkInMBC() {
+       scrollToElement(mbcImportFeesDepositText);
+       mbcImportFeesDepositText.click();
+       shippingRateLinkInMBC.click();
+       waitForPageToLoad();
+   }
+
+   /**
+    * Method helps to click the Return Policy Link in MBC
+    */
+   public void clickReturnPolicyLinkInMBC() {
+       scrollToElement(mbcImportFeesDepositText);
+       mbcImportFeesDepositText.click();
+       returnPolicyLinkInMBC.click();
+       waitForPageToLoad();
+   }
+
+   /**
+    * Method helps to click the Global Store Link in MBC
+    */
+   public void clickGlobalStoreTermsAndConditionsLinkInMBC() {
+       scrollToElement(mbcImportFeesDepositText);
+       mbcImportFeesDepositText.click();
+       globalStoreTermsAndCOnditionsLinkInMBC.click();
+       waitForPageToLoad();
+   }
+
+   /**
+    * Click About IFD link in GS landing page
+    */
+   public void clickifdLinkInGsLandingPage() {
+       ifdLinkInGsLandingPage.waitForElementToBeEnabled();
+       ifdLinkInGsLandingPage.click();
+   }
+
+   /**
+    * Click Return support centre link in GS landing page
+    */
+   public void clickreturnSupportLinkInGsLandingPage() {
+       returnSupportLinkInGsLandingPage.waitForElementToBeEnabled();
+       returnSupportLinkInGsLandingPage.click();
+   }
+
+   /**
+    * Click conditions of sale or terms & condition link in GS landing page
+    */
+   public void clickconditionOfSaletLinkInGsLandingPage() {
+       conditionOfSaletLinkInGsLandingPage.waitForElementToBeEnabled();
+       conditionOfSaletLinkInGsLandingPage.click();
+   }
+
+    /**
+     * get Deep Check Promise Info text
+     * @return Deep Check Promise info
+     */
+    public String getDeepCheckPromiseInfoMsg() {
+        SleepUtil.sleep(3000);
+        return deepCheckPromiseInfoDebugMsg.getText();
+    }
+
+    /**
+     * Verify AGS Holiday Message Present
+     * @param holidayMessageString Holiday Message to Pass
+     * @return true if Holiday Message Present
+     */
+    public boolean isAGSHolidayMessagePresent(String holidayMessageString) {
+        SleepUtil.sleep(3000);
+        return new BasePageElement(driver,
+                String.format(agsHolidayMessage.getName() + holidayMessageString),
+                String.format(agsHolidayMessage.getXPath(), holidayMessageString)
+        ).isPresent();
+    }
+
+   /**
+   * Method to get the IFD Link In MBC.
+   * @return IFD Link
+   */
+   public String getIFDLinkInMBC() {
+   return ifdLinkInMBC.getElement().getAttribute("href");
+   }
+
+   /**
+    * Verify prime badge absent in compare with similar items widget.
+    */
+   public void verifyPrimeBadgeAbsentInCompareWithSimilarItemsWidget() {
+       status.addIsHiddenOrMissing(primeBadgeInCompareWithSimilarItems);
+       status.processStatus();
+   }
+
+    /**
+     * Verify prime badge absent in Variations options in twister ASINs
+     */
+    public void verifyPrimeBadgeAbsentInVariationASINs() {
+        status.addIsHiddenOrMissing(primeBadgeInVariations);
+        status.processStatus();
+    }
+
+   /**
+    * Helps to Identify prime badge in mbc block is Present.
+    *
+    * @return boolean representing presence of prime badge.
+    */
+   public boolean isPrimeBadgeInMbcblockPresent() {
+       return primeBadgeInMbcblock.isPresent();
+   }
+
+   /**
+    * Method to get prime free trial message in buy box
+    * @return prime free trial message in buy box
+    */
+   public String getPrimeFreeTrialMessageInBuybox() {
+   primefreetrialmessageinbuybox.waitForElementToBeEnabled();
+   return primefreetrialmessageinbuybox.getText();
+   }
+
+   /**
+    * Verify and click on Facebook share icon.
+    */
+   public void clickOnShareFacebookIcon() {
+       status.addIsDisplayed(dpShareIcon);
+       dpShareIcon.click();
+       status.addIsDisplayed(dpShareFacebookIcon);
+       status.processStatus();
+       dpShareFacebookIcon.click();
+   }
+
+   /**
+    * Verify and click on on Twitter icon.
+    */
+   public void clickOnShareTwitterIcon() {
+       status.addIsDisplayed(dpShareIcon);
+       dpShareIcon.click();
+       status.addIsDisplayed(dpShareTwitterIcon);
+       status.processStatus();
+       dpShareTwitterIcon.click();
+   }
+
+   /**
+    * Verify and click on Pinterest icon.
+    */
+   public void clickOnSharePinterestIcon() {
+       status.addIsDisplayed(dpShareIcon);
+       dpShareIcon.click();
+       status.addIsDisplayed(dpSharePinterestIcon);
+       status.processStatus();
+       dpSharePinterestIcon.click();
+   }
+
+    /**
+     * Click Separate Terms link in Amazon Global store section.
+     */
+    public void clickSeparateTermsLink() {
+        getDetailPage().getClickSeparateTermsInsideAmazonGlobalStorePopover()
+                .clickAndWait(getHelpPage().getHelpPageContent());
+    }
+
+    /**
+     * Helps to identify Deal price widget present in buybox.
+     *
+     * @return boolean representing presence of Deal price widget.
+     */
+    public boolean isBuyboxDealPriceWidgetPresent() {
+        return buyboxDealPriceWidget.isPresent();
+    }
+
+    /**
+     * click Regular price radio button to select Radio button.
+     */
+    public void clickRegularPriceRadioButton() {
+        buyboxRegularPriceRadioButton.waitForElementToBeEnabled();
+        buyboxRegularPriceRadioButton.click();
+    }
+
+    /**
+     * Get ASIN Value from the EAW popup
+     * @return the asin Value.
+     */
+    public String getAsinValueFromEAW() {
+        waitForPageToLoad();
+        return eawDataAsin.getValue("data-asin");
+    }
+
+    /**
+     * Get the 'Selected Color Name' text.
+     * @return 'Selected Color Name' Text
+     */
+    public String getSelectedColorName() {
+        selectedColorName.waitIsPresent();
+        return selectedColorName.getText();
+    }
+
+    /**
+     * Verify DCP primary delivery date is present
+     * @return true if present, or else return false
+     */
+    public boolean isDCPPrimaryDeliveryDateIsPresent() {
+        deepCheckPromisePrimaryDeliveryDate.waitIsPresent();
+        return deepCheckPromisePrimaryDeliveryDate.isPresent();
+    }
+
+    /**
+     * Verify DCP secondary date is present
+     * @return true if present or else return false
+     */
+    public boolean isDCPSecondaryDeliveryDateIsPresent() {
+        deepCheckPromiseSecondaryDeliveryDate.waitIsPresent();
+        return deepCheckPromiseSecondaryDeliveryDate.isPresent();
+    }
+
+    /**
+     * Method to get Deep Check Promise primary delivery date count in detail page
+     * @return Duplicate deep check promise count
+     */
+    public int getDCPPrimaryDeliveryDateCountInDetailPage() {
+        return deepCheckPromisePrimaryDeliveryDate.getElements().size();
+    }
+
+    /**
+     * Method to get Deep Check Promise secondary delivery date count in detail page
+     * @return Duplicate deep check promise count
+     */
+    public int getDCPSecondaryDeliveryDateCountInDetailPage() {
+        return deepCheckPromiseSecondaryDeliveryDate.getElements().size();
+    }
+
+   /**
+    * Verify Seller Fulfillment Message Block is present.
+    * @return Seller Fulfillment Message Block is present
+    */
+   public boolean isSellerFulfillmentMessageBlockIsPresent() {
+       return sellerFulfillmentMessageDetailPage.isPresent();
+   }
+
+   /**
+   * Get Seller Fulfillment Ship From text.
+   * @return Seller Fulfillment Ship From text.
+   */
+  public String getShipFromTextOfFulfillmentMessage() {
+      return shipFromText.getText();
+   }
+
+  /**
+   * Get Seller Fulfillment sold by Seller Name value.
+   * @return Seller Fulfillment sold by Seller Name value.
+   */
+  public String getSellerNameFromFulfillmentMessage() {
+      return soldBySellerName.getText();
+  }
+
+   /**
+   * Get Ship From Seller Name value.
+   * @return Seller Fulfillment Ship From Seller Name value.
+   */
+  public String getShipFromNameOfFulfillmentMessage() {
+      return shipFromSellerName.getText();
+   }
+
+   /**
+    * Get Seller Fulfillment Sold By text.
+    * @return Seller Fulfillment Sold By text.
+    */
+   public String getSoldByTextOfFulfillmentMessage() {
+       return soldByText.getText();
+   }
+
+   /**
+    * Get Seller Fulfillment Message.
+    * @return Seller Fulfillment Message text.
+    */
+   public String getSellerFulfillmentMessageText() {
+       return sellerFulfillmentMessageDetailPage.getText();
+   }
+
+   /**
+    * Get Delivery price in detail page for GS offer
+    * @param sellerName of the global store under test.
+    * @return Delivery price
+    */
+   public String getDeliveryPriceForGlobalStoreOffer(String sellerName) {
+       deliveryPriceInDetailPageForGSOffer.waitIsPresent();
+       return new BasePageElement(driver, deliveryPriceInDetailPageForGSOffer.getName(),
+               String.format(deliveryPriceInDetailPageForGSOffer.getXPath(), sellerName)).getText();
+   }
+
+    /**
+     * Verify Brand showcase bar is present
+     * @return true if present, or else return false
+     */
+    public boolean isBrandShowcaseBarPresent() {
+        brandShowcaseBar.waitIsPresent();
+        return brandShowcaseBar.isPresent();
+    }
+
+    /**
+     * Verify undeliverable message is present in price block section of detail page.
+     * @return true if present, or else return false.
+     */
+
+    public boolean isUndeliverableMessageInPriceBlockPresent() {
+        return exportsUndeliverableMessageInPriceBlock.isPresent();
+    }
+
+    /**
+     * To get the availability text  color in detail page.
+     * @return Boolean if the availability element has green color
+     */
+    public boolean verifyAsinAvailabilityTextColor() {
+        return asinAvailabilityText.getElement().getCssValue("color").equals("rgba(0, 118, 0, 1)");
+    }
+    /**
+     * To get the availability text of detail page.
+     * @return String text of availability element
+     */
+    public String getAsinAvailabilityText() {
+        asinAvailabilityText.doesExists();
+        return asinAvailabilityText.getText();
+    }
+}
