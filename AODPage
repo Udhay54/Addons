@@ -1,0 +1,693 @@
+package com.amazon.aeeqa.ui.pagemodels.aod;
+
+import com.amazon.aeeqa.utils.SleepUtil;
+import java.util.List;
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.testasins.Marketplace;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+
+/**
+ * All Offers Display Page Model.
+ *
+ * @author sresgm
+ */
+@PageName("aod")
+public class AODPage extends BasePageModel {
+
+    @Locator("PRIME_BADGE_FOR_GLOBAL_STORE_OFFER")
+    private static BasePageElement primeBadgeForGlobalStoreOffer;
+
+    @Locator("DELIVERY_FEE_FOR_GLOBAL_STORE_OFFER")
+    private static BasePageElement deliveryFeeForGlobalStoreOffer;
+
+    @Locator("UDM_MESSAGE_FOR_GLOBAL_STORE_OFFER")
+    private static BasePageElement udmMessageForGlobalStoreOffer;
+
+    @Locator("OFFER_PRICE_FOR_GLOBAL_STORE_OFFER")
+    private static BasePageElement offerPriceForGlobalStoreOffer;
+
+    @Locator("AOD_OFFERS_PRICE")
+    private static BasePageElement aodOffersPrice;
+
+    @Locator("AOD_OFFERS_PRICE_CURRENCY_SYMBOL")
+    private static BasePageElement aodOffersPriceCurrencySymbol;
+
+    @Locator("AOD_ITEM_CONDITION")
+    private static BasePageElement aodItemCondition;
+
+    @Locator("AOD_FILTER_REFINEMENT")
+    private static BasePageElement aodFilterRefinement;
+
+    @Locator("AOD_FILTER_DROPDOWN_BUTTON")
+    private static BasePageElement aodFilterDropdownButton;
+
+    @Locator("AOD_ADD_TO_CART_BUTTON")
+    private static BasePageElement aodAddToCartButton;
+
+    @Locator("AOD_PRIME_BADGE")
+    private static BasePageElement aodPrimeBadge;
+
+    @Locator("AOD_DELIVERY_PROMISE_TEXT")
+    private static BasePageElement aodDeliveryPromiseText;
+
+    @Locator("AOD_OFFERS_SHIPPING_FEE")
+    private static BasePageElement aodOffersShippingFee;
+
+    @Locator("AOD_PRIME_FILTER_REFINEMENT")
+    private static BasePageElement aodPrimeFilterRefinement;
+
+    @Locator("AOD_PRODUCT_TITLE")
+    private static BasePageElement aodProductTitle;
+
+    @Locator("OFFER_ADDED_TO_CART_MESSAGE")
+    private static BasePageElement offerAddedToCartMessage;
+
+    @Locator("AOD_PINNED_OFFER_PRICE")
+    private static BasePageElement aodPinnedOfferPrice;
+
+    @Locator("AOD_PINNED_OFFER_ADD_TO_CART_BUTTON")
+    private static BasePageElement aodPinnedOfferAddToCartButton;
+
+    @Locator("AOD_PINNED_OFFER_DELIVERY_PROMISE_TEXT")
+    private static BasePageElement aodPinnedOfferDeliveryPromiseText;
+
+    @Locator("AOD_AMAZON_GLOBAL_SELLER_NAME")
+    private static BasePageElement aodAmazonGlobalSellerName;
+
+    @Locator("PINNED_OFFER_SHOW_MORE_LINK")
+    private static BasePageElement pinnedOfferShowMoreLink;
+
+    @Locator("AOD_INTERNATIONAL_PRODUCTS_LINK")
+    private static BasePageElement aodInternationalProductsLink;
+
+    @Locator("AOD_PINNED_OFFER_MORE_LINK")
+    private static BasePageElement aodPinnedOfferMoreLink;
+
+    @Locator("AOD_LEARN_MORE_LINK")
+    private static BasePageElement aodLearnMoreLink;
+
+    @Locator(value = "AOD_OFFERS_ADD_TO_CART_BUTTON", stringId = "add_to_cart")
+    private static BasePageElement aodOffersAddToCartButton;
+
+    @Locator(value = "COSTS_INCLUDE_IMPORTS_AND_CUSTOMS_TEXT", stringId = "aod-ags-price-include-imports-customs")
+    private static BasePageElement costIncludeImportsAndCustomsText;
+
+    @Locator("AGS_SECTION_BULLET_POINTS")
+    private static BasePageElement agsSectionBulletpoints;
+
+    @Locator("AOD_NEW_ITEM_CONDITION_FILTER_REFINEMENT")
+    private static BasePageElement aodNewItemConditionFilterRefinement;
+
+    @Locator("AOD_OFFERS_SELLER_NAME")
+    private static BasePageElement aodOffersSellerName;
+
+    @Locator("AOD_OFFERS_DISPATCHES_FROM")
+    private static BasePageElement aodOffersDispatchesFrom;
+
+    @Locator("AOD_FREE_DELIVERY_FILTER_REFINEMENT")
+    private static BasePageElement aodFreeDeliveryFilterRefinement;
+
+    @Locator("AOD_CLEAR_ALL_FILTERS")
+    private static BasePageElement aodClearAllFilters;
+
+    @Locator("AOD_FREE_DELIVERY_FILTER_LABEL")
+    private static BasePageElement aodFreeDeliveryFilterLabel;
+
+    @Locator("AOD_PRIME_FILTER_LABEL")
+    private static BasePageElement aodPrimeFilterLabel;
+
+    @Locator("AOD_FILTER_CHECKBOXES")
+    private static BasePageElement aodFilterCheckboxes;
+
+    @Locator("AOD_OFFERS")
+    private static BasePageElement aodOffers;
+
+    @Locator("AOD_STICKY_PINNED_OFFER")
+    private static BasePageElement aodStickyPinnedOffer;
+
+    @Locator("AOD_STICKY_PINNED_OFFER_ADD_TO_CART_BUTTON")
+    private static BasePageElement aodStickyPinnedOfferAddToCartButton;
+
+    @Locator("AOD_STICKY_PINNED_OFFER_DELIVERY_PROMISE_MESSAGE")
+    private static BasePageElement aodStickyPinnedOfferDeliveryPromiseMessage;
+
+    @Locator("AOD_FREE_SHIPPING_MESSAGE_FOR_GLOBAL_STORE")
+    private static BasePageElement  freeShippingMessageAodForGlobalStore;
+
+    @Locator("DEEP_CHECK_PROMISE_IN_AOD")
+    private static BasePageElement deepCheckPromiseAodForGlobalStore;
+
+    @Locator("AOD_SHIPPING_FEE_PROMISE_TEXT")
+    private static BasePageElement shippingFeeAODForGlobalStore;
+
+    @Locator("SHIP_FROM_AOD_PINNED_OFFER")
+    private static BasePageElement shipFromAodPinnedOffer;
+
+    @Locator("SOLD_BY_AOD_PINNED_OFFER")
+    private static BasePageElement soldByAodPinnedOffer;
+
+    @Locator("SOLD_BY_MESSAGE_AOD_OFFERS")
+    private static BasePageElement soldByMessageAodOffers;
+
+    @Locator("SHIPS_FROM_MESSAGE_AOD_OFFERS")
+    private static BasePageElement shipsFromMessageAodOffers;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public AODPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        aodProductTitle.waitIsPresent();
+        status.addIsDisplayed(aodProductTitle);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Prime Badge present for Global Store offer.
+     * @param sellerName of the global store under test.
+     * @return boolean of prime badge's presence
+     */
+    public boolean verifyPrimeBadgeForGlobalStoreOfferIsPresent(String sellerName) {
+        return new BasePageElement(driver, primeBadgeForGlobalStoreOffer.getName(),
+                String.format(primeBadgeForGlobalStoreOffer.getXPath(), sellerName)).isPresent();
+    }
+
+    /**
+     * Get Delivery Fee(or FREE Shipping) for Global Store offer.
+     * @param sellerName of the global store under test.
+     * @return Delivery Fee(or FREE Shipping) text.
+     */
+    public String getDeliveryFeeForGlobalStoreOffer(String sellerName) {
+        deliveryFeeForGlobalStoreOffer.waitIsPresent();
+        return new BasePageElement(driver, deliveryFeeForGlobalStoreOffer.getName(),
+                String.format(deliveryFeeForGlobalStoreOffer.getXPath(), sellerName)).getText();
+    }
+
+    /**
+     * Get the pricing part of UDM Message for Global Store offer
+     * @param sellerName of the global store under test.
+     * @return the text.
+     */
+    public String getShippingPriceFromUDMMessageForGlobalStoreOffer(String sellerName) {
+        BasePageElement udmMessageForGlobalStoreOfferElement =
+                new BasePageElement(driver, udmMessageForGlobalStoreOffer.getName(),
+                String.format(udmMessageForGlobalStoreOffer.getXPath(), sellerName));
+        udmMessageForGlobalStoreOfferElement.waitIsPresent();
+        return udmMessageForGlobalStoreOfferElement.getElement().getAttribute("data-csa-c-delivery-price");
+    }
+
+    /**
+     * Method to get the AOD Offer Price for Global Store offer.
+     * @param sellerName of the global store under test.
+     * @return aod offer price
+     */
+    public String getAODOfferPriceForGlobalStoreOfferIsPresent(String sellerName) {
+        String aodOfferPrice = "";
+        StringBuffer stringBuffer = new StringBuffer();
+        BasePageElement aodOfferPriceForAGS = new BasePageElement(driver, offerPriceForGlobalStoreOffer.getName(),
+                String.format(offerPriceForGlobalStoreOffer.getXPath(), sellerName));
+        for (PageElement offerPrice : aodOfferPriceForAGS.getElements()) {
+            stringBuffer.append(offerPrice.getText());
+        }
+        aodOfferPrice = stringBuffer.toString();
+        return aodOfferPrice;
+    }
+
+    /**
+     * Verify AOD Offers Item Condition Present.
+     * @param conditionType condition type be either new or use
+     * @return returns true if the condition type present
+     */
+    public boolean itemConditionForAODOffersIsPresent(String conditionType) {
+         return new BasePageElement(driver, aodItemCondition.getName(),
+                String.format(aodItemCondition.getXPath(), conditionType)).isPresent();
+    }
+
+    /**
+     * Verify AOD Offers filter refinement present.
+     * @param refinementName refinement to verify
+     * @return returns true if the refinement present present
+     */
+    public boolean aodFilterRefinementIsPresent(String refinementName) {
+        return new BasePageElement(driver, aodFilterRefinement.getName(),
+                String.format(aodFilterRefinement.getXPath(), refinementName)).isPresent();
+    }
+
+    /**
+     * Verify AOD Offers filter prime refinement present.
+     * @return returns true if the prime refinement present present
+     */
+    public boolean aodPrimeFilterRefinementIsPresent() {
+        return aodPrimeFilterRefinement.isPresent();
+    }
+
+    /**
+     * Method to verify AOD Offers Details like Price, Promise Message, etc.. present.
+     */
+    public void verifyAODOffersDetailsPresent() {
+        aodOffersPrice.waitIsPresent();
+        status.addIsDisplayed(aodDeliveryPromiseText);
+        status.addIsDisplayed(aodAddToCartButton);
+        status.addIsDisabled(aodPrimeBadge);
+        status.processStatus();
+    }
+
+    /**
+     * Method to get the Shipping Fee for the aod offers.
+     * @return returns the Shipping Fee
+     */
+    public String getAODOffersShippingFee() {
+        return aodOffersShippingFee.getText();
+    }
+
+    /**
+     * Method to get Currency symbol next to the aod offers.
+     * @return returns the currency symbol
+     */
+    public String getAODOffersPriceCurrencySymbol() {
+        aodOffersPrice.waitIsPresent();
+        return aodOffersPriceCurrencySymbol.getText();
+    }
+
+    /**
+     * Method to click filter drop down button on the AOD.
+     */
+    public void clickAODFilterDropDownButton() {
+        aodOffersPrice.waitIsPresent();
+        aodFilterDropdownButton.click();
+    }
+
+    /**
+     * Method to get total number aod offers in AOD page.
+     * @return count of aod offers.
+     */
+    public int getAODOffersCount() {
+        aodOffers.waitForTextNotBlank(5);
+        return aodOffers.countElements();
+    }
+
+    /**
+     * Method to get Price of aod pinned offer.
+     * @param currencyDecimalSeparator - country specific decimal separator in item price
+     * @return returns the AOD Pinned offer price.
+     */
+    public String getAODPinnedOfferPrice(String currencyDecimalSeparator) {
+        return aodPinnedOfferPrice.getText().replaceAll("[\\r\\n]+", currencyDecimalSeparator);
+    }
+
+    /**
+     * Method to get Product title from AOD Page.
+     * @return returns the Product title.
+     */
+    public String getAODProductTitle() {
+        return aodProductTitle.getText();
+    }
+
+    /**
+     * Method to click 'Add to Cart button' of aod pinned offer.
+     */
+    public void clickAODPinnedOfferAddToCartButton() {
+        aodPinnedOfferAddToCartButton.clickAndWait(offerAddedToCartMessage);
+    }
+
+    /**
+     * Method to click 'Add to Cart button' of aod offers other than pinned
+     */
+    public void clickAODOffersAddToCartButton() {
+        aodOffersAddToCartButton.click();
+        SleepUtil.sleep(2000);
+    }
+
+    /**
+     * Get AODOffers addToCartButton presence.
+     * @return  addToCartButton presence
+     */
+    public boolean isAddToCartButtonPresent() {
+        return aodOffersAddToCartButton.isPresent();
+    }
+
+    /**
+     * Method to get Delivery Promise message of an aod offer by index.
+     * @param offerIndex index of aod offer.
+     * @return returns Delivery Promise text.
+     */
+    public String getDeliveryPromiseMessage(int offerIndex) {
+        return aodDeliveryPromiseText.getElements().get(offerIndex).getText();
+    }
+
+    /**
+     * Method to get Delivery Promise message of aod pinned offer.
+     * @return returns Delivery Promise text.
+     */
+    public String getAODPinnedOfferDeliveryPromiseMessage() {
+        return aodDeliveryPromiseText.getText();
+    }
+
+    /**
+     * Click on the Amazon Global Store seller name link in AOD.
+     * @param globalStoreSellerName in the target marketplace.
+     */
+    public void clickGlobalStoreSellerName(String globalStoreSellerName) {
+        new BasePageElement(driver, aodAmazonGlobalSellerName.getName(),
+                String.format(aodAmazonGlobalSellerName.getXPath(), globalStoreSellerName)).click();
+    }
+
+    /**
+     * Method to click show more link of pinned offer on the AOD.
+     */
+    public void clickPinnedOfferShowMoreLink() {
+        aodOffersPrice.waitIsPresent();
+        pinnedOfferShowMoreLink.click();
+    }
+
+    /**
+     * Method to click International Products link of pinned offer on the AOD.
+     * @param linkName is localized text of "International Products" link name
+     */
+    public void clickInternationalProductLink(String linkName) {
+        new BasePageElement(driver, aodInternationalProductsLink.getName(),
+                String.format(aodInternationalProductsLink.getXPath(), linkName)).click();
+    }
+
+    /**
+     * Method to get value of International Products link of pinned offer on the AOD.
+     * @param linkName is localized text of "International Products" link name
+     * @return This method will return the href value of International Products Link
+     */
+    public String getHrefValueOfInternationalProductLink(String linkName) {
+        return new BasePageElement(driver, aodInternationalProductsLink.getName(),
+                String.format(aodInternationalProductsLink.getXPath(), linkName)).getValue("href");
+    }
+
+    /**
+     * Method to click more link of pinned offer on the AOD.
+     * @param linkName is localized text of "More" link name
+     */
+    public void clickPinnedOfferMoreLink(String linkName) {
+        new BasePageElement(driver, aodPinnedOfferMoreLink.getName(),
+                String.format(aodPinnedOfferMoreLink.getXPath(), linkName)).click();
+    }
+
+    /**
+     * Method to click learn more link of pinned offer on the AOD.
+     * @param linkName is localized text of "Learn More" link name
+     */
+    public void clickLearnMoreLink(String linkName) {
+        new BasePageElement(driver, aodLearnMoreLink.getName(),
+                String.format(aodLearnMoreLink.getXPath(), linkName)).click();
+    }
+
+    /**
+     * Method to verify "Delivery costs include imports and customs handling" text.
+     * @return This method will return True only if the text present.
+     */
+    public boolean verifyImportsAndCustomsText() {
+        return costIncludeImportsAndCustomsText.isPresent();
+    }
+
+    /**
+     * Verify Amazon Global Store Bullet Points are present in AOD
+     * @return This method will return True only if the text present.
+     */
+    public boolean verifyAgsSectionBulletPointsIsPresent() {
+        return agsSectionBulletpoints.isPresent(3);
+    }
+
+    /**
+     * Method to check the presence of "New" Item Condition filter refinement in AOD.
+     * @return true if New condition filter is displayed.
+     */
+    public boolean isItemConditionFilterRefinementPresent() {
+        boolean isNewItemConditionFilterRefinementPresent = aodNewItemConditionFilterRefinement.isPresent();
+        return isNewItemConditionFilterRefinementPresent;
+    }
+
+    /**
+     * Method to get Offer price from AOD.
+     * This doesn't include the pinned offer's price.
+     * @param priceIndex - index of prices in AOD.
+     * @return Offer prices.
+     */
+    public String getOfferPriceByIndex(int priceIndex) {
+        BasePageElement aodOffersPriceDetails = new BasePageElement(driver,
+                String.format("%s-OfferIndex_%d", aodOffersPrice.getName(), priceIndex),
+                aodOffersPrice.getElements().get(priceIndex).getXPath());
+        status.addIsEnabled(aodOffersPriceDetails);
+        status.processStatus();
+        return aodOffersPriceDetails.getText();
+    }
+
+    /**
+     * Method to get Seller Names from AOD.
+     * This doesn't include pinned offer's seller name.
+     * @param sellerIndex - index of sellers in AOD.
+     * @return Seller Names.
+     */
+    public String getSellerNamesByIndex(int sellerIndex) {
+        BasePageElement aodOffersSellerDetails = new BasePageElement(driver,
+                String.format("%s-OfferIndex_%d", aodOffersSellerName.getName(), sellerIndex),
+                aodOffersSellerName.getElements().get(sellerIndex).getXPath());
+        status.addIsEnabled(aodOffersSellerDetails);
+        status.processStatus();
+        return aodOffersSellerDetails.getText();
+    }
+
+    /**
+     * Method to get "Dispatches From" from AOD.
+     * This doesn't include pinned offer's dispatcher.
+     * @param dispatcherIndex - index of dispatchers in AOD.
+     * @return Dispatcher Names.
+     */
+    public String getDispatchesFromByIndex(int dispatcherIndex) {
+        BasePageElement aodOffersDispatcherDetails = new BasePageElement(driver,
+                String.format("%s-OfferIndex_%d", aodOffersDispatchesFrom.getName(), dispatcherIndex),
+                aodOffersDispatchesFrom.getElements().get(dispatcherIndex).getXPath());
+        status.addIsEnabled(aodOffersDispatcherDetails);
+        status.processStatus();
+        return aodOffersDispatcherDetails.getText();
+    }
+
+    /** Get the number of filter refinements displayed.
+    * @return an integer - count of filter refinements displayed in AOD page.
+    */
+    public int getFilterRefinementCount() {
+       status.addIsDisplayed(aodFilterCheckboxes);
+       status.processStatus();
+       return aodFilterCheckboxes.countElements();
+   }
+
+    /**
+     * Method to click "Prime" filter refinement in AOD, and if not present, click "Free Delivery" filter refinement.
+     * If both are present, then click both.
+     * Method to check Filters in AOD.
+     * @param index - Number of filters
+     * @return true if filters are selected
+     */
+    public boolean checkAvailableFiltersSelected(int index) {
+        return aodFilterCheckboxes.getElements().get(index).isSelected();
+    }
+
+    /**
+     * Method to click "Prime" filter refinement in AOD
+     */
+    public void clickPrimeFilter() {
+        aodPrimeFilterRefinement.isPresent();
+        aodPrimeFilterRefinement.click();
+    }
+
+    /**
+     * Method to check whether the country is eligible for Prime services.
+     * @param countryCode to check for Prime eligibility.
+     * @return true if countryCode is eligible for Prime services.
+     */
+    public boolean checkPrimeEligibility(String countryCode) {
+         List<String> primeEligibleCountries = Marketplace.getCountryListWithPrimeEligible();
+         for (String country : primeEligibleCountries) {
+                 if (country.contains(countryCode)) {
+                     return true;
+                     }
+                 }
+         return false;
+         }
+
+    /**
+     * Method to click filters in AOD based on Prime eligibility.
+     * @param isPrimeEligible True if the country is Prime eligible, false otherwise
+     */
+    public void clickFiltersBasedOnPrimeEligibility(boolean isPrimeEligible) {
+        if (isPrimeEligible) {
+            clickPrimeFilter();
+        }
+        clickFreeDeliveryFilter();
+    }
+
+    /**
+     * Method to click "Free Delivery" filter refinement in AOD
+     */
+    public void clickFreeDeliveryFilter() {
+        aodFreeDeliveryFilterRefinement.isPresent();
+        aodFreeDeliveryFilterRefinement.click();
+    }
+
+    /**
+     * Method to check the presence of "Prime" labels in AOD before & after filter selection.
+     * @return true if "Prime" label is displayed.
+     */
+    public boolean checkPrimeLabelPresence() {
+        return aodPrimeFilterLabel.isPresent();
+    }
+
+    /**
+     * Method to check the presence of "Free Delivery" label in AOD before & after filter selection.
+     * @return true if "Free Delivery" label is displayed.
+     */
+    public boolean checkFreeDeliveryLabelPresence() {
+        return aodFreeDeliveryFilterLabel.isPresent();
+    }
+
+    /**
+     * Method to click 'Clear All' link in AOD filter section.
+     */
+    public void clearAllFilterRefinements() {
+        aodClearAllFilters.waitIsPresent();
+        aodClearAllFilters.click();
+    }
+
+    /**
+     * Method to verify AOD Pinned Offers Details like Title, Promise Message, etc.. present.
+     */
+    public void verifyAODPinnedOffersDetailsPresent() {
+        aodOffersPrice.waitIsPresent();
+        status.addIsDisplayed(aodProductTitle);
+        status.addIsDisplayed(aodPinnedOfferDeliveryPromiseText);
+        status.addIsDisplayed(aodPinnedOfferPrice);
+        status.addIsDisplayed(aodPinnedOfferAddToCartButton);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Scroll to offer in AOD page.
+     * @param offerIndex index of AOD offers.
+     * @return true if scrolling was successful and the element is displayed, false otherwise
+     */
+    public boolean aodScrollToOffer(int offerIndex) {
+        BasePageElement scrollToOffer =  new BasePageElement(driver,
+                 aodOffers.getName() + "_BY_INDEX_" + offerIndex,
+                 String.format("(" + aodOffers.getXPath() + ")" + "[" + offerIndex + "]"));
+        scrollToElement(scrollToOffer);
+        status.addIsDisplayed(scrollToOffer);
+        status.processStatus();
+        return scrollToOffer.isPresent();
+    }
+
+    /**
+     * Method to verify AOD Sticky Pinned Offers is intact.
+     * @param offerIndex index of AOD offers.
+     */
+    public void verifyAODStickyPinnedOffer(int offerIndex) {
+        aodScrollToOffer(offerIndex);
+        aodStickyPinnedOfferAddToCartButton.waitIsPresent();
+        status.addIsDisplayed(aodStickyPinnedOffer);
+        status.addIsDisplayed(aodStickyPinnedOfferDeliveryPromiseMessage);
+        status.processStatus();
+    }
+    /**
+     * Verify Free Shipping Message present for Global Store offer.
+     * @param freeShippingMessage message of the global store under test.
+     * @return boolean of free shipping presence using LOP Helper
+     */
+    public boolean verifyFreeShippingMessageForPrimeAboveOffer(String freeShippingMessage) {
+        return new BasePageElement(driver, freeShippingMessageAodForGlobalStore.getName(),
+                String.format(freeShippingMessageAodForGlobalStore.getXPath(), freeShippingMessage)).isPresent();
+    }
+    /**
+     * Verify DCP delivery date is present.
+     * @return true if present, or else return false.
+     */
+    public boolean isDCPDeliveryDatePresent() {
+        deepCheckPromiseAodForGlobalStore.waitIsPresent();
+        return deepCheckPromiseAodForGlobalStore.isPresent();
+    }
+    /**
+     * Get Deep Check Promise message in AOD Page.
+     * @return DeepCheckPromise Date.
+     */
+    public String getDeepCheckPromiseInAOD() {
+        return deepCheckPromiseAodForGlobalStore.getText();
+    }
+
+    /**
+     * Method to verify if the Shipping Fee for the aod offers is present
+     * @return returns the boolean if Shipping fee text is present
+     */
+    public boolean verifyAODOffersShippingFeePresent() {
+        return shippingFeeAODForGlobalStore.doesExists();
+    }
+    /**
+     * Method to fetch the Shipping Fee for the aod offers is present
+     * @return returns the String  Shipping fee text
+     */
+    public String getAODOffersShippingFeePromiseText() {
+        return shippingFeeAODForGlobalStore.getText();
+    }
+
+    /**
+     * Get Ships From text of AOD Pinned Offer.
+     * @return Ships From text in AOD Pinned Offer.
+     */
+    public String getShipsFromTextOfAODPinnedOffer() {
+       shipFromAodPinnedOffer.waitIsPresent();
+       return shipFromAodPinnedOffer.getText();
+    }
+
+    /**
+     * Get Sold By text of AOD Pinned Offer.
+     * @return Sold By text in AOD Pinned Offer.
+     */
+    public String getSoldByTextOfAODPinnedOffer() {
+       soldByAodPinnedOffer.waitIsPresent();
+       return soldByAodPinnedOffer.getText();
+    }
+
+    /**
+     * Get Ships From Fulfillment Message in AOD Offer.
+     * @param offerIndex - index of offer in AOD page.
+     * @return Returns Ships From Fulfillment text in AOD Offer.
+     */
+    public String getShipsFromFulfillmentTextInAODOffers(int offerIndex) {
+       BasePageElement shipsFromTextInAODOffer = new BasePageElement(driver,
+               String.format("%s-OfferIndex_%d", shipsFromMessageAodOffers.getName(), offerIndex),
+               aodOffers.getElements().get(offerIndex).getXPath() + shipsFromMessageAodOffers.getXPath());
+        status.addIsEnabled(shipsFromTextInAODOffer);
+        status.processStatus();
+        return shipsFromTextInAODOffer.getText();
+     }
+
+    /**
+     * Get Sold by Fulfillment Message in AOD Offer.
+     * @param offerIndex - index of offer in AOD page.
+     * @return Returns sold by Fulfillment text in AOD Offer.
+     */
+    public String getSoldByFulfillmentTextInAODOffers(int offerIndex) {
+        BasePageElement soldByTextInAODOffer = new BasePageElement(driver,
+                String.format("%s-OfferIndex_%d", soldByMessageAodOffers.getName(), offerIndex),
+                aodOffers.getElements().get(offerIndex).getXPath() + soldByMessageAodOffers.getXPath());
+        status.addIsEnabled(soldByTextInAODOffer);
+        status.processStatus();
+        return soldByTextInAODOffer.getText();
+     }
+}
