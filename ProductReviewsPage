@@ -1,0 +1,177 @@
+package com.amazon.aeeqa.ui.pagemodels.customerreviews;
+
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.google.common.collect.Lists;
+
+/**
+ * Product Reviews Page Model.
+ */
+
+@PageName("product_reviews")
+public class ProductReviewsPage extends BasePageModel {
+
+    @Locator("PRODUCT_TITLE_LINK")
+    private static BasePageElement productTitleLink;
+
+    @Locator("PRODUCT_IMAGE_LINK")
+    private static BasePageElement productImageLink;
+
+    @Locator("PRODUCT_BYLINE_LINK")
+    private static BasePageElement productBylineLink;
+
+    @Locator("SEE_ALL_BUYING_OPTIONS_BUTTON")
+    private static BasePageElement seeAllBuyingOptionsButton;
+
+    @Locator("WRITE_A_REVIEW_BUTTON")
+    private static BasePageElement writeAReviewButton;
+
+    @Locator("TOP_POSITIVE_REVIEW_SECTION")
+    private static BasePageElement topPositiveReviewSection;
+
+    @Locator("TOP_CRITICAL_REVIEW_SECTION")
+    private static BasePageElement topCriticalReviewSection;
+
+    @Locator("SEARCH_BAR_IN_ALL_REVIEWS_PAGE")
+    private static BasePageElement searchBarInAllReviews;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_STAR_RATINGS_ICON")
+    private static BasePageElement averageCustomerReviewsStarRatingsIcon;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_BREAKDOWN")
+    private static BasePageElement averageCustomerReviewsBreakdown;
+
+    @Locator("AVERAGE_CUSTOMER_RATINGS_OUT_OF_TEXT")
+    private static BasePageElement averageCustomerRatingsOutOfText;
+
+    @Locator("WRITE_A_CUSTOMER_REVIEW_BUTTON_IN_THE_SOLICITATION_WIDGET")
+    private static BasePageElement writeACustomerReviewButtonInTheSolicitationWidget;
+
+    @Locator("RATING_LINKS_WITH_PERCENTAGE")
+    private static BasePageElement ratingLinksWithPercentage;
+
+    /**
+     * Constructor with driver instance.
+     *
+     * @param driver the WebDriver instance.
+     */
+    public ProductReviewsPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        verifyProductBylineLinkPresent();
+        verifyProductTitleAndImageLinksPresent();
+        verifySeeAllBuyingOptionsButtonPresent();
+    }
+
+    /**
+     * Verify product tile/image links present.
+     */
+    public void verifyProductTitleAndImageLinksPresent() {
+        status.addIsDisplayed(productTitleLink);
+        status.addIsDisplayed(productImageLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify product byline present.
+     */
+    public void verifyProductBylineLinkPresent() {
+        status.addIsDisplayed(productBylineLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'See All Buying Options' button present.
+     */
+    public void verifySeeAllBuyingOptionsButtonPresent() {
+        status.addIsDisplayed(seeAllBuyingOptionsButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'Write A Review' button Is present.
+     */
+    public void verifyWriteAReviewButtonIsPresent() {
+        status.addIsDisplayed(writeAReviewButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'Top Positive Review' section Is present.
+     */
+    public void verifyTopPositiveReviewSectionIsPresent() {
+        status.addIsDisplayed(topPositiveReviewSection);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'Top Critical Review' section Is present.
+     */
+    public void verifyTopCriticalReviewSectionIsPresent() {
+        status.addIsDisplayed(topCriticalReviewSection);
+        status.processStatus();
+    }
+
+    /**
+     * Verify the search bar present in all reviews page.
+     */
+    public void verifyReviewSearchBarPresent() {
+        waitForPageToLoad();
+        status.addIsDisplayed(searchBarInAllReviews);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Average customer reviews table elements in Product review page.
+     */
+    public void verifyAverageCustomerReviewsTable() {
+        status.addIsDisplayed(averageCustomerReviewsBreakdown);
+        status.addIsDisplayed(averageCustomerReviewsStarRatingsIcon);
+        status.addIsDisplayed(averageCustomerRatingsOutOfText);
+        status.processStatus();
+    }
+
+    /**
+     * Click on Write a Review Button in Product Review Page.
+     */
+    public void clickOnWriteReviewButton() {
+            writeACustomerReviewButtonInTheSolicitationWidget.waitIsPresent();
+            writeACustomerReviewButtonInTheSolicitationWidget.click();
+            waitForPageToLoad();
+    }
+
+    /**
+     * Verify Write a Review Button in Product Review Page.
+     */
+    public void verifyWriteReviewButtonIsPresent() {
+            status.addIsDisplayed(writeACustomerReviewButtonInTheSolicitationWidget);
+            status.processStatus();
+    }
+
+    /**
+     * Get the URLs of the rating links with percentage format.
+     * @return URLs.
+     */
+    public List<String> getURLsOfRatingLinksWithPercentage() {
+        List<String> urls = Lists.newArrayList();
+        for (PageElement element : ratingLinksWithPercentage.getElements()) {
+            urls.add(element.getElement().getAttribute("href"));
+        }
+        return urls;
+    }
+
+}
