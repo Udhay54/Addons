@@ -1,0 +1,238 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import com.amazon.aeeqa.testaddress.Address;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.utils.SleepUtil;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Address widget in Checkout Address Selection.
+ *
+ * @author vllaks
+ */
+@PageName("checkout.AddEditAddressWidget")
+public class AddEditAddressWidget extends BasePageModel {
+
+    @Locator("COUNTRY_DROP_DOWN_LIST")
+    private static BasePageElement countryDropDownList;
+
+    @Locator("SELECT_COUNTRY_CODE")
+    private static BasePageElement selectCountryCode;
+
+    @Locator("ADDRESS_FULL_NAME_TEXT_BOX")
+    private static BasePageElement addressFullNameTextBox;
+
+    @Locator("ADDRESS_PHONE_NUMBER_TEXT_BOX")
+    private static BasePageElement addressPhoneNumberTextBox;
+
+    @Locator("ADDRESS_LINE_1_TEXT_BOX")
+    private static BasePageElement addressLine1TextBox;
+
+    @Locator("ADDRESS_POSTAL_CODE_TEXT_BOX")
+    private static BasePageElement addressPostalCodeTextBox;
+
+    @Locator("ADDRESS_CITY_TEXT_BOX")
+    private static BasePageElement addressCityTextBox;
+
+    // Add default selected Country and City text elements
+    @Locator("ADDRESS_COUNTRY_TEXT")
+    private static BasePageElement addressCountryText;
+
+    @Locator("ADDRESS_CITY_TEXT")
+    private static BasePageElement addressCityText;
+
+    // City selection may be a dropdown list
+    @Locator("ADDRESS_CITY_DROPDOWN_LIST")
+    private static BasePageElement addressCityDropdownList;
+
+    @Locator("ADDRESS_SUBMIT_BUTTON")
+    private static BasePageElement addressSubmitButton;
+
+    @Locator(value = "AVS_PROBLEM_WITH_ADDRESS_INFO", stringId = "address_ui_widgets_problem_with_address")
+    private static BasePageElement avsProblemWithAddressInfo;
+
+    @Locator(value = "AVS_SUGGESTED_ADDRESS_TITLE", stringId = "address_ui_widgets_suggested_address")
+    private static BasePageElement avsSuggestedAddressTitle;
+
+    @Locator("AVS_SUGGESTED_ADDRESS_RADIO_BUTTON")
+    private static BasePageElement avsSuggestedAddressRadioButton;
+
+    @Locator(value = "AVS_SAVE_ADDRESS_BUTTON", stringId = "address_ui_widgets_addr_save_addr")
+    private static BasePageElement avsSaveAddressButton;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public AddEditAddressWidget(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Method to select country name from the drop down list.
+     * @param countryName international country code.
+     */
+    public void selectCountry(final String countryName) {
+        addressCountryText.waitForTextNotBlank(5);
+        if (!addressCountryText.getText().equals(countryName)) {
+            BasePageElement countryCodeSelect = new BasePageElement(driver,
+                    selectCountryCode.getName() + "_" + countryName,
+                    String.format(selectCountryCode.getXPath(), countryName));
+            countryDropDownList.setSelectedOption(countryName);
+            countryCodeSelect.click();
+            waitForPageToLoad();
+            //Adding Sleep to make the test stable
+            SleepUtil.sleep(1000);
+        }
+    }
+
+    /**
+     * Method to Set Text for Address Full Name Text Box.
+     * @param keyword the keyword string to set.
+     */
+    public void setAddressFullName(final String keyword) {
+        addressFullNameTextBox.setText(keyword);
+    }
+
+    /**
+     * Method to Set Text for Address Line Number Text Box.
+     * @param keyword the keyword string to set.
+     */
+    public void setAddressLine1Text(final String keyword) {
+        addressLine1TextBox.setText(keyword);
+    }
+
+    /**
+     * Method to Set Text for Address Postal Code Text Box.
+     * @param keyword the keyword string to set.
+     */
+    public void setAddressPostalCode(final String keyword) {
+        addressPostalCodeTextBox.setText(keyword);
+    }
+
+    /**
+     * Method to Set Text for Address Phone Number Text Box.
+     * @param keyword the keyword string to set.
+     */
+    public void setAddressPhoneNumber(final String keyword) {
+        addressPhoneNumberTextBox.setText(keyword);
+    }
+
+    /**
+     * Method to Set Text for Address City Text Box.
+     * @param keyword the keyword string to set.
+     */
+    public void setAddressCity(final String keyword) {
+        if (!addressCityText.getText().equals(keyword)) {
+            try {
+                addressCityDropdownList.setSelectedOption(keyword);
+            } catch (Exception e) {
+                // If city input is an input box
+                addressCityTextBox.setText(keyword);
+            }
+        }
+    }
+
+    /**
+     * Method to Click Add Address Button when it fails first time.
+     * @param keyword used for retry.
+     */
+    public void clickAddAddressButton(String keyword) {
+        //to avoid race condition when clicking Add address button throw error.
+        try {
+            addressSubmitButton.click();
+            //Adding this condition for negative case not to wait for element to disappear
+            //As we verify the error message and submit button not disappear
+            if (!keyword.contains("Invalid")) {
+                addressSubmitButton.waitForElementToDisappear();
+            }
+        } catch (Exception e) {
+            setAddressCity(keyword);
+            addressSubmitButton.click();
+            //Adding this condition for negative case not to wait for element to disappear
+            //As we verify the error message and submit button not disappear
+            if (!keyword.contains("Invalid")) {
+                addressSubmitButton.waitForElementToDisappear();
+            }
+        }
+    }
+
+    /**
+     * Method to Click Add Address Button.
+     */
+    public void clickAddAddressButton() {
+        addressSubmitButton.click();
+        addressSubmitButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Add a new or edit an address.
+     * @param address Address object.
+     */
+    public void addOrEditAddress(Address address) {
+        // Country
+        if (StringUtils.isNotBlank(address.getCountry())) {
+            selectCountry(address.getCountry());
+        }
+        // Full name
+        if (StringUtils.isNotBlank(address.getFullName())) {
+            setAddressFullName(address.getFullName());
+        }
+        // Phone number
+        if (StringUtils.isNotBlank(address.getPhoneNumber())) {
+            setAddressPhoneNumber(address.getPhoneNumber());
+        }
+        // Line 1
+        if (StringUtils.isNotBlank(address.getLine1())) {
+            setAddressLine1Text(address.getLine1());
+        }
+        if (StringUtils.isNotBlank(address.getZipCode())) {
+            setAddressPostalCode(address.getZipCode());
+            // Sleep 3 seconds for the City auto populate
+            SleepUtil.sleep(3000);
+        }
+        // City
+        if (StringUtils.isNotBlank(address.getCity())) {
+            setAddressCity(address.getCity());
+        }
+        // Add or Save
+        if (StringUtils.isNotBlank(address.getCity())) {
+            clickAddAddressButton(address.getCity());
+        } else {
+            clickAddAddressButton();
+        }
+    }
+
+    /**
+     * Select Suggested address if AVS is displayed
+     */
+    public void handleAVSWidgetIfPresent() {
+        if (avsProblemWithAddressInfo.isPresent()) {
+            verifySuggestedAddressTitleAndRadioButtonPresent();
+            clickSaveAddress();
+        }
+    }
+
+    /**
+     * Verify the (suggestedAddress) radio button is enabled on the page and verify suggested address title is displayed
+     */
+    public void verifySuggestedAddressTitleAndRadioButtonPresent() {
+        status.addIsDisplayed(avsSuggestedAddressTitle);
+        avsSuggestedAddressRadioButton.click();
+        status.addIsDisplayed(avsSuggestedAddressRadioButton);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Click "Save address" button on the page
+     */
+    public void clickSaveAddress() {
+        avsSaveAddressButton.click();
+        avsSaveAddressButton.waitForElementToDisappear();
+    }
+
+}
