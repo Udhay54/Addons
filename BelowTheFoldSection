@@ -1,0 +1,375 @@
+package com.amazon.aeeqa.ui.pagemodels.customerreviews;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.dtk.element.PageElement;
+import com.google.common.collect.Lists;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+
+/**
+ * This page contains all the Customer Reviews elements in Below The Fold(BTF) - section in Detail page.
+ */
+
+@PageName("customer_reviews")
+public class BelowTheFoldSection extends BasePageModel {
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_STAR_RATINGS_ICON_IN_BELOW_THE_FOLD")
+    private static BasePageElement averageCustomerReviewsStarRatingsIconInBelowTheFold;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_OUT_OF_TEXT_IN_BELOW_THE_FOLD")
+    private static BasePageElement averageCustomerReviewsOutOfTextInBelowTheFold;
+
+    @Locator("AVERAGE_CUSTOMER_REVIEWS_BREAKDOWN_TABLE_IN_BELOW_THE_FOLD")
+    private static BasePageElement averageCustomerReviewsBreakdownTableInBelowTheFold;
+
+    @Locator("WRITE_A_CUSTOMER_REVIEW_BUTTON_IN_THE_SOLICITATION_WIDGET")
+    private static BasePageElement writeACustomerReviewButtonInSolicitationWidget;
+
+    @Locator("GLOBAL_RATINGS_TEXT_IN_BELOW_THE_FOLD")
+    private static BasePageElement globalRatingsTextInBelowTheFold;
+
+    @Locator("SEE_ALL_LOCAL_REVIEWS_LINK_IN_BELOW_THE_FOLD")
+    private static BasePageElement seeAllLocalReviewsLinkInBelowTheFold;
+
+    @Locator(value = "ASK_QUESTION_CONTAINER")
+    private static BasePageElement askQuestionContainer;
+
+    @Locator(value = "SEARCH_BAR_IN_BELOW_THE_FOLD", stringId = "ask_question_input_placeholder")
+    private static BasePageElement searchBarInBelowTheFold;
+
+    @Locator("RATING_LINKS_WITH_PERCENTAGE_IN_BELOW_THE_FOLD")
+    private static BasePageElement ratingLinksWithPercentageInBelowTheFold;
+
+    @Locator("CUSTOMER_REVIEWS_SECTION")
+    private static BasePageElement customerReviewsSection;
+
+    @Locator("HAVE_A_QUESTION_SECTION")
+    private static BasePageElement haveAQuestionSection;
+
+    @Locator("CUSTOMER_Q_AND_A_SEARCH_INLINE_TEXT")
+    private static BasePageElement customerQAndASearchInlineText;
+
+    @Locator("CUSTOMER_Q_AND_A_TYPICAL_QUESTIONS")
+    private static BasePageElement customerQAndATypicalQuestions;
+
+    @Locator("CUSTOMER_Q_AND_A_HEADER")
+    private static BasePageElement customerQAndAHeader;
+
+    @Locator("CUSTOMER_Q_AND_A_QUESTION")
+    private static BasePageElement customerQAndAQuestion;
+
+    @Locator("CUSTOMER_Q_AND_A_ANSWER")
+    private static BasePageElement customerQAndAAnswer;
+
+    @Locator("CUSTOMER_Q_AND_A_QUESTION_LIST")
+    private static BasePageElement customerQAndAQuestionList;
+
+    @Locator("CUSTOMER_Q_AND_A_SEARCH_RESULTS_QUESTION")
+    private static BasePageElement customerQAndASearchResultsQuestion;
+
+    @Locator("CUSTOMER_Q_AND_A_SEARCH_RESULTS_ANSWER")
+    private static BasePageElement customerQAndASearchResultsAnswer;
+
+    @Locator("CUSTOMER_REVIEW_HISTOGRAM_BELOW_THE_FOLD")
+    private static BasePageElement customerReviewHistogramInBTF;
+
+    @Locator("CUSTOMER_Q_AND_A_QUESTION_LINK")
+    private static BasePageElement customerQAndAQuestionLink;
+
+    @Locator(value = "POST_YOUR_QUESTION_BUTTON", stringId = "ask_post_your_question")
+    private static BasePageElement postYourQuestionButton;
+
+    @Locator("REVIEWS_FILTER_WIDGET")
+    private static BasePageElement reviewsFilterWidget;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public BelowTheFoldSection(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Constructor with a driver instance and an ASIN url.
+     * @param driver  the WebDriver instance.
+     * @param asinUrl the ASIN url to navigate.
+     */
+    public BelowTheFoldSection(WebDriver driver, String asinUrl) {
+        super(driver);
+        setPageurl(asinUrl);
+        navigateToPage();
+    }
+
+    /**
+     * Getter method of customerReviewsSection PageElement.
+     * @return customerReviewsSection PageElement.
+     */
+    public BasePageElement getCustomerReviewsSectionInBTF() {
+        return customerReviewsSection;
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        verifyWriteACustomerReviewButtonInSolicitationWidget();
+        verifySeeAllLocalReviewsLink();
+    }
+
+    /**
+     * Verify Average customer reviews table elements.
+     */
+    public void verifyAverageCustomerReviewsTable() {
+        status.addIsDisplayed(averageCustomerReviewsStarRatingsIconInBelowTheFold);
+        status.addIsDisplayed(averageCustomerReviewsOutOfTextInBelowTheFold);
+        status.addIsDisplayed(averageCustomerReviewsBreakdownTableInBelowTheFold);
+        status.processStatus();
+    }
+
+    /**
+     * Get Average customer reviews out of text.
+     * @return the text
+     */
+    public String getAverageCustomerReviewsOutOfTextInBelowTheFold() {
+        return averageCustomerReviewsOutOfTextInBelowTheFold.getText();
+    }
+
+    /**
+     * Verify Write A Customer Review Button is present.
+     */
+    public void verifyWriteACustomerReviewButtonInSolicitationWidget() {
+        scrollToElement(globalRatingsTextInBelowTheFold);
+        writeACustomerReviewButtonInSolicitationWidget.waitIsPresent();
+        status.addIsDisplayed(writeACustomerReviewButtonInSolicitationWidget);
+        status.processStatus();
+    }
+
+    /**
+     * Verify global ratings text is present.
+     * @return text of global ratings.
+     */
+    public String verifyGlobalRatingsText() {
+        status.addIsDisplayed(globalRatingsTextInBelowTheFold);
+        status.processStatus();
+        return globalRatingsTextInBelowTheFold.getText();
+    }
+
+    /**
+     * Verify See All Reviews Link is present.
+     */
+    public void verifySeeAllLocalReviewsLink() {
+        status.addIsDisplayed(seeAllLocalReviewsLinkInBelowTheFold);
+        status.processStatus();
+    }
+
+    /**
+     * Click on Write a Review Button.
+     */
+    public void clickOnWriteReviewButton() {
+        scrollToElement(globalRatingsTextInBelowTheFold);
+        if (writeACustomerReviewButtonInSolicitationWidget.waitIsPresent()) {
+            writeACustomerReviewButtonInSolicitationWidget.click();
+            waitForPageToLoad();
+        }
+    }
+
+    /**
+     * Check if "Have a Question" section is present.
+     *  @return Existence of Have a Question section.
+     */
+    public boolean isHaveAQuestionSectionPresent() {
+        return haveAQuestionSection.isPresent();
+    }
+
+    /**
+     * Verify customer question and answers section is displayed on clicking link in ATF.
+     * @return Existence of customer question and answers section
+     */
+    public boolean isCustomerQAndASectionPresent() {
+        scrollToElement(customerReviewsSection);
+        askQuestionContainer.isPresent(3);
+        return askQuestionContainer.isPresent();
+    }
+
+    /**
+     * Verify Customer review section is displayed on clicking customer reviews link in ATF.
+     */
+    public void verifyCustomerReviewSectionPresent() {
+        status.addIsDisplayed(customerReviewsSection);
+        status.processStatus();
+    }
+
+    /**
+     * Verify the search bar present.
+     */
+    public void verifySearchBarPresent() {
+        scrollToElement(askQuestionContainer);
+        status.addIsDisplayed(searchBarInBelowTheFold);
+        status.processStatus();
+    }
+
+    /**
+     * Set the searchkeyword in the search bar.
+     * @param searchKeyword with the first answer
+     */
+    public void setTextInSearchBar(String searchKeyword) {
+        searchBarInBelowTheFold.click();
+        searchBarInBelowTheFold.setText(searchKeyword);
+    }
+
+    /**
+     * Return "Customer Question & Answers" section search inline text.
+     * @return customerQAndASearchInlineText
+     */
+    public String getCustomerQAndASearchInlineText() {
+        //Tried scrolling to customer Q & A section itself but it was failing always
+        //Instead scrolling to customer reviews section which is usually just below customer Q & A
+        scrollToElement(customerReviewsSection);
+        return customerQAndASearchInlineText.getElement().getAttribute("placeholder");
+    }
+
+    /**
+     * Get the list of typical questions displayed.
+     * @return the list of typical questions displayed
+     */
+    public List<String> getCustomerQAndATypicalQuestions() {
+        scrollToElement(askQuestionContainer);
+        List<String> customerQandATypicalQList = new ArrayList<String>();
+        for (PageElement typicalQuestion : customerQAndATypicalQuestions.getElements()) {
+            customerQandATypicalQList.add(typicalQuestion.getText());
+        }
+        return customerQandATypicalQList;
+    }
+
+    /**
+     * Verify the customer and questions header present.
+     */
+    public void verifyCustomerQAndAHeaderPresent() {
+        scrollToElement(haveAQuestionSection);
+        askQuestionContainer.waitForElementToBeEnabled();
+        status.addIsDisplayed(customerQAndAHeader);
+        status.processStatus();
+    }
+
+    /**
+     * Get the list of typical questions displayed.
+     * @return the list of typical questions displayed
+     */
+    public int getCustomerQAndAQuestionsCount() {
+        scrollToElement(askQuestionContainer);
+        return customerQAndAQuestion.countElements();
+    }
+
+    /**
+     * Check if question present in customer Q and A section.
+     * @param index starting from 0
+     * @return true if present
+     */
+    public boolean isQuestionPresent(int index) {
+        return customerQAndAQuestion.getElements().get(index).isPresent();
+    }
+
+    /**
+     * Check if answer present in customer Q and A section.
+     * @param index starting from 0
+     * @return true if present
+     */
+    public boolean isAnswerPresent(int index) {
+        return customerQAndAAnswer.getElements().get(index).isPresent();
+    }
+
+    /**
+     * Get the text of the Q that matches in the search result.
+     * @return the text
+     */
+    public String getCustomerQAndASearchResultsQuestionText() {
+        customerQAndASearchResultsQuestion.waitIsPresent();
+        return customerQAndASearchResultsQuestion.getText();
+    }
+
+    /**
+     * Get the text of the A that matches in the search result.
+     * @return the text
+     */
+    public String getCustomerQAndASearchResultsAnswerText() {
+        customerQAndASearchResultsAnswer.waitIsPresent();
+        return customerQAndASearchResultsAnswer.getText();
+    }
+
+    /**
+     * Get the URLs of the rating links with percentage format.
+     * @return URLs.
+     */
+    public List<String> getURLsOfRatingLinksWithPercentage() {
+        List<String> urls = Lists.newArrayList();
+        scrollToElement(globalRatingsTextInBelowTheFold);
+        for (PageElement element : ratingLinksWithPercentageInBelowTheFold.getElements()) {
+            urls.add(element.getElement().getAttribute("href"));
+        }
+        return urls;
+    }
+
+    /**
+     * Get the list rows in histogram in customer review section.
+     * @return the list of rows displayed in histogram
+     */
+    public List<String> getCustomerReviewHistogramInBTF() {
+        scrollToElement(globalRatingsTextInBelowTheFold);
+        List<String> histogramRow = new ArrayList<String>();
+        for (PageElement row : customerReviewHistogramInBTF.getElements()) {
+            histogramRow.add(row.getElement().getText());
+        }
+        return histogramRow;
+    }
+
+    /**
+     * Click on See All Local Reviews Link.
+     */
+    public void clickOnSeeAllLocalReviewsLink() {
+        scrollToElement(seeAllLocalReviewsLinkInBelowTheFold);
+        if (seeAllLocalReviewsLinkInBelowTheFold.waitIsPresent()) {
+            seeAllLocalReviewsLinkInBelowTheFold.click();
+            waitForPageToLoad();
+        }
+    }
+
+    /**
+     * Click on First Question link in The BTF.
+     */
+    public void clickOnFirstQuestionInBelowTheFold() {
+        scrollToElement(customerQAndAQuestionLink);
+        if (customerQAndAQuestionLink.waitIsPresent()) {
+            customerQAndAQuestionLink.click();
+            waitForPageToLoad();
+        }
+    }
+
+    /**
+     * Verify that Post Your Question Button is Present.
+     */
+    public void verifyPostYourQuestionButtonIsPresent() {
+        postYourQuestionButton.waitIsPresent();
+        status.addIsDisplayed(postYourQuestionButton);
+        status.processStatus();
+    }
+
+    /**
+     * Get whether Reviews Filter Widget is Present or not.
+     *
+     * @return Existence of reviews Filter Widget.
+     */
+    public boolean isReviewsFilterWidgetPresent() {
+        waitForPageToLoad();
+        return reviewsFilterWidget.isPresent();
+    }
+
+}
