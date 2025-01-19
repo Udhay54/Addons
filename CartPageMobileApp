@@ -1,0 +1,90 @@
+package com.amazon.aeeqa.ui.pagemodels.mobileapp;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.element.AppElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Mobile Cart Page Model.
+ *
+ * @author tingyong
+ */
+@PageName("cart")
+public class CartPageMobileApp extends BasePageModel {
+
+    @Locator(value = "PROCEED_TO_CHECKOUT_BUTTON", stringId = "rcx-sc-shoppingcart-proceed-to-checkout")
+    private static AppElement proceedToCheckoutButton;
+
+    @Locator(value = "CART_EMPTY_MESSAGE", stringId = "rcx-sc-your-amazon-cart-is-empty")
+    private static AppElement cartEmptyMessage;
+
+    @Locator(value = "CONTINUE_SHOPPING_BUTTON", stringId = "rcx-cart-add-on-continue-shopping")
+    private static AppElement continueShoppingButton;
+
+    @Locator(value = "SIGN_UP_NOW_BUTTON", stringId = "rcx-sc-sign-up")
+    private static AppElement signUpNowButton;
+
+    @Locator(value = "SIGN_IN_BUTTON", stringId = "rcx-sc-sign-in-to-your-account")
+    private static AppElement signInButton;
+
+    /**
+     * Parameterized Class Constructor.
+     * @param driver the webdriver instance
+     */
+    public CartPageMobileApp(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Click the Proceed to checkout button.
+     */
+    public void clickProceedToCheckoutButton() {
+        proceedToCheckoutButton.waitIsPresent();
+        proceedToCheckoutButton.click();
+    }
+
+    /**
+     * Click the Sign In button.
+     */
+    public void clickSignInButton() {
+        signInButton.waitIsPresent();
+        signInButton.click();
+    }
+
+    /**
+     * Click the Sign Up now button.
+     */
+    public void clickSignUpNowButton() {
+        signUpNowButton.waitIsPresent();
+        signUpNowButton.click();
+    }
+
+    /**
+     * Click the Continue Shopping button.
+     */
+    public void clickContinueShoppingButton() {
+        continueShoppingButton.waitIsPresent();
+        continueShoppingButton.click();
+    }
+
+    /**
+     * Verify Proceed to checkout button present.
+     */
+    public void verifyProceedToCheckoutButtonPresent() {
+        status.addIsDisplayed(proceedToCheckoutButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Your Amazon Basket is empty message Present.
+     * @return cart empty message present
+     */
+    public boolean verifyCartEmptyMessagePresent() {
+        cartEmptyMessage.waitIsPresent();
+        return cartEmptyMessage.isPresent();
+    }
+
+}
