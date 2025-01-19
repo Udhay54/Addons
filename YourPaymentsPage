@@ -1,0 +1,286 @@
+package com.amazon.aeeqa.ui.pagemodels.yourpayments;
+
+import com.amazon.aeeqa.utils.SleepUtil;
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.ui.pagemodels.checkout.AddCreditCardWidget;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Your Payments Page Model.
+ *
+ * @author tingyong
+ */
+@Slf4j
+@PageName("your_payments")
+public class YourPaymentsPage extends BasePageModel {
+
+    @Locator(value = "GC_HEAD", stringId = "apx_wallet_cash_reward_header")
+    private static BasePageElement gcHead;
+
+    @Locator("GC_ROW")
+    private static BasePageElement gcRow;
+
+    @Locator(value = "CC_HEAD", stringId = "apx_wallet_credit_card_header")
+    private static BasePageElement ccHead;
+
+    @Locator("CC_INSTRUMENTS")
+    private static BasePageElement ccInstruments;
+
+    @Locator(value = "DC_HEAD", stringId = "pmts_portal_payselect_cc_table_instrument_detail")
+    private static BasePageElement dcHead;
+
+    @Locator("ADD_CREDIT_CARD_BUTTON")
+    private static BasePageElement addCreditCardButton;
+
+    @Locator("ADD_PAYMENT_METHOD_LINK")
+    private static BasePageElement addPaymentMethodLink;
+
+    @Locator("CARD_NUMBER_TAIL_TEXT")
+    private static BasePageElement cardNumberTailText;
+
+    private AddCreditCardWidget addCreditCardWidget;
+
+    @Locator("ADD_A_PURCHASE_PREFERENCE_LINK")
+    private static BasePageElement addAPurchasePreferenceLink;
+
+    @Locator("PAYMENT_REMOVE_BUTTON")
+    private static BasePageElement paymentRemoveButton;
+
+    @Locator("PAYMENT_REMOVE_CONFIRM_BUTTON")
+    private static BasePageElement paymentRemoveConfirmButton;
+
+    @Locator("EDIT_CREDIT_CARD_LINK")
+    private static BasePageElement editCreditCardLink;
+
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    @Locator ("CHANGE_PREFERENCE_LINK")
+    private static BasePageElement changePreferenceLink;
+
+    @Locator (value = "MANAGE_BACK_UP_PAYMENT_METHOD_BUTTON", stringId = "apx-cpefront-settings-bpm-link")
+    private static BasePageElement manageBackUpPaymentMethodButoon;
+
+    @Locator (value = "EDIT_PAYMENT_METHOD_FOR_A_CURRENT_ORDER_BUTTON",
+            stringId = "apx-cpefront-settings-order-history-link")
+    private static BasePageElement editPaymentMethodForACurrentOrderButton;
+
+    @Locator ("YOUR_PAYMENTS_PAGE_TABS")
+    private static BasePageElement yourPaymentsPageTabs;
+
+    @Locator ("DEFAULT_ADDRESS")
+    private static BasePageElement defaultAddress;
+
+    @Locator ("DEFAULT_PAYMENT")
+    private static BasePageElement defaultPayment;
+
+    @Locator ("CVV_SECURITY_CODE_ERROR")
+    private static BasePageElement cvvSecurityCodeError;
+
+    /**
+     * Constructor with driver istance.
+     * @param driver the WebDriver instance.
+     */
+    public YourPaymentsPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify payment options display.
+     * @param cardNumberTail card number to pass
+     */
+    public void verifyPaymentOptionsDisplay(String cardNumberTail) {
+        status.addIsDisplayed(gcHead);
+        status.addIsDisplayed(gcRow);
+        status.addIsDisplayed(ccHead);
+        new BasePageElement(driver, cardNumberTailText.getName()
+                + "_" + cardNumberTail,
+                String.format(cardNumberTailText.getXPath(), cardNumberTail))
+                .clickAndWaitForDisappear(loadingSpinner);
+        BasePageElement creditCardNumber = new BasePageElement(driver, ccInstruments.getName()
+                + "_" + cardNumberTail,
+                String.format(ccInstruments.getXPath(), cardNumberTail));
+        status.addIsDisplayed(creditCardNumber);
+        status.processStatus();
+    }
+
+    /**
+     * Add Credit/Debit Card.
+     * @param creditCardNumber to parameterized
+     * @param creditCardName to parameterized
+     * @param creditCardExpiryMonth to parameterized
+     * @param creditCardExpiryYear to parameterized
+     */
+    public void addCreditCard(String creditCardName, String creditCardNumber,
+            String creditCardExpiryMonth, String creditCardExpiryYear) {
+        addPaymentMethodLink.clickAndWait(addCreditCardButton);
+        addCreditCardButton.click();
+        getAddCreditCardWidget().addNewPaymentMethod(creditCardName, creditCardNumber,
+                creditCardExpiryMonth, creditCardExpiryYear);
+    }
+
+    /**
+     * Is the card with the tail number present or not.
+     * @param cardNumberTail the tail number of a card.
+     * @return is the card with the tail number present or not.
+     */
+    public boolean isCardPresent(String cardNumberTail) {
+        return new BasePageElement(driver, cardNumberTailText.getName() + "_" + cardNumberTail,
+                String.format(cardNumberTailText.getXPath(), cardNumberTail)).isPresent();
+    }
+
+    /**
+     * Verify Gift Card balance display.
+     */
+    public void verifyGCDisplay() {
+        status.addIsDisplayed(gcHead);
+        status.addIsDisplayed(gcRow);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Add A Purchase Preference Link display.
+     */
+    public void verifyAddAPurchasePreferenceLinkPresent() {
+        status.addIsDisplayed(addAPurchasePreferenceLink);
+        status.processStatus();
+    }
+
+    /**
+     * Get AddCreditCardWidget instance.
+     * @return AddCreditCardWidget instance.
+     */
+    public AddCreditCardWidget getAddCreditCardWidget() {
+        if (addCreditCardWidget == null) {
+            addCreditCardWidget = new AddCreditCardWidget(driver);
+        }
+        return addCreditCardWidget;
+    }
+
+    /**
+     * Method to remove payment method from your account based on the last 4 digit passed.
+     * @param creditCardNumber to be parameterized
+     */
+    public void removePaymentMethod(String creditCardNumber) {
+        BasePageElement cardToBeDeleted = new BasePageElement(driver, cardNumberTailText.getName()
+                + "_" + creditCardNumber,
+                String.format(cardNumberTailText.getXPath(), creditCardNumber));
+        if (cardToBeDeleted.isPresent(2)) {
+            cardToBeDeleted.clickAndWait(editCreditCardLink);
+            editCreditCardLink.clickAndWait(paymentRemoveButton);
+            SleepUtil.sleep(3000);
+            paymentRemoveButton.clickAndWait(paymentRemoveConfirmButton);
+            paymentRemoveConfirmButton.clickAndWaitForDisappear(paymentRemoveConfirmButton);
+            }
+        }
+
+    /**
+     * Click Your Payments Tab by its name/text
+     * @param text Tab Text to Parameterized for xpath.
+     */
+    public void clickTab(final String text) {
+        BasePageElement yourPaymentsPageTab = new BasePageElement(driver, yourPaymentsPageTabs.getName(),
+                String.format(yourPaymentsPageTabs.getXPath(), text));
+        yourPaymentsPageTab.click();
+    }
+
+    /**
+     * Method to verify Change Preference Link is Displayed.
+     */
+    public void verifyChangePreferenceLink() {
+        status.addIsEnabled(changePreferenceLink);
+        status.addIsDisplayed(changePreferenceLink);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Manage Backup Payment Method Button is Displayed.
+     */
+    public void verifyManageBackUpPaymentMethodButton() {
+        status.addIsEnabled(manageBackUpPaymentMethodButoon);
+        status.addIsDisplayed(manageBackUpPaymentMethodButoon);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify Edit Payment Method for current order button is Displayed.
+     */
+    public void verifyEditPaymentMethodForACurrentOrderButton() {
+        status.addIsEnabled(editPaymentMethodForACurrentOrderButton);
+        status.addIsDisplayed(editPaymentMethodForACurrentOrderButton);
+        status.processStatus();
+    }
+
+    /**
+     * Is Payment page tab by text present or not
+     * @param text Tab text to Parameterized for xpath.
+     * @return tab is present or not in Your payments page.
+     */
+    public boolean isTabPresent(final String text) {
+        return new BasePageElement(driver, yourPaymentsPageTabs.getName(),
+                String.format(yourPaymentsPageTabs.getXPath(), text)).isPresent();
+    }
+
+    /**
+     * Is Default address is present or not under settings tab.
+     * @return Default address is present or not in Settings Tab.
+     */
+    public boolean isDefaultAddressPresent() {
+        defaultAddress.waitForElementToBeEnabled();
+        return defaultAddress.isPresent();
+    }
+
+    /**
+     * Is Default Payment is present or not under settings tab.
+     * @param text payment text for Parameterized xpath
+     * @return Default payment is present or not in Settings Tab.
+     */
+    public boolean isDefaultPaymentPresent(final String text) {
+        return new BasePageElement(driver, defaultPayment.getName(),
+                String.format(defaultPayment.getXPath(), text)).isPresent();
+    }
+
+    /**
+     * Add Credit/Debit Card with CVV
+     * @param creditCardNumber to parameterized
+     * @param creditCardName to parameterized
+     * @param creditCardExpiryMonth to parameterized
+     * @param creditCardExpiryYear to parameterized
+     * @param creditCardCVV to parameterized
+     */
+    public void addCreditCardWithCVV(String creditCardName, String creditCardNumber,
+            String creditCardExpiryMonth, String creditCardExpiryYear, String creditCardCVV) {
+        try {
+            addPaymentMethodLink.clickAndWait(addCreditCardButton);
+            addCreditCardButton.click();
+            getAddCreditCardWidget().addNewPaymentMethodWithCVVValidation(creditCardName, creditCardNumber,
+                    creditCardExpiryMonth, creditCardExpiryYear, creditCardCVV);
+            } catch (Exception e) {
+            log.error("Failed to add credit card with CVV", e);
+            }
+    }
+
+    /**
+     * Method to get CVV Error text when adding Credit/Debit Card.
+     * @return Security Code (CVV) Error text.
+     */
+    public String getCVVErrorText() {
+        cvvSecurityCodeError.waitIsPresent();
+        return cvvSecurityCodeError.getText();
+    }
+
+    /**
+     * Gets Default Payment information in Payments setting tab.
+     * @param text payment text for Parameterized xpath
+     * @return Payment information
+     */
+    public String getDefaultPaymentInformationInSettingsTab(final String text) {
+        return new BasePageElement(driver, defaultPayment.getName(),
+           String.format(defaultPayment.getXPath(), text)).getText();
+    }
+}
