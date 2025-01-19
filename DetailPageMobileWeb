@@ -1,0 +1,140 @@
+package com.amazon.aeeqa.ui.pagemodels.mobileweb;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Mobile Web Detail Page Model.
+ * @author vllaks
+ *
+ */
+@PageName("detail")
+public class DetailPageMobileWeb extends BasePageModel {
+
+    @Locator("ADD_TO_CART_BUTTON")
+    private BasePageElement addToCartButton;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_LINK")
+    private static BasePageElement totalLandedCostDetailsLink;
+
+    @Locator("FREE_PRIME_SHIPPING_MESSAGE")
+    private static BasePageElement freePrimeShippingMessage;
+
+    // It can be 'FREE Delivery' or a shipping price text.
+    @Locator("SHIPPING_MESSAGE")
+    private static BasePageElement shippingMessage;
+
+    @Locator("AVAILABILITY_MESSAGE")
+    private static BasePageElement availabilityMessage;
+
+    @Locator("PROMISE_MESSAGE")
+    private static BasePageElement promiseMessage;
+
+    @Locator("OFFERLISTING_VALUE")
+    private static BasePageElement offerListingValue;
+
+    @Locator("OLP_LINK_IN_DETAIL_PAGE")
+    private static BasePageElement olpLinkInDetailPage;
+
+    /**
+     * Constructor Method for Class 'DetailPageMobileWeb'.
+     * @param driver the driver.
+     */
+    public DetailPageMobileWeb(final WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Method to click 'Add to Cart' button.
+     */
+    public void clickAddToCartButton() {
+        addToCartButton.waitIsPresent();
+        addToCartButton.click();
+    }
+
+    /**
+     * Verify Whether 'Add to Cart' button present or not.
+     * @return true if 'Add to Cart' button is present, else return false.
+     */
+    public boolean isAddToCartButtonPresent() {
+        return addToCartButton.waitIsPresent();
+    }
+
+    /**
+     * Verify total landed cost "Details" link present in Mobile.
+     */
+    public void verifyMobileTotalLandedCostDetailsLinkPresentAndClickable() {
+        totalLandedCostDetailsLink.waitForElementToBeEnabled();
+        status.addIsEnabled(totalLandedCostDetailsLink);
+        status.processStatus();
+    }
+
+    /**
+     * Get Free Prime shipping message in the price line.
+     * @return the shipping message.
+     */
+    public String getFreePrimeShippingMessage() {
+        freePrimeShippingMessage.waitIsPresent();
+        return freePrimeShippingMessage.getText();
+    }
+
+    /**
+     * Get IFD & Shipping Price.
+     * @return the IFD & Shipping message.
+     */
+    public String getCountryEligibleText() {
+        totalLandedCostDetailsLink.waitIsPresent();
+        waitForPageToLoad();
+        return totalLandedCostDetailsLink.getText();
+    }
+
+    /**
+     * Get shipping message, it can be 'FREE Delivery' or a shipping price text.
+     * @param localizedShippingText localized shipping text.
+     * @return shipping message.
+     */
+    public String getShippingMessage(final String localizedShippingText) {
+        BasePageElement shippingMessageElement = new BasePageElement(driver, shippingMessage.getName(),
+                String.format(shippingMessage.getXPath(), localizedShippingText));
+        shippingMessageElement.waitIsPresent();
+        return shippingMessageElement.getText();
+    }
+
+    /**
+     * Get availability text.
+     * @return availability text.
+     */
+    public String getAvailabilityText() {
+        availabilityMessage.waitIsPresent();
+        return availabilityMessage.getText();
+    }
+
+    /**
+     * Get Offerlisting Value for the specific Merchant to add items from Cart Internal tool.
+     * @return the OfferListing Value.
+     */
+    public String getOfferListingValue() {
+        return offerListingValue.getValue("value");
+    }
+
+    /**
+     * Get promise message.
+     * @return promise text.
+     */
+    public String getPromiseMessage() {
+        promiseMessage.waitIsPresent();
+        return promiseMessage.getText();
+    }
+
+    /**
+     * Click on aod link in detail page.
+     */
+    public void clickAODLink() {
+        scrollToElement(olpLinkInDetailPage);
+        olpLinkInDetailPage.click();
+    }
+
+}
