@@ -1,0 +1,84 @@
+package com.amazon.aeeqa.ui.pagemodels.mobileweb;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * SignIn Page Mobile Web.
+ *
+ * @author tingyong
+ *
+ */
+@PageName("sign_in")
+public class SignInPageMobileWeb extends BasePageModel {
+
+    @Locator("EMAIL_TEXTBOX")
+    private static BasePageElement emailTextBox;
+
+    @Locator("PASSWORD_TEXTBOX")
+    private static BasePageElement passwordTextBox;
+
+    @Locator("SIGNIN_BUTTON")
+    private static BasePageElement signInButton;
+
+    @Locator("SIGNIN_CONTINUE_BUTTON")
+    private static BasePageElement continueButton;
+
+    @Locator(value = "SWITCH_ACCOUNTS_HEADING_TEXT", stringId = "ab-nav-switch-account")
+    private static BasePageElement switchAccountsHeadingText;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public SignInPageMobileWeb(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        emailTextBox.waitIsPresent();
+        status.addIsDisplayed(emailTextBox);
+        status.processStatus();
+    }
+
+    /**
+     * Perform Amazon Sign-in.
+     * @param email    buyer/payer account email address
+     * @param password buyer/payer account password
+     */
+    public void doSignIn(final String email, final String password) {
+        verifyCurrentPage();
+        emailTextBox.setText(email);
+        // Sometimes email field and continue button are displayed instead of email and password fields
+        if (continueButton.isPresent()) {
+            continueButton.click();
+        }
+        passwordTextBox.waitIsPresent();
+        passwordTextBox.setText(password);
+        signInButton.click();
+    }
+
+    /**
+     * Check Email Text Box Present.
+     * @return boolean Email Text Box Present
+     */
+    public boolean isEmailTextBoxPresent() {
+        return emailTextBox.isPresent(3);
+    }
+
+    /**
+     * Verify Switch Accounts Heading Text Present.
+     */
+    public void verifySwitchAccountHeadingText() {
+        status.addIsDisplayed(switchAccountsHeadingText);
+        status.processStatus();
+    }
+}
