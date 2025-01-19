@@ -1,0 +1,200 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+import java.time.Year;
+import org.testng.Assert;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Add Credit/Debit Card widget.
+ *
+ * @author tingyong
+ */
+@Slf4j
+@PageName("checkout.AddCCWidget")
+public class AddCreditCardWidget extends BasePageModel {
+
+    public static final String EXISTING_CREDIT_CARD_EXP_MONTH = "12";
+    public static final String EXISTING_CREDIT_CARD_EXP_YEAR = String.valueOf(Year.now().getValue() + 1);
+
+    @Locator("ADD_CARD_IFRAME")
+    private static BasePageElement addCardIFrame;
+
+    @Locator("PSP_CARD_NUMBER_TEXT_BOX")
+    private static BasePageElement pspCardNumberTextBox;
+
+    @Locator("PSP_NAME_ON_CARD_TEXT_BOX")
+    private static BasePageElement pspCardNameTextBox;
+
+    @Locator("PSP_EXPIRATION_YEAR_DROPDOWN_LIST")
+    private static BasePageElement pspExpirationYearDropdownList;
+
+    @Locator("PSP_EXPIRATION_MONTH_DROPDOWN_LIST")
+    private static BasePageElement pspExpirationMonthDropdownList;
+
+    @Locator("PSP_DROPDOWN_LIST_VALUE_TO_SELECT")
+    private static BasePageElement pspDropdownListValueToSelect;
+
+    @Locator("PSP_ADD_YOUR_CARD_BUTTON")
+    private static BasePageElement pspAddYourCardButton;
+
+    @Locator("PSP_USE_THIS_ADDRESS_BUTTON")
+    private static BasePageElement pspUseThisAddressButton;
+
+    @Locator("SET_AS_DEFAULT_PAYMENT_CHECKBOX")
+    private static BasePageElement setAsDefaultPaymentCheckbox;
+
+    @Locator("PAYMENT_CARD_LOGO")
+    private static BasePageElement paymentCardLogo;
+
+    @Locator("PSP_CONSENT_FORM_OPTED_OUT_RADIO_BUTTON")
+    private static BasePageElement pspConsentFormOptedOutRadioButton;
+
+    @Locator("PSP_CONSENT_FORM_OPTED_IN_RADIO_BUTTON")
+    private static BasePageElement pspConsentFormOptedInRadioButton;
+
+    @Locator("PSP_EXPIRY_DATE_UPDATE_BUTTON")
+    private static BasePageElement pspExpiryDateUpdateButton;
+
+    @Locator("PSP_CVV_SECURITY_CODE_TEXTBOX")
+    private static BasePageElement pspCvvSecurityCodeTextbox;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public AddCreditCardWidget(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Method to add new Payment Method.
+     * @param creditCardNumber to parameterized
+     * @param creditCardName to parameterized
+     * @param creditCardExpiryMonth to parameterized
+     * @param creditCardExpiryYear to parameterized
+     */
+    public void addNewPaymentMethod(String creditCardName, String creditCardNumber, String creditCardExpiryMonth,
+            String creditCardExpiryYear) {
+        if (addCardIFrame.isPresent(5)) {
+            driver.switchTo().frame(StringUtils.isNotBlank(addCardIFrame.getValue("name"))
+                    ? addCardIFrame.getValue("name") : addCardIFrame.getValue("id"));
+        }
+        pspAddYourCardButton.waitIsPresent();
+        pspCardNameTextBox.sendKey(creditCardName);
+        pspCardNumberTextBox.sendKey(creditCardNumber);
+        BasePageElement expMonthToSelect = new BasePageElement(driver,
+                pspDropdownListValueToSelect.getName() + "_" + creditCardExpiryMonth,
+                String.format(pspDropdownListValueToSelect.getXPath(), creditCardExpiryMonth));
+        pspExpirationMonthDropdownList.clickAndWaitWithRetries(expMonthToSelect, 3);
+        expMonthToSelect.click();
+        BasePageElement expYearToSelect = new BasePageElement(driver,
+                pspDropdownListValueToSelect.getName() + "_" + creditCardExpiryYear,
+                String.format(pspDropdownListValueToSelect.getXPath(), creditCardExpiryYear));
+        pspExpirationYearDropdownList.clickAndWait(expYearToSelect);
+        expYearToSelect.click();
+        if (pspConsentFormOptedOutRadioButton.isPresent()) {
+            pspConsentFormOptedOutRadioButton.click();
+        }
+        pspAddYourCardButton.click();
+        pspAddYourCardButton.waitForElementToDisappear();
+        if (pspUseThisAddressButton.isPresent()) {
+            pspUseThisAddressButton.click();
+            pspUseThisAddressButton.waitForElementToDisappear();
+        }
+    }
+
+    /**
+     * Method to update existing Payment Method.
+     */
+    public void updatePaymentMethodExipryDate() {
+        BasePageElement expMonthToSelect = new BasePageElement(driver,
+                pspDropdownListValueToSelect.getName() + "_" + EXISTING_CREDIT_CARD_EXP_MONTH,
+                String.format(pspDropdownListValueToSelect.getXPath(), EXISTING_CREDIT_CARD_EXP_MONTH));
+        pspExpirationMonthDropdownList.clickAndWaitWithRetries(expMonthToSelect, 3);
+        expMonthToSelect.click();
+        BasePageElement expYearToSelect = new BasePageElement(driver,
+                pspDropdownListValueToSelect.getName() + "_" + EXISTING_CREDIT_CARD_EXP_YEAR,
+                String.format(pspDropdownListValueToSelect.getXPath(), EXISTING_CREDIT_CARD_EXP_YEAR));
+        pspExpirationYearDropdownList.clickAndWait(expYearToSelect);
+        expYearToSelect.click();
+        pspExpiryDateUpdateButton.click();
+        pspExpiryDateUpdateButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Verify setAsDefaultPaymentCheckbox present.
+     */
+    public void verifySetAsDefaultPaymentCheckboxPresent() {
+        if (addCardIFrame.isPresent(5)) {
+            driver.switchTo().frame(StringUtils.isNotBlank(addCardIFrame.getValue("name"))
+                    ? addCardIFrame.getValue("name") : addCardIFrame.getValue("id"));
+            }
+        if (pspConsentFormOptedInRadioButton.waitIsPresent()) {
+            pspConsentFormOptedInRadioButton.click();
+        }
+        setAsDefaultPaymentCheckbox.waitIsPresent();
+        status.addIsDisplayed(setAsDefaultPaymentCheckbox);
+        status.processStatus();
+    }
+
+    /**
+     * Verify paymentCardLogo is present.
+     */
+    public void verifyPaymentCardLogoPresent() {
+        if (addCardIFrame.isPresent(5)) {
+            driver.switchTo().frame(StringUtils.isNotBlank(addCardIFrame.getValue("name"))
+                    ? addCardIFrame.getValue("name") : addCardIFrame.getValue("id"));
+        }
+        paymentCardLogo.waitIsPresent();
+        status.addIsDisplayed(paymentCardLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Method to add new Payment Method for CVV Validation
+     * @param creditCardNumber to parameterized
+     * @param creditCardName to parameterized
+     * @param creditCardExpiryMonth to parameterized
+     * @param creditCardExpiryYear to parameterized
+     * @param creditCardCVV to parameterized
+     */
+    public void addNewPaymentMethodWithCVVValidation(String creditCardName, String creditCardNumber,
+            String creditCardExpiryMonth, String creditCardExpiryYear, String creditCardCVV) {
+         try {
+            if (addCardIFrame.isPresent(5)) {
+                driver.switchTo().frame(StringUtils.isNotBlank(addCardIFrame.getValue("name"))
+                        ? addCardIFrame.getValue("name") : addCardIFrame.getValue("id"));
+            } else {
+                log.error("Add Card iframe not found");
+                Assert.fail("Add Card iframe not found");
+            }
+            pspAddYourCardButton.waitIsPresent();
+            pspCardNameTextBox.sendKey(creditCardName);
+            pspCardNumberTextBox.sendKey(creditCardNumber);
+            BasePageElement expMonthToSelect = new BasePageElement(driver,
+                    pspDropdownListValueToSelect.getName() + "_" + creditCardExpiryMonth,
+                    String.format(pspDropdownListValueToSelect.getXPath(), creditCardExpiryMonth));
+            pspExpirationMonthDropdownList.clickAndWaitWithRetries(expMonthToSelect, 3);
+            expMonthToSelect.click();
+            BasePageElement expYearToSelect = new BasePageElement(driver,
+                    pspDropdownListValueToSelect.getName() + "_" + creditCardExpiryYear,
+                    String.format(pspDropdownListValueToSelect.getXPath(), creditCardExpiryYear));
+            pspExpirationYearDropdownList.clickAndWait(expYearToSelect);
+            expYearToSelect.click();
+            pspCvvSecurityCodeTextbox.sendKey(creditCardCVV);
+            pspAddYourCardButton.click();
+            } catch (Exception e) {
+                log.error("Failed to add new payment method with CVV validation", e);
+                Assert.fail("Failed to add new payment method with CVV validation: " + e.getMessage());
+             }
+         }
+
+}
