@@ -1,0 +1,44 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Purchase Authorization Page.
+ *
+ * @author vllaks
+ */
+@PageName("checkout.purchaseauthorization")
+public class PurchaseAuthorizationPage extends BasePageModel {
+
+    @Locator("AUTHORIZE_AND_CONTINUE_BUTTON")
+    private static BasePageElement authorizeAndContinueButton;
+
+    @Locator("AUTHORIZE_CHECKBOX_ONE")
+    private static BasePageElement authorizeCheckboxOne;
+
+    @Locator("AUTHORIZE_CHECKBOX_TWO")
+    private static BasePageElement authorizeCheckboxTwo;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public PurchaseAuthorizationPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+    Method to accept Authorization Notice if its present
+     */
+    public void acceptAuthorization() {
+        if (authorizeAndContinueButton.isPresent()) {
+            authorizeCheckboxOne.click();
+            authorizeCheckboxTwo.click();
+            authorizeAndContinueButton.clickAndWaitForDisappear(authorizeAndContinueButton);
+        }
+    }
+}
