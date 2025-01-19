@@ -1,0 +1,1049 @@
+package com.amazon.aeeqa.ui.pagemodels.globalnav;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.collections.Lists;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.utils.SleepUtil;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Global Nav Page Model
+ *
+ * @author vllaks
+ *
+ */
+@PageName("global_nav")
+public class GlobalNavPage extends BasePageModel {
+
+    // Class level Variable Declarations.
+    // Category value to be selected in the All department drop-down.
+    public static final String CATEGORY_KEYWORD_VALUE = "search-alias=baby";
+    // Category value for global store item or international store item.
+    public static final String CATEGORY_KEYWORD_VALUE_OF_GLOBAL_STORE = "search-alias=amazon-global-store";
+    // Category value to be selected in the All department drop-down in AIS mode
+    public static final String CATEGORY_KEYWORD_VALUE_AIS = "search-alias=baby-products-intl-ship";
+
+    @Locator("YOUR_ACCOUNT_FLYOUT_ALL_AVAILABLE_LINKS")
+    private static BasePageElement yourAccountFlyoutAllAvailableLinks;
+
+    @Locator("GIFT_CARDS_LINK")
+    private static BasePageElement giftCardsLink;
+
+    @Locator("HAMBURGER_MENU")
+    private static BasePageElement hamburgerMenu;
+
+    @Locator("ACCOUNT_LINK_INSIDE_HAMBURGER_MENU")
+    private static BasePageElement accountLinkInsideHamburgerMenu;
+
+    @Locator("SIGNOUT_LINK_INSIDE_HAMBURGER_MENU")
+    private static BasePageElement signOutLinkInsideHamburgerMenu;
+
+    @Locator("FOOTER_SHIPPING_RATES_AND_POLICIES_LINK")
+    private static BasePageElement footerShippingRatesAndPoliciesLink;
+
+    @Locator("FOOTER_AFFILIATE_PROGRAM_LINK")
+    private static BasePageElement footerAffiliateProgramLink;
+
+    @Locator("FOOTER_RECYCLING_OR_DISPOSAL_LINK")
+    private static BasePageElement footerRecyclingLink;
+
+    @Locator("FOOTER_INTEREST_BASED_ADS_NOTICE_LINK")
+    private static BasePageElement footerInterestBasedAdsNoticeLink;
+
+    @Locator("ACCOUNT_AND_LISTS_LINK")
+    private static BasePageElement accountAndListsLink;
+
+    @Locator(value = "YOUR_ACCOUNT_LINK", stringId = "nav-item-youraccount")
+    private static BasePageElement yourAccountLink;
+
+    @Locator("YOUR_ORDERS_LINK")
+    private static BasePageElement yourOrdersLink;
+
+    @Locator("NEW_CUSTOMER_START_HERE_LINK")
+    private static BasePageElement newCustomerStartHereLink;
+
+    @Locator("FOOTER_PRIVACY_NOTICE_LINK")
+    private static BasePageElement footerPrivacyNoticeLink;
+
+    @Locator("FOOTER_TRACK_PACKAGES_OR_VIEW_ORDERS_LINK")
+    private static BasePageElement footerTrackPackagesOrViewOrdersLink;
+
+    @Locator("FOOTER_HELP_LINK")
+    private static BasePageElement footerHelpLink;
+
+    @Locator("FOOTER_COOKIES_NOTICE_LINK")
+    private static BasePageElement footerCookiesNoticeLink;
+
+    @Locator("ALL_DEPARTMENT_DROP_DOWN_LIST")
+    private static BasePageElement allDepartmentDropDownList;
+
+    // Help link on the Top
+    @Locator("HELP_LINK")
+    private static BasePageElement helpLink;
+
+    @Locator("NAV_LOGO_TRY_PRIME_LINK")
+    private static BasePageElement navLogoTryPrimeLink;
+
+    @Locator("EXPLORE_PRIME_LINK_INSIDE_TOOL_TIP")
+    private static BasePageElement explorePrimeLinkInsideToolTip;
+
+    @Locator("TRY_PRIME_TOOL_TIP_HEADING_TEXT")
+    private static BasePageElement tryPrimeToolTipHeadingText;
+
+    @Locator("COUNT_IN_CART_ICON")
+    private static BasePageElement countInCartIcon;
+
+    @Locator("CREATE_A_LIST_LINK_FROM_YOUR_LISTS_FLYOUT")
+    private static BasePageElement createListLinkFromYourListsFlyout;
+
+    @Locator("YOUR_LISTS_LINK_FROM_YOUR_ACCOUNT_FLYOUT")
+    private static BasePageElement yourListsLinkFromYourListsFlyout;
+
+    @Locator("FOOTER_COPY_RIGHT_TEXT")
+    private static BasePageElement footerCopyRightText;
+
+    @Locator("FOOTER_AMAZON_LOGO")
+    private static BasePageElement footerAmazonLogo;
+
+    @Locator(value = "FOOTER_SELL_ON_AMAZON_LINK", stringId = "nav_foot_make-money-text-1")
+    private static BasePageElement footerSellerLink;
+
+    @Locator("FOOTER_FULFILMENT_BY_AMAZON_LINK")
+    private static BasePageElement footerFulfilmentByAmazonLink;
+
+    @Locator("FOOTER_CONDITIONS_OF_USE_AND_SALE_LINK")
+    private static BasePageElement footerConditionsOfUseAndSaleLink;
+
+    @Locator("FIND_A_LIST_LINK_FROM_YOUR_LISTS_FLYOUT")
+    private static BasePageElement findListLinkFromYourListsFlyout;
+
+    @Locator("SEARCH_BAR_TEXT_BOX")
+    private static BasePageElement searchBarTextBox;
+
+    @Locator("SEARCH_BAR_GO_BUTTON")
+    private static BasePageElement searchBarGoButton;
+
+    @Locator("ALL_DEPARTMENT_DROP_DOWN_OPTIONS")
+    private static BasePageElement allDepartmentDropDownOptions;
+
+    @Locator("SEARCH_BAR_DEPARTMENT_DROPDOWN_LIST_SELECT")
+    private static BasePageElement searchBarDepartmentDropdownListSelect;
+
+    @Locator("SEARCH_BAR_DEPARTMENT_DROPDOWN_LABEL")
+    private static BasePageElement searchBarDepartmentDropdownLabel;
+
+    @Locator("SEARCH_AUTO_COMPLETE_SUGGESTIONS")
+    private static BasePageElement searchAutoCompeteSuggestions;
+
+    @Locator(value = "YOUR_RECOMMENDATIONS_LINK_IN_FLYOUT", stringId = "nav-item-yourrecommendations")
+    private static BasePageElement yourRecommendationsLink;
+
+    @Locator(value = "SWITCH_ACCOUNTS_LINK_IN_FLYOUT")
+    private static BasePageElement flyoutSwitchAccountLink;
+
+    @Locator(value = "SIGN_OUT_LINK_IN_FLYOUT")
+    private static BasePageElement flyoutSignOutLink;
+
+    @Locator(value = "YOUR_ACCOUNT_FLYOUT_SIGN_IN_BUTTON")
+    private static BasePageElement flyoutSignInButton;
+
+    @Locator("NEW_CUSTOMER_START_HERE_TEXT")
+    private static BasePageElement newCustomerStartHereText;
+
+    @Locator("YOUR_AMAZON_NAV_LINK")
+    private static BasePageElement yourAmazonNavLink;
+
+    @Locator("BUY_AGAIN_NAV_LINK")
+    private static BasePageElement buyAgainNavLink;
+
+    @Locator("FOOTER_BACK_TO_TOP_LINK")
+    private static BasePageElement footerBackToTopLink;
+
+    @Locator("FOOTER_RETURNS_LINK")
+    private static BasePageElement footerReturnsLink;
+
+    @Locator("FOOTER_AMAZON_APP_LINK")
+    private static BasePageElement footerAmazonAppLink;
+
+    @Locator("FOOTER_PRESS_RELEASES_LINK")
+    private static BasePageElement footerPressReleasesLink;
+
+    @Locator("FOOTER_TWITTER_LINK")
+    private static BasePageElement footerTwitterLink;
+
+    @Locator("HAMBURGER_MENU_PROFILE_NAME")
+    private static BasePageElement hamburgerMenuProfileName;
+
+    @Locator("ACCOUNT_FLYOUT_SELL_ON_AMAZON_LINK")
+    private static BasePageElement accountFlyOutSellOnAmazonLink;
+
+    @Locator("GLOBAL_NAV_SELL_ON_AMAZON_LINK")
+    private static BasePageElement globalNavSellOnAmazonLink;
+
+    @Locator("FOOTER_ABOUT_AMAZON_LINK")
+    private static BasePageElement footerAboutAmazonLink;
+
+    @Locator("FOOTER_SUBSIDIARIES_LINKS")
+    private static BasePageElement footerSubsidiariesLink;
+
+    @Locator("GIFT_CARDS_LINK_IN_HAMBURGER_MENU")
+    private static BasePageElement giftCardsLinkInHamburgerMenu;
+
+    @Locator("ACCOUNTS_AND_LISTS_DROP_DOWN_DISPLAYED_BEFORE_ORDERS")
+    private static BasePageElement accountsAndListsDropDownDisplayedBeforeOrders;
+
+    @Locator("BEST_SELLERS_NAV_LINK")
+    private static BasePageElement bestSellrsNavLink;
+
+    @Locator("SITE_WIDE_MERCHANDISER_NAV_SLOT")
+    private static BasePageElement siteWideMerchandiserLink;
+
+    @Locator("ORDERS_NAV_LINK")
+    private static BasePageElement ordersNavLink;
+
+    @Locator("TODAYS_DEALS_NAV_LINK")
+    private static BasePageElement todaysDealsNavLink;
+
+    @Locator("FOOTER_YOUR_ACCOUNT_LINK")
+    private static BasePageElement footerYourAccountLink;
+
+    @Locator("TOP_NAV_LINKS")
+    private static BasePageElement topNavLinks;
+
+    @Locator("FOOTER_IMPRINT_LINK")
+    private static BasePageElement footerImprintLink;
+
+    @Locator("GLOBAL_SUB_NAV_LINKS")
+    private static BasePageElement globalSubNavLinks;
+
+    @Locator("PRODUCTS_IN_BESTSELLERS_PAGE")
+    private static BasePageElement productsInBestSellersPage;
+
+    @Locator("HELP_LINK_IN_HAMBURGER_MENU")
+    private static BasePageElement helpLinkInHamburgerMenu;
+
+    @Locator("HAMBURGER_MENU_PROFILE_IMAGE")
+    private static BasePageElement hamburgerMenuProfileImage;
+
+    @Locator("PRIME_VIDEO_IN_HAMBURGER_MENU")
+    private static BasePageElement primeVideoInHamburgerMenu;
+
+    @Locator("SUBNAV_OPTIONS_IN_GLOBALNAV_BAR")
+    private static BasePageElement subnavOptionsInGlobalnavBar;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public GlobalNavPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Method to get Text above Accounts and List.
+     * @return text above accountandlistslink
+     */
+    public String getTextAboveAccountsAndList() {
+        return accountAndListsLink.getText();
+    }
+
+    /**
+     * Method to click New Customer, Start Here link and navigate to the Sign up page.
+     */
+    public void clickNewCustomerStartHereLink() {
+        accountAndListsLink.mouseOverAndWait(newCustomerStartHereLink);
+        newCustomerStartHereLink.click();
+        newCustomerStartHereLink.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to Click Help Link on the Home Page.
+     */
+    public void clickHelpLink() {
+        helpLink.click(true);
+    }
+
+    /**
+     * Verify all options in the all department drop down list is enabled and available.
+     */
+    public void verifyAllDepartmentsInSearchDropdownIsEnabled() {
+        SleepUtil.sleep(2000);
+        List<PageElement> allDepartmentDropDownOptions = allDepartmentDropDownList.getElements();
+        for (PageElement allDepartmentDropDownOption : allDepartmentDropDownOptions) {
+            status.addIsEnabled(allDepartmentDropDownOption);
+            status.processStatus();
+            allDepartmentDropDownOption.click();
+        }
+    }
+
+    /**
+     * Verify all department drop down list is Present.
+     */
+    public void verifyAllDepartmentDropDownListPresent() {
+        status.addIsEnabled(allDepartmentDropDownList);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Try Prime" link Present (under Nav logo)and get the Text.
+     * @return tryPrimeLink text
+     */
+    public String verifyNavLogoTryPrimeLinkPresentAndGetText() {
+        status.addIsEnabled(navLogoTryPrimeLink);
+        status.processStatus();
+        return navLogoTryPrimeLink.getText();
+    }
+
+    /**
+     * Click "Try Prime" link  (under Nav logo).
+     */
+    public void clickTryPrimeLink() {
+        navLogoTryPrimeLink.click();
+    }
+
+    /**
+     * Click "Explore Prime" link inside Try Prime tool Tip.
+     */
+    public void clickExplorePrimeInsideToolTip() {
+        navLogoTryPrimeLink.mouseOverAndWait(tryPrimeToolTipHeadingText);
+        explorePrimeLinkInsideToolTip.click();
+        explorePrimeLinkInsideToolTip.waitForElementToDisappear();
+    }
+
+    /**
+     * Get Cart Icon Count Text.
+     * @return countIcon Count
+     */
+    public String getCartIconCountText() {
+        return countInCartIcon.getText();
+    }
+
+    /**
+     * Method to Verify all the Links under Your Account are clickable.
+     */
+    public void verifyYourAccountAllLinks() {
+        accountAndListsLink.mouseOverAndWait(yourAccountFlyoutAllAvailableLinks);
+        List<PageElement> linksUnderYourAccount = yourAccountFlyoutAllAvailableLinks.getElements();
+        for (PageElement linkUnderYourAccount : linksUnderYourAccount) {
+            status.addIsEnabled(linkUnderYourAccount);
+            status.processStatus();
+        }
+    }
+
+    /**
+     * Click Your Account link.
+     */
+    public void clickYourAccountLink() {
+        accountAndListsLink.mouseOverAndWait(yourAccountLink);
+        yourAccountLink.click();
+    }
+
+    /**
+     * Verify Your Orders link present, and click it.
+     * @return page's title after clicking.
+     */
+    public String verifyYourOrdersLinkPresentAndClick() {
+        accountAndListsLink.mouseOverAndWait(yourOrdersLink);
+        status.addIsEnabled(yourOrdersLink);
+        status.processStatus();
+        yourOrdersLink.click();
+        return driver.getTitle();
+    }
+
+    /**
+     * Get Copy Right Text in the footer Section.
+     * @return copy right text
+     */
+    public String getCopyRightTextInFooter() {
+        status.addIsDisplayed(footerCopyRightText);
+        status.processStatus();
+        return footerCopyRightText.getText();
+    }
+
+    /**
+     * Method to click "Find a List" from the your accounts and list flyout.
+     */
+    public void clickFindListFromYourListFlyOut() {
+        accountAndListsLink.mouseOverAndWait(findListLinkFromYourListsFlyout);
+        findListLinkFromYourListsFlyout.click();
+    }
+
+    /**
+     * Method to click "Create a List" from the your accounts and list flyout.
+     */
+    public void clickCreateListFromYourListFlyOut() {
+        accountAndListsLink.mouseOverAndWait(createListLinkFromYourListsFlyout);
+        createListLinkFromYourListsFlyout.click();
+    }
+
+    /**
+     * Method to click "Your Lists" from the your accounts and list flyout.
+     */
+    public void clickYourListFromYourAccountFlyOut() {
+        accountAndListsLink.mouseOverAndWait(yourListsLinkFromYourListsFlyout);
+        yourListsLinkFromYourListsFlyout.click();
+    }
+
+    /**
+     * Method Verify "Footer Amazon Logo" link Present and Click.
+     */
+    public void verifyAndClickFooterAmazonLogo() {
+        status.addIsEnabled(footerAmazonLogo);
+        status.processStatus();
+        footerAmazonLogo.click();
+    }
+
+    /**
+     * Method to Verify Search Bar Text Box element Present and Click.
+     */
+    public void verifyAndClickSearchBarTextBox() {
+        status.addIsEnabled(searchBarTextBox);
+        status.processStatus();
+        searchBarTextBox.click();
+    }
+
+    /**
+     * Method to Verify Search Bar Go Button element Exists.
+     */
+    public void verifySearchBarGoButton() {
+        status.addIsDisplayed(searchBarGoButton);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Verify Search Bar Go Button element Present and click.
+     */
+    public void verifyAndClickSearchBarGoButton() {
+        status.addIsEnabled(searchBarGoButton);
+        status.processStatus();
+        searchBarGoButton.click();
+    }
+
+    /**
+     * Method to Verify Search Bar Container elements are Present.
+     */
+    public void verifySearchBarContainer() {
+        verifySearchBarGoButton();
+        verifyAndClickSearchBarTextBox();
+        verifyAllDepartmentDropDownListPresent();
+    }
+
+    /**
+     * Method to Verify if department index is within department menu size range.
+     * @param departmentIndexInDropDownList is the department option in the dropdown list,Index starts from 0
+     * @return boolean if the department index within range or not.
+     */
+    private boolean verifyDepartmentIndexWithinLimit(int departmentIndexInDropDownList) {
+        return (departmentIndexInDropDownList >= 0
+                && departmentIndexInDropDownList <= allDepartmentDropDownList.getElements().size() - 1);
+    }
+
+    /**
+     * Method to select a Department from department menu dropdown list by Index.
+     * @param departmentIndexInDropDownList is the department option in the dropdown list, Index starts from 0.
+     * @return boolean if the department selected or not.
+     */
+    public boolean selectSearchDropdownDepartmentByIndex(int departmentIndexInDropDownList) {
+        verifyAllDepartmentsInSearchDropdownIsEnabled();
+        if (verifyDepartmentIndexWithinLimit(departmentIndexInDropDownList)) {
+            List<PageElement> allDepartmentDropDownOptions = allDepartmentDropDownList.getElements();
+            allDepartmentDropDownOptions.get(departmentIndexInDropDownList).click();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method to select a Department from department menu dropdown list by Visible Text.
+     * @param department is the Displayable department name in dropdown to be selected.
+     *@return boolean if the department selected or not.
+     */
+    public boolean selectSearchDropdownDepartmentByText(String department) {
+        List<PageElement> allDepartmentDropDownOptions = allDepartmentDropDownList.getElements();
+        for (int i = 0; i < allDepartmentDropDownOptions.size(); i++) {
+            if (allDepartmentDropDownOptions.get(i).getText().equals(department)) {
+                return (selectSearchDropdownDepartmentByIndex(i));
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method to select a  specific department using the value in "department" param.
+     * @param departmentValue is the category value to be selected,
+     * which represents the search alias ex:"search-alias=baby".
+     *@return Selected Department string
+     */
+    public String selectSpecificCategoryInSearchDropdown(String departmentValue) {
+        new BasePageElement(driver, allDepartmentDropDownOptions.getName() + "_" + allDepartmentDropDownOptions,
+                String.format(allDepartmentDropDownOptions.getXPath(),
+                        departmentValue)).click();
+        waitForPageToLoad();
+        return searchBarDepartmentDropdownListSelect.getSelectedOption();
+    }
+
+    /**
+     * Method to verify a specific department is present using the value in "department" param.
+     * @param departmentValue is the category value to be selected,
+     * which represents the search alias ex:"search-alias=baby".
+     * @return boolean value if Selected Department string is present or not
+     */
+    public boolean isSpecificCategoryInSearchDropdownPresent(String departmentValue) {
+        return new BasePageElement(driver, allDepartmentDropDownOptions.getName() + "_" + allDepartmentDropDownOptions,
+                String.format(allDepartmentDropDownOptions.getXPath(),
+                        departmentValue)).isPresent();
+    }
+
+    /**
+     * Method to get selected department label in search bar dropdown.
+     * @return value of selected department.
+     */
+    public String getDepartmentDropdownLabelInSearchBar() {
+        return searchBarDepartmentDropdownLabel.getText();
+    }
+
+    /**
+     * Method to search from search bar in global nav.
+     * @param keyword the keyword string to search.
+     */
+    public void searchByKeyword(final String keyword) {
+        setSearchBarTextBox(keyword);
+        searchBarGoButton.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method to set text in search bar in global nav.
+     * @param keyword the text to be entered in search bar.
+     */
+    public void setSearchBarTextBox(final String keyword) {
+        verifySearchBarContainer();
+        searchBarTextBox.click();
+        searchBarTextBox.setText(keyword);
+    }
+
+    /**
+     * Method to get the text in search bar box in global nav.
+     * @return keyword entered in the search box.
+     */
+    public String getSearchBarBoxText() {
+        verifySearchBarContainer();
+        return searchBarTextBox.getValue("value");
+    }
+
+    /**
+     * Method to search for a Keyword within a specific Category.
+     * @param keyword the keyword string to search.
+     * @param departmentValue is the  department option value to be selected,
+     * which represents the search alias ex:"search-alias=kitchen".
+     */
+    public void searchForKeywordInSpecificCategory(final String keyword, final String departmentValue) {
+        selectSpecificCategoryInSearchDropdown(departmentValue);
+        searchByKeyword(keyword);
+    }
+
+    /**
+     * Method to verify Search Auto Complete Suggestions are present.
+     * @return boolean, It verifies if the elements are showing,
+     * If only one element was found then it returns True.
+     */
+    public boolean verifyAutoCompleteSuggestionsPresent() {
+       return searchAutoCompeteSuggestions.waitIsPresent();
+    }
+
+    /**
+     * Method to get the list of strings of Search Autocomplete Suggestions.
+     * @return list of strings of autocomplete suggestions.
+     */
+    public List<String> getSearchAutoCompleteSuggestionsList() {
+        verifyAutoCompleteSuggestionsPresent();
+        final List<PageElement> searchAutoCompleteSuggestionsElements = searchAutoCompeteSuggestions.getElements();
+        final List<String> searchSuggestions = new ArrayList<String>();
+        searchAutoCompleteSuggestionsElements.forEach((suggestionElement) -> searchSuggestions.
+                add(suggestionElement.getValue("aria-label")));
+        return searchSuggestions;
+    }
+
+    /**
+     * Method to select an autocomplete suggestion by Index.
+     * @param  index of chosen autocomplete suggestion,Index starts from 0
+     * @return boolean True if suggestion is clicked.
+     */
+    public boolean selectSearchAutoCompleteSuggestionByIndex(final int index) {
+        verifyAutoCompleteSuggestionsPresent();
+        final List<PageElement> searchAutoCompleteSuggestionsElements = searchAutoCompeteSuggestions.getElements();
+        if (index >= 0
+                && index <= searchAutoCompleteSuggestionsElements.size() - 1) {
+            searchAutoCompleteSuggestionsElements.get(index).click();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Click Your Recommendations link.
+     */
+    public void clickYourRecommedationsLink() {
+        accountAndListsLink.mouseOverAndWait(yourRecommendationsLink);
+        yourRecommendationsLink.click();
+    }
+
+    /**
+     * Verify Switch Accounts link is present.
+     * @return Status of Switch Accounts link in flyout
+     */
+    public boolean isSwitchAccountsLinkDisplayedInFlyout() {
+        accountAndListsLink.mouseOver();
+        flyoutSwitchAccountLink.waitIsPresent();
+        return flyoutSwitchAccountLink.isPresent();
+    }
+
+    /**
+     * Click Switch Accounts link.
+     */
+    public void clickSwitchAccountsLinkInFlyout() {
+        accountAndListsLink.mouseOverAndWait(flyoutSwitchAccountLink);
+        flyoutSwitchAccountLink.click();
+    }
+
+    /**
+     * Click Sign-out link in flyout.
+     */
+    public void clickSignOutLinkInFlyout() {
+        accountAndListsLink.mouseOverAndWait(flyoutSignOutLink);
+        flyoutSignOutLink.click();
+    }
+
+    /**
+     * Method to click the Your Account & List flyout link in Global Nav.
+     */
+    public void clickYourAccountAndListFlyoutLink() {
+        accountAndListsLink.click();
+    }
+
+    /**
+     * Method to click the Footer Privacy Link in footer.
+     */
+    public void clickFooterPrivacyNoticeLink() {
+        status.addIsDisplayed(footerPrivacyNoticeLink);
+        status.processStatus();
+        footerPrivacyNoticeLink.click();
+    }
+
+    /**
+     * Method to click the Track Packages or View Orders Link in footer.
+     */
+    public void clickFooterTrackPackagesOrViewOrdersLink() {
+        status.addIsDisplayed(footerTrackPackagesOrViewOrdersLink);
+        status.processStatus();
+        footerTrackPackagesOrViewOrdersLink.click();
+    }
+
+    /**
+     * Click Help link or Customer Service Link in Footer.
+     */
+    public void clickFooterHelpLink() {
+        status.addIsDisplayed(footerHelpLink);
+        status.processStatus();
+        footerHelpLink.click();
+    }
+
+    /**
+     * Method to click the Cookies Notice Link in footer.
+     */
+    public void clickCookiesNoticeLink() {
+        status.addIsDisplayed(footerCookiesNoticeLink);
+        status.processStatus();
+        footerCookiesNoticeLink.click();
+    }
+
+    /**
+     * Verify Sign Out link is present.
+     * @return Status of Sign Out link in flyout
+     */
+    public boolean isSignOutLinkDisplayedInFlyout() {
+        accountAndListsLink.mouseOver();
+        return flyoutSignOutLink.isPresent();
+    }
+
+    /**
+     * Verify Sign-In Button of flyout.
+     * @return Status of Sign-In Button of flyout
+     */
+    public boolean verifySignInButtonInFlyout() {
+        accountAndListsLink.mouseOverAndWait(flyoutSignInButton);
+        return flyoutSignInButton.isPresent();
+    }
+
+    /**
+     * Click Sign-In Button of flyout.
+     */
+    public void clickSignInButtonInFlyout() {
+        accountAndListsLink.mouseOverAndWait(flyoutSignInButton);
+        flyoutSignInButton.click();
+    }
+
+    /**
+     * Method to get the New Customer Start Here text flyout.
+     * @return keyword entered in the search box.
+     */
+    public String getNewCustomerStartHereText() {
+        accountAndListsLink.mouseOver();
+        return newCustomerStartHereText.getText();
+    }
+
+    /**
+     * Verify new customer start here link.
+     * @return Status of Here hyperlink in the flyout
+     */
+    public boolean newCustomerStartHereLinkStatus() {
+        accountAndListsLink.mouseOverAndWait(newCustomerStartHereLink);
+        return newCustomerStartHereLink.isPresent();
+    }
+
+    /**
+     * Method helps to Click and verify gift cart link.
+     */
+    public void clickVerifyGiftCardLink() {
+        status.addIsDisplayed(giftCardsLink);
+        status.processStatus();
+        giftCardsLink.click();
+    }
+
+    /**
+     * Method to Click XXXX's Amazon Nav Link.
+     */
+    public void clickYourAmazonNavLink() {
+        yourAmazonNavLink.click();
+    }
+
+    /**
+     * Method to Click Buy Again Nav Link.
+     */
+    public void clickBuyAgainNavLink() {
+        buyAgainNavLink.click();
+    }
+
+    /**
+     * Method to Click Back To Top footer Link.
+     */
+    public void clickBackToTopFooterLink() {
+        footerBackToTopLink.click();
+    }
+
+    /**
+     * Method to Click Returns & Replacement footer Link.
+     */
+    public void clickReturnsAndReplacemnetLinkInFooter() {
+        footerReturnsLink.click();
+    }
+
+    /**
+     * Method to Click "Hamburger Menu".
+     */
+    public void clickHamburgerMenu() {
+        waitForPageToLoad();
+        hamburgerMenu.click();
+    }
+
+    /**
+     * Method to click account link inside HamburgerMenu.
+     */
+    public void clickAccountLinkInsideHamburgerMenu() {
+        accountLinkInsideHamburgerMenu.waitIsPresent();
+        accountLinkInsideHamburgerMenu.click();
+    }
+
+    /**
+     * Method to click signout link inside HamburgerMenu.
+     */
+    public void clickSignOutLinkInsideHamburgerMenu() {
+        signOutLinkInsideHamburgerMenu.waitIsPresent();
+        signOutLinkInsideHamburgerMenu.click();
+    }
+
+     /**
+     * Method to Verify Seller on Amazon link in footer and Click.
+     */
+    public void verifyAndClickSellerLinkInFooter() {
+        status.addIsEnabled(footerSellerLink);
+        status.processStatus();
+        footerSellerLink.click();
+    }
+
+    /**
+     * Method to Verify FBA link in footer and Click.
+     */
+    public void verifyAndClickFulfilmentByAmazonLink() {
+        status.addIsEnabled(footerFulfilmentByAmazonLink);
+        status.processStatus();
+        footerFulfilmentByAmazonLink.click();
+    }
+
+    /**
+     * Method to Verify Conditions of Use and Sale Link in footer and Click.
+     */
+    public void verifyAndClickFooterConditionsOfUseAndSaleLink() {
+        status.addIsEnabled(footerConditionsOfUseAndSaleLink);
+        status.processStatus();
+        footerConditionsOfUseAndSaleLink.click();
+    }
+
+    /**
+     * Click "Amazon Mobile App" link under Let Us Help You section in Footer.
+     */
+    public void verifyAndClickFooterAmazonAppLink() {
+        status.addIsEnabled(footerAmazonAppLink);
+        status.processStatus();
+        footerAmazonAppLink.click();
+    }
+
+    /**
+     * Method to click Shipping Rates & Policies Link in Footer.
+     */
+    public void clickfooterShippingRatesAndPoliciesLink() {
+        footerShippingRatesAndPoliciesLink.click();
+    }
+
+    /**
+     * Method to click Interest Based Ads Notice Link in Footer.
+     */
+    public void clickfooterInterestBasedAdsNoticeLink() {
+        footerInterestBasedAdsNoticeLink.click();
+    }
+
+    /**
+     * Method to click Affiliate or Associate Link in Footer.
+     */
+    public void clickfooterAssociateProgramLink() {
+        footerAffiliateProgramLink.click();
+    }
+
+    /**
+     * Method to click Recycling or Disposal Link in Footer.
+     */
+    public void clickfooterRecyclingLink() {
+        footerRecyclingLink.click();
+    }
+
+    /**
+     * Click "Press Releases" link under Get To Know Us section in Footer.
+     */
+    public void verifyAndClickPressReleasesLink() {
+        status.addIsEnabled(footerPressReleasesLink);
+        status.processStatus();
+        footerPressReleasesLink.click();
+    }
+
+    /**
+     * Click Twitter Link.
+     */
+    public void clickTwitterLink() {
+        footerTwitterLink.click();
+    }
+
+    /**
+     * Method to get Profile Name in Hamburger Menu.
+     * @return text of ProfileName
+     */
+    public String getTexthamburgerMenuProfileName() {
+        SleepUtil.sleep(3000);
+        return hamburgerMenuProfileName.getText();
+    }
+
+    /**
+     * Click Profile Name in Hamburger Menu.
+     */
+    public void clickHamburgerMenuProfileName() {
+        hamburgerMenuProfileName.click();
+    }
+
+    /**
+     * Click Sell on Amazon Link in Account Flyout.
+     */
+    public void clickAccountFlyOutSellOnAmazonLink() {
+        accountAndListsLink.mouseOverAndWait(accountFlyOutSellOnAmazonLink);
+        accountFlyOutSellOnAmazonLink.click();
+    }
+
+    /**
+     * Click Sell on Amazon Link in Global Nav.
+     */
+    public void clickGlobalNavSellOnAmazonLink() {
+        globalNavSellOnAmazonLink.click();
+    }
+
+    /**
+     * Click About Amazon Link in Footer.
+     */
+    public void clickFooterAboutAmazonLink() {
+        waitForPageToLoad();
+        footerAboutAmazonLink.click();
+    }
+
+    /**
+     * Get URLs all the Subsidiaries Link in Footer.
+     * @return URLs.
+     */
+    public List<String> getURLsOfSubsidiariesLinkInFooter() {
+        List<String> urls = Lists.newArrayList();
+        for (PageElement element : footerSubsidiariesLink.getElements()) {
+            urls.add(element.getElement().getAttribute("href"));
+            status.addIsDisplayed(element);
+        }
+        return urls;
+    }
+
+    /**
+     * Method to click Imprint or Disclaimer Link in Footer.
+     */
+    public void clickfooterImprintLink() {
+        waitForPageToLoad();
+        footerImprintLink.click();
+    }
+
+    /**
+     * Get URLs all the Sub Nav Links.
+     * @return URLs.
+     */
+    public List<String> getURLsOfSubNavsLink() {
+        List<String> urls = Lists.newArrayList();
+        for (PageElement element : globalSubNavLinks.getElements()) {
+            urls.add(element.getElement().getAttribute("href"));
+            status.addIsDisplayed(element);
+        }
+        return urls;
+    }
+
+    /**
+     * Get URLs all the Top Nav Links.
+     * @return URLs.
+     */
+    public List<String> getURLsOfNavLinks() {
+        List<String> urls = Lists.newArrayList();
+        for (PageElement element : topNavLinks.getElements()) {
+            urls.add(element.getElement().getAttribute("href"));
+            status.addIsDisplayed(element);
+        }
+        return urls;
+    }
+
+    /**
+     * Verify Accounts and List drop down displayed before Orders in Global Nav.
+     */
+    public void verifyAccountsAndListsDropDownDisplayedBeforeOrders() {
+        accountAndListsLink.mouseOverAndWait(accountsAndListsDropDownDisplayedBeforeOrders);
+        status.addIsDisplayed(accountsAndListsDropDownDisplayedBeforeOrders);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to Click and verify gift cart link in Hamburger Menu.
+     */
+    public void clickVerifyGiftCardLinkInHamburgerMenu() {
+        scrollToElement(giftCardsLinkInHamburgerMenu);
+        SleepUtil.sleep(2000);
+        giftCardsLinkInHamburgerMenu.click();
+    }
+
+    /**
+     * Method to click Best Sellers Nav Link.
+     */
+    public void clickBestSellersNavLink() {
+        bestSellrsNavLink.click();
+    }
+
+    /**
+     * Method to click Site Wide Merchandiser slot Link.
+     */
+    public void clickSiteWideMerchandiserSlot() {
+        siteWideMerchandiserLink.click();
+    }
+
+    /**
+     * Method to click Orders Nav link.
+     */
+    public void clickOrdersNavLink() {
+        ordersNavLink.click();
+    }
+
+    /**
+     * Method to click Today's Deals Nav Link.
+     */
+    public void clickTodaysDealsNavLink() {
+        todaysDealsNavLink.click();
+    }
+
+    /**
+     * Method to click Your Account link in Footer.
+     */
+    public void clickFooterYourAccountLink() {
+        footerYourAccountLink.click();
+    }
+
+    /**
+     * Verify Help link in the Global Nav.
+     * @return status of Help link in Global Nav
+     */
+    public boolean helpGlobalNavLinkIsPresent() {
+        return helpLink.isPresent();
+    }
+
+    /**
+     * Method to verify the status of products displayed in Best Sellers page.
+     * @return status of products displayed in Best Sellers page
+     */
+    public boolean verifyProductsIsDisplayedInBestSellersPage() {
+        return productsInBestSellersPage.isPresent();
+    }
+
+    /**
+     * Method to click Help Link in Hamburger Menu.
+     */
+    public void clickHelpLinkInHamburgerMenu() {
+        scrollToElement(helpLinkInHamburgerMenu);
+        helpLinkInHamburgerMenu.clickAndWaitForDisappear(hamburgerMenuProfileImage);
+    }
+
+    /**
+     * Click Profile Image in Hamburger Menu.
+     */
+    public void clickHamburgerMenuProfileImage() {
+        hamburgerMenuProfileImage.waitIsPresent();
+        hamburgerMenuProfileImage.click();
+    }
+
+    /**
+     * Verify "Prime Video" link present inside Hamburger Menu.
+     * @param primeVideoString to Parameterized for xpath.
+     * @return Prime video is displayed or not inside Hamburger Menu.
+     */
+    public boolean verifyPrimeVideoPresentInHamburgerMenu(String primeVideoString) {
+        BasePageElement amazonPrimeVideoTextInHamburgerMenu = new BasePageElement(driver,
+                primeVideoInHamburgerMenu.getName(),
+                String.format(primeVideoInHamburgerMenu.getXPath(), primeVideoString));
+        waitForPageToLoad();
+        hamburgerMenu.isPresent();
+        return amazonPrimeVideoTextInHamburgerMenu.waitIsPresent();
+    }
+
+    /**
+     * Verify subNavs appears on Nav bar.
+     * @param subNavString to Parameterized for xpath.
+     * @return Checks the passed parameter Nav option is displayed or not in the global nav.
+     */
+    public boolean verifySubNavsPresentInNavbar(String subNavString) {
+        BasePageElement subNavTextInNavBar = new BasePageElement(driver,
+                subnavOptionsInGlobalnavBar.getName(),
+                String.format(subnavOptionsInGlobalnavBar.getXPath(), subNavString));
+        waitForPageToLoad();
+        return subNavTextInNavBar.isPresent();
+    }
+}
