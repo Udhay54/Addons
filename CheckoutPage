@@ -1,0 +1,2071 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.utils.SleepUtil;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.WebDriver;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Checkout - Review Your Order page model.
+ *
+ * @author mehalaak
+ */
+@SuppressWarnings("checkstyle:visibilitymodifier")
+@SuppressFBWarnings({"MS_SHOULD_BE_FINAL"})
+@PageName("checkout")
+public class CheckoutPage extends BasePageModel {
+
+    @Locator("EXPORTS_TERMS_AND_CONDITION_MESSAGE")
+    private static BasePageElement exportsTermsAndConditionMessage;
+
+    @Locator("EXPORTS_TERMS_AND_CONDITION_LINK")
+    private static BasePageElement exportsTermsAndConditionLink;
+
+    @Locator("AMAZON_GLOBAL_TERMS_AND_CONDITIONS_LINK")
+    private static BasePageElement amazonGlobalTermsAndConditionsLink;
+
+    @Locator("PRIME_UPSELL_AREA_IN_SHIP_OPTIONS_PAGE")
+    private static BasePageElement primeUpsellAreaInShipOptionsPage;
+
+    @Locator("PRIME_UPSELL_POPUP_IN_REVIEW_YOUR_ORDER_PAGE")
+    private static BasePageElement primeUpsellPopupInReviewYourOrderPage;
+
+    @Locator("IMPORT_FEES_DEPOSIT_LINK")
+    private static BasePageElement importFeesDepositLink;
+
+    @Locator("DELIVERY_TO_THIS_ADDRESS_BUTTON_FOR_PRIME")
+    private static BasePageElement deliverToThisAddressButtonForPrime;
+
+    @Locator("PLACE_YOUR_ORDER_BUTTON")
+    private static BasePageElement placeYourOrderButton;
+
+    @Locator("PRIME_UPSELL_AREA_IN_PAY_SELECT_PAGE")
+    private static BasePageElement primeUpsellAreaInPaySelectPage;
+
+    @Locator("PRIME_UPSELL_AREA_IN_REVIEW_YOUR_ORDER_PAGE")
+    private static BasePageElement primeUpsellAreaInReviewYourOrderPage;
+
+    @Locator("SHIP_AND_SOLD_BY_TEXT")
+    private static BasePageElement shipAndSoldByText;
+
+    @Locator(value = "GIFT_OPTION_NOT_AVAILABLE_TEXT", stringId = "checkout-gift-options-unavailable")
+    private static BasePageElement giftOptionNotAvailableText;
+
+    @Locator("CONDITIONS_OF_SALE_LINK")
+    private static BasePageElement conditionsOfSaleLink;
+
+    @Locator("HERE_LINK_UNDER_TERM_AND_CONDITION_IN_THE_FOOTER")
+    private static BasePageElement hereLinkUnderTermAndConditionInTheFooter;
+
+    @Locator("IMPORT_FEES_DEPOSIT_INCLUDED_TEXT")
+    private static BasePageElement importFeesDepositIncludedText;
+
+    @Locator("IMPORT_FEES_DEPOSIT_TEXT_UNDER_ORDER_SUMMARY")
+    private static BasePageElement importFeesDepositTextUnderOrderSummary;
+
+    @Locator("ORDER_SUMMARY_PRIMARY_ACTION_BUTTON")
+    private static BasePageElement orderSummaryPrimaryActionButton;
+
+    @Locator("ADDRESS_CHANGE_LINK")
+    private static BasePageElement addressChangeLink;
+
+    @Locator("USE_THIS_PAYMENT_METHOD_BUTTON_FOR_PRIME")
+    private static BasePageElement useThisPaymentMethodButtonForPrime;
+
+    @Locator("PAYMENT_CHANGE_LINK")
+    private static BasePageElement paymentChangeLink;
+
+    @Locator("PRIME_BADGE_UNDER_REVIEW_ITEMS_AND_DELIVERY")
+    private static BasePageElement primeBadgeUnderReviewItemsAndDelivery;
+
+    @Locator("PRIME_ELIGIBILITY_MESSAGE_UNDER_REVIEW_ITEMS_AND_DELIVERY")
+    private static BasePageElement primeEligibilityMessageUnderReviewItemsAndDelivery;
+
+    @Locator("CHOOSE_DELIVERY_OPTION_RADIO_BUTTON")
+    private static BasePageElement chooseDeliveryOptionRadioButton;
+
+    @Locator("SHIP_OPTION_BY_NAME")
+    private static BasePageElement shipOptionByName;
+
+    @Locator("SHIP_OPTION_RADIO_BUTTON_BY_NAME")
+    private static BasePageElement shipOptionRadioButtonByName;
+
+    @Locator("SHIP_OPTION_RADIO_BUTTON")
+    private static BasePageElement shipOptionRadioButton;
+
+    @Locator("SPC_ORDER_SUMMARY_SUB_TOTALS_BY_CELL")
+    private static BasePageElement spcOrderSummarySubTotalsByCell;
+
+    @Locator("SHIPPING_BENEFIT_PROMO_MESSAGE")
+    private static BasePageElement shippingBenefitPromotionText;
+
+    @Locator("NOT_QUALIFY_FREE_SHIPPING_LINK")
+    private static BasePageElement notQualifyFreeShippingLink;
+
+    @Locator("ESTIMATED_TAX_LINK")
+    private static BasePageElement estimatedTaxLink;
+
+    //This locator on True SPC Page //TODO: All the SPC locator name to change to TSPC
+    @Locator("SPC_CHANGE_SHIPPING_ADDRESS_LINK")
+    private static BasePageElement spcChangeShippingAddressLink;
+
+    //Change Link on multi Page checkout
+    @Locator("CHANGE_SHIPPING_ADDRESS_LINK")
+    private static BasePageElement changeShippingAddressLink;
+
+    @Locator("SPC_CHANGE_BILLING_ADDRESS_LINK")
+    private static BasePageElement spcChangeBillingAddressLink;
+
+    @Locator("SPC_CHANGE_PAYMENT_METHOD_LINK")
+    private static BasePageElement spcChangePaymentMethodLink;
+
+    @Locator("SPC_BILLING_ADDRESS_NAME_TEXT")
+    private static BasePageElement spcBillingAddressNameText;
+
+    @Locator("SPC_SHIPPING_ADDRESS_NAME_TEXT")
+    private static BasePageElement spcShippingAddressNameText;
+
+    @Locator("CHANGE_SHIPPING_ADDRESS_BUTTON_BY_ADDRESS_NAME")
+    private static BasePageElement changeShippingAddressByAddressName;
+
+    @Locator("CHANGE_BILLING_ADDRESS_BUTTON")
+    private static BasePageElement changeBillingAddressButton;
+
+    @Locator("CHOOSE_BILLING_ADDRESS_RADIO_BUTTON_BY_NAME")
+    private static BasePageElement chooseBillingAddressRadioButtonByName;
+
+    @Locator("SPC_SAME_AS_DELIVERY_ADDRESS_TEXT_UNDER_BILLING_ADDRESS")
+    private static BasePageElement spcSameAsDeliveryAddressTextUnderBillingAddress;
+
+    @Locator("SPC_PAYMENT_INFORMATION_TEXT")
+    private static BasePageElement spcPaymentInformationText;
+
+    @Locator("SPC_ADD_GIFT_OPTION_BUTTON")
+    private static BasePageElement spcAddGiftOptionButton;
+
+    @Locator("SPC_ADD_GIFT_WRAP_LINK")
+    private static BasePageElement spcAddGiftWrapLink;
+
+    @Locator("SPC_CHANGE_GIFT_OPTION_LINK")
+    private static BasePageElement spcChangeGiftOptionLink;
+
+    @Locator("SPC_GIFT_WRAP_CHECKBOX")
+    private static BasePageElement spcGiftWrapCheckbox;
+
+    @Locator("SPC_GIFT_OPTION_SAVE_BUTTON")
+    private static BasePageElement spcGiftOptionSaveButton;
+
+    @Locator("REVIEW_SELECTED_GIFT_OPTIONS_MESSAGE")
+    private static BasePageElement reviewSelectedGiftOptionsMessage;
+
+    @Locator("REVIEW_SELECTED_GIFT_WRAP")
+    private static BasePageElement reviewSelectedGiftWrap;
+
+    @Locator("SPC_SHIPMENT_DETAILS_BOX")
+    private static BasePageElement spcShipmentDetailsBox;
+
+    @Locator("SPC_DELIVER_TO_MULTIPLE_ADDRESS_LINK")
+    private static BasePageElement spcDeliverToMultipleAddressLink;
+
+    @Locator("SPC_QUANTITY_DISPLAY_TEXT")
+    private static BasePageElement spcQuantityDisplayText;
+
+    @Locator("SPC_ORDER_SUMMARY_CHANGE_QUANTITY_LINK")
+    private static BasePageElement spcOrderSummaryChangeQuantityLink;
+
+    @Locator("SPC_ORDER_SUMMARY_DELETE_QUANTITY")
+    private static BasePageElement spcOrderSummaryDeleteQuantity;
+
+    @Locator("SPC_ORDER_SUMMARY_QUANTITY_DROP_DOWN")
+    private static BasePageElement spcOrderSummaryQuantityDropDown;
+
+    @Locator("SPC_ORDER_SUMMARY_SHIPPING_PRICE_TEXT")
+    private static BasePageElement spcOrderSummaryShippingPriceText;
+
+    @Locator("SPC_ORDER_SUMMARY_QUANTITY_TEXT_BOX")
+    private static BasePageElement spcOrderSummaryQuantityTextBox;
+
+    @Locator("SPC_ORDER_SUMMARY_UPDATE_QUANTITY_LINK")
+    private static BasePageElement spcOrderSummaryUpdateQuantityLink;
+
+    @Locator("SPC_ORDER_SUMMARY_DELETE_QUANTITY_LINK")
+    private static BasePageElement spcOrderSummaryDeleteQuantityLink;
+
+    @Locator("SPC_ORDER_SUMMARY_SOLD_BY_TEXT")
+    private static BasePageElement spcOrderSummarySoldByText;
+
+    @Locator("SPC_ORDER_SUMMARY_ITEM_PRICE_TEXT")
+    private static BasePageElement spcOrderSummaryItemPriceText;
+
+    @Locator("SPC_ORDER_SUMMARY_PRODUCT_TITLE")
+    private static BasePageElement spcOrderSummaryProductTitle;
+
+    @Locator("SPC_ORDER_SUMMARY_PRODUCT_IMAGE")
+    private static BasePageElement spcOrderSummaryProductImage;
+
+    @Locator("SPC_ORDER_SUMMARY_MULTIPLE_SHIPPING_ADDRESS_CHANGE_LINK")
+    private static BasePageElement spcOrderSummaryMultiShippingAddressChangeLink;
+
+    @Locator("ORDER_SUMMARY_GST_TEXT")
+    private static BasePageElement orderSummaryGstText;
+
+    @Locator("ORDER_SUMMARY_GST_DETAILS_TEXT")
+    private static BasePageElement orderSummaryGstDetailsText;
+
+    @Locator("ORDER_SUMMARY_GST_POPOVER_PRICE")
+    private static BasePageElement orderSummaryGstPopoverPrice;
+
+    @Locator("GLOBAL_STORE_BADGE")
+    private static BasePageElement globalStoreBadge;
+
+    @Locator("GLOBAL_STORE_GROUP_LEVEL_PROMISE")
+    private static BasePageElement globalStoreGroupLevelPromise;
+
+    @Locator("ORDER_SUMMARY_ITEMS")
+    private static BasePageElement orderSummaryItems;
+
+    @Locator("ORDER_SUMMARY_SHIPPING")
+    private static BasePageElement orderSummaryShipping;
+
+    @Locator("ORDER_SUMMARY_TOTAL_BEFORE_PAYMENT")
+    private static BasePageElement orderSummaryTotalBeforePayment;
+
+    @Locator("ORDER_SUMMARY_TOTAL")
+    private static BasePageElement orderSummaryTotal;
+
+    @Locator("SPC_PRIORITY_SHIP_OPTION")
+    private static BasePageElement spcPriorityShipOption;
+
+    @Locator("SPC_STANDARD_SHIP_OPTION")
+    private static BasePageElement spcStandardShipOption;
+
+    @Locator("SPC_EXPEDITED_SHIP_OPTION")
+    private static BasePageElement spcExpeditedShipOption;
+
+    @Locator("SPC_PRIORITY_SHIP_OPTION_SELECTED")
+    private static BasePageElement spcPriorityShipOptionSelected;
+
+    @Locator("SOSP_SHIPPING_OPTION_RADIO_BUTTON")
+    private static BasePageElement sospShippingOptionRadioButton;
+
+    @Locator("SOSP_SHIPPING_SPEED_DESCRIPTION")
+    private static BasePageElement sospShippingSpeedDescription;
+
+    @Locator("DEFAULT_SELECTED_SHIP_OPTION")
+    private static BasePageElement defaultSelectedShipOption;
+
+    @Locator("SPC_GIFT_MESSAGE_TEXT")
+    private static BasePageElement spcGiftMessageText;
+
+    @Locator("SPC_GIFT_WRAP_TEXT")
+    private static BasePageElement spcGiftWrapText;
+
+    @Locator("GIFT_PAGE_CONTINUE_BUTTON")
+    private static BasePageElement giftPageContinueButton;
+
+    @Locator("GIFT_WRAP_RADIO_BUTTON")
+    private static BasePageElement giftPageWrapRadioButton;
+
+    @Locator("GIFT_WRAP_CHECKBOX")
+    private static BasePageElement giftPageWrapCheckbox;
+
+    @Locator("GIFT_MESSAGE_TEXT_BOX")
+    private static BasePageElement giftPageMessageTextBox;
+
+    @Locator("GIFT_WRAP_RADIO_BUTTON_DESCRIPTION")
+    private static BasePageElement giftPageWrapRadioButtonDescription;
+
+    @Locator("SPC_DELIVERY_PREFERENCE_RADIO_BUTTON")
+    private static BasePageElement spcDeliveryPreferenceRadioButton;
+
+    //TODO: This locator needs to be deleted if PAGE_LOADING_SPINNER works fine https://issues.amazon.com/issues/D103271413
+    @Locator("LOADING_SPINNER")
+    private static BasePageElement loadingSpinner;
+
+    @Locator("SPC_SHIPMENT_PROMISE_TEXT")
+    private static BasePageElement spcShipmentPromiseText;
+
+    @Locator("SOSP_DELIVERY_PREFERENCE_RADIO_BUTTON")
+    private static BasePageElement sospDeliveryPreferenceRadioButton;
+
+    @Locator("SOSP_SOLDBY_TEXT")
+    private static BasePageElement sospSoldByText;
+
+    @Locator("SOSP_DELIVERY_HEADER_TEXT")
+    private static BasePageElement sospDeliveryHeaderText;
+
+    @Locator("APPLY_PROMO_CODE_INPUT")
+    private static BasePageElement applyPromoCodeInput;
+
+    @Locator("APPLY_PROMO_CODE_BUTTON")
+    private static BasePageElement applyPromoCodeButton;
+
+    @Locator(value = "PROMOTION_APPLIED_LABEL_IN_ORDER_SUMMARY", stringId = "acp-subtotals-promotion-default")
+    private static BasePageElement promotionAppliedLabelInOrderSummary;
+
+    @Locator("ORDERING_PREFERENCE_CHECKBOX")
+    private static BasePageElement orderingPreferenceCheckbox;
+
+    @Locator("ADDRESS_POPOVER_ADD_NEW_ADDRESS_BUTTON")
+    private static BasePageElement addressPopoverAddNewAddressButton;
+
+    @Locator("SPC_PAYMENT_LOGO")
+    private static BasePageElement spcPaymentLogo;
+
+    @Locator("AMAZON_PICK_UP_LOCATION_NEXT_TO_SHIPPING_ADDRESS")
+    private static BasePageElement amazonPickUpNextToShippingAddress;
+
+    //Details Link next to Shipment x of y
+    @Locator("SPC_FAST_TRACK_DETAILS_LINK")
+    private static BasePageElement spcFastTrackDetailsLink;
+
+    //Add Gift Option Button locator varies between SPC & MPC. The below Locator is during MPC flow
+    @Locator("ADD_GIFT_OPTION_BUTTON")
+    private static BasePageElement addGiftOptionButton;
+
+    @Locator("SPC_GIFT_CARD_LOGO")
+    private static BasePageElement spcGiftCardLogo;
+
+    @Locator("NAV_BAR_AMAZON_LOGO")
+    private static BasePageElement navBarAmazonLogo;
+
+    @Locator("TSPC_SHIPPING_ADDRESS_PANNEL")
+    private static BasePageElement tspcShippingAddressPannel;
+
+    @Locator(value = "VAT_DETAILS_LINK", stringId = "checkout-see-details-link")
+    private static BasePageElement vatDetailsLink;
+
+    @Locator(value = "ORDER_SUMMARY_TITLE_INSIDE_VAT_DETAILS_POPOVER", stringId = "acp-amazon-order-summary")
+    private static BasePageElement orderSummaryTitleInsideVatDetailsPopover;
+
+    @Locator("VAT_POPOVER")
+    private static BasePageElement vatPopover;
+
+    @Locator("SPC_FOOTER_LEGAL_MESSAGE")
+    private static BasePageElement spcFooterLegalMessage;
+
+    @Locator("NEXT_BUTTON_IN_CHOOSE_ADDRESS")
+    private static BasePageElement nextButtonInChooseAddress;
+
+    @Locator("ESTIMATED_TAX_LINK_FOR_ACCB_PAYMENT")
+    private static BasePageElement estimatedTaxLinkForACCBpayment;
+
+    @Locator("STANDARD_SHIP_OPTION_PROMISE_TEXT")
+    private static BasePageElement standardShipOptionPromiseText;
+
+    @Locator("PRIORITY_SHIP_OPTION_PROMISE_TEXT")
+    private static BasePageElement priorityShipOptionPromiseText;
+
+    @Locator("INFO_LINK_IN_VAT_POPOVER_IN_SPC")
+    private static BasePageElement infoLinkInVATPopoverInSPC;
+
+    @Locator("VAT_POPOVER_ORDER_SUMMARY_SUB_TOTALS_BY_CELL")
+    private static BasePageElement vatPopoverOrderSummarySubtotalByCell;
+
+    @Locator("VAT_POPOVER_ORDER_SUMMARY_ORDER_TOTAL")
+    private static BasePageElement vatPopoverOrderSummaryOrderTotal;
+
+    @Locator(value = "FREE_SHIPPING_PROMO_UNDER_ORDER_SUMMARY")
+    private static BasePageElement freeShippingPromoUnderOrderSummary;
+
+    @Locator("SHIP_OPTION_BY_ASIN")
+    private static BasePageElement shipOptionByAsin;
+
+    @Locator(value = "SPC_GIFT_OPTION_NOT_AVAILABLE_TEXT", stringId = "checkout-gift-options-unavailable")
+    private static BasePageElement spcGiftOptionNotAvailableText;
+
+    @Locator("SPC_GIFT_POPUP_PRODUCT_TITLE")
+    private static BasePageElement spcGiftPopupProductTitle;
+
+    @Locator("SPC_GIFT_POPUP_GIFT_WRAP_TEXT")
+    private static BasePageElement spcGiftPopUpGiftWrapText;
+
+    @Locator("SPC_ORDER_SUMMARY_PRICE_OF_LINE_ITEMS_WITHOUT_GRAND_TOTAL")
+    private static BasePageElement spcOrderSummaryPriceOfLineItemsWithoutGrandTotal;
+
+    @Locator("REVIEW_ITEMS_AND_DELIVERY_SECTION")
+    private static BasePageElement reviewItemsAndDeliverySection;
+
+    //TODO: This locator needs to be deleted if PAGE_LOADING_SPINNER works fine https://issues.amazon.com/issues/D103271413
+    @Locator("LOADING_SPINNER_IN_REVIEW_ITEMS_SECTION")
+    private static BasePageElement loadingSpinnerInReviewItemsSection;
+
+    @Locator("SPC_PRIME_OFFER_BUTTON")
+    private static BasePageElement spcPrimeOfferButton;
+
+    @Locator("AMAZON_REWARDS_VISA_OR_STORE_PROMOTION_CARD_IN_SPC_PAGE")
+    private static BasePageElement amazonRewardsVisaOrStorePromotionCardInSpcPage;
+
+    @Locator("ACCB_SELECTED_CURRENCY_RADIO_BUTTON")
+    private static BasePageElement accbSelectedCurrencyRadioButton;
+
+    @Locator("SPC_ORDER_SUMMARY_PRICE_OF_LINE_ITEMS_WITH_GRAND_TOTAL")
+    private static BasePageElement spcOrderSummaryPriceOfLineItemsWithGrandTotal;
+
+    @Locator("PRIME_INTERSTITIAL_PAGE_BEFORE_SPC")
+    private static BasePageElement primeInterstitialAdBeforeSPC;
+
+    @Locator("PRIME_INTERSTITIAL_BENEFIT_DECLINE")
+    private static BasePageElement primeInterstitialBenefitDecline;
+
+    @Locator("KYC_REQUIRED_ALERT_BANNER_IN_CHECKOUT")
+    private static BasePageElement kycRequiredAlertBannerInCheckout;
+
+    //TODO: This locator needs to be deleted if PAGE_LOADING_SPINNER works fine https://issues.amazon.com/issues/D103271413
+    @Locator("PAGE_SPINNER")
+    private static BasePageElement pageSpinner;
+
+    @Locator("SECTIONAL_LOADING_SPINNER")
+    protected static BasePageElement sectionalLoadingSpinner;
+
+    @Locator("PAYMENT_METHOD_IN_CHECKOUT_SUMMARY")
+    private static BasePageElement paymentMethodInCheckoutSummary;
+
+    @Locator("TANGO_SHIPPING_ADDRESS_PANEL")
+    private static BasePageElement tangoShippingAddressPanel;
+
+    @Locator("CHECKOUT_FINAL_DELIVERY_PANEL")
+    private static BasePageElement checkoutFinalDeliveryPanel;
+
+    private AddressSelectionPage addressSelectionPage;
+    private PaymentSelectionPage paymentSelectionPage;
+    private GiftOptionsSelectionPage giftOptionsSelectionPage;
+    private PurchaseAuthorizationPage purchaseAuthorizationPage;
+    private SospPage sospPage;
+    private KYCWidgetPage kycWidgetPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public CheckoutPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+    }
+
+    /**
+     * Getter method of placeYourOrder PageElement.
+     * @return placeYourOrder PageElement.
+     */
+    public BasePageElement getPlaceYourOrderButton() {
+        return placeYourOrderButton;
+    }
+
+    /**
+     * Is placeYourOrderButton present or not.
+     * @return placeYourOrderButton present or not.
+     */
+    public boolean isPlaceYourOrderButtonPresent() {
+        return placeYourOrderButton.waitIsPresent();
+    }
+
+    /**
+     * Verify prime upsell area absent in ship options page.
+     */
+    public void verifyPrimeUpsellAreaInShipOptionsPageAbsent() {
+        status.addIsHiddenOrMissing(primeUpsellAreaInShipOptionsPage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify prime upsell area absent in review your order page.
+     */
+    public void verifyPrimeUpsellAreaInReviewYourOrderPageAbsent() {
+        status.addIsHiddenOrMissing(primeUpsellAreaInReviewYourOrderPage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify if Amazon Global T&C message is present when delivering to foreign address.
+     */
+    public void verifyAmazonGlobalTermsAndConditionsLinkPresent() {
+        status.addIsDisplayed(amazonGlobalTermsAndConditionsLink);
+        status.processStatus();
+    }
+
+    /**
+     * Click Amazon Global Terms And Conditions Link.
+     */
+    public void clickAmazonGlobalTermsAndConditionsLink() {
+        amazonGlobalTermsAndConditionsLink.click();
+    }
+
+    /**
+     * Verify if Exports T&C message is displayed when delivering to foreign address.
+     */
+    public void verifyExportsTermsAndConditionsMessagePresent() {
+        status.addIsDisplayed(exportsTermsAndConditionMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify if Exports T&C link is present when delivering to foreign address.
+     */
+    public void verifyExportsTermsAndConditionsLinkPresent() {
+        status.addIsDisplayed(exportsTermsAndConditionLink);
+        status.processStatus();
+    }
+
+    /**
+     * Click Exports Terms And Conditions Link.
+     */
+    public void clickExportsTermsAndConditionsLink() {
+        exportsTermsAndConditionLink.click();
+    }
+
+    /**
+     * Verify if IFD Link is displayed when delivering AIS items to foreign address.
+     * @param importStringType string can be either "IFD" or "Import Charges"
+     */
+    public void isImportFeeDepositLinkPresent(String importStringType) {
+        status.addIsDisplayed(new BasePageElement(driver, importFeesDepositLink.getName() + "_"
+                + importStringType, String.format(importFeesDepositLink.getXPath(), importStringType)));
+        status.processStatus();
+    }
+
+    /**
+     * Verify if IFD Link is not displayed when delivering AIS items to foreign address, with no import deposit fees.
+     * @param importStringType string can be either "IFD" or "Import Charges"
+     */
+    public void isImportFeeDepositLinkAbsent(String importStringType) {
+        status.addIsHiddenOrMissing(new BasePageElement(driver, importFeesDepositLink.getName()  + "_"
+                + importStringType, String.format(importFeesDepositLink.getXPath(), importStringType)));
+        status.processStatus();
+    }
+
+    /**
+     * Verify if GST/VAT Link is displayed when delivering AIS items to GST/VAT Eligible countries.
+     * @param taxType is either "GST" or "VAT" depending on destination countries
+     * @return estimatedTAX link present or not present
+     */
+    public boolean isEstimatedGSTLinkPresent(String taxType) {
+        return new BasePageElement(driver, estimatedTaxLink.getName() + "_" + taxType,
+                String.format(estimatedTaxLink.getXPath(), taxType)).isPresent();
+    }
+
+    /**
+     * Click Estimated GST Link
+     * @param taxType is either "GST" or "VAT" depending on destination countries
+     */
+    public void clickEstimatedGSTLink(String taxType) {
+        new BasePageElement(driver, estimatedTaxLink.getName() + "_" + taxType,
+                String.format(estimatedTaxLink.getXPath(), taxType)).click();
+    }
+
+    /**
+     * Verify if GST/VAT Link is displayed when delivering AIS items to GST/VAT Eligible countries.
+     * @param taxType is either "GST" or "VAT" depending on destination countries
+     * @return estimatedTAX link present or not present
+     */
+    public boolean isEstimatedGSTLinkForACCBPaymentPresent(String taxType) {
+        return new BasePageElement(driver, estimatedTaxLinkForACCBpayment.getName() + "_" + taxType,
+                String.format(estimatedTaxLinkForACCBpayment.getXPath(), taxType)).isPresent();
+    }
+
+    /**
+     * Click Estimated GST Link
+     * @param taxType is either "GST" or "VAT" depending on destination countries
+     */
+    public void clickEstimatedGSTLinkForACCBPayment(String taxType) {
+        new BasePageElement(driver, estimatedTaxLinkForACCBpayment.getName() + "_" + taxType,
+                String.format(estimatedTaxLinkForACCBpayment.getXPath(), taxType)).click();
+    }
+
+    /**
+     * Click IFD 'Import Fee Deposit' Link.
+     * @param importStringType string can be either "IFD" or "Import Charges"
+     */
+    public void clickImportFeeDepositLink(String importStringType) {
+        new BasePageElement(driver, importFeesDepositLink.getName() + "_"
+                + importStringType, String.format(importFeesDepositLink.getXPath(), importStringType)).click();
+    }
+
+    /**
+     * Verify (['Ships from']) 'Sold by: xxx' ('xxx' is source country specific, like 'Amazon US') text present.
+     * @param sellerNameText the dynamic replaced text by caller.
+     */
+    public void verifyShipAndSoldByTextPresent(final String sellerNameText) {
+        waitForPageToLoad();
+        status.addIsDisplayed(new BasePageElement(driver, shipAndSoldByText.getName() + "_" + sellerNameText,
+                String.format(shipAndSoldByText.getXPath(), sellerNameText)));
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'Gift option not available' text present.
+     * @param pageType pass either SPC or Non-SPC
+     */
+    public void verifyGiftOptionNotAvailableTextPresent(String pageType) {
+        if (pageType.equalsIgnoreCase("SPC")) {
+            status.addIsDisplayed(spcGiftOptionNotAvailableText);
+            status.processStatus();
+        } else {
+            status.addIsDisplayed(giftOptionNotAvailableText);
+            status.processStatus();
+        }
+    }
+
+    /**
+     * Verify 'Conditions of sale' link present and clickable.
+     */
+    public void verifyConditionsOfSaleLinkClickable() {
+        status.addIsDisplayed(conditionsOfSaleLink);
+        status.addIsEnabled(conditionsOfSaleLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'here' link under term and condition in the footer present and clickable.
+     */
+    public void verifyHereLinkUnderTermAndConditionInTheFooterClickable() {
+        status.addIsDisplayed(hereLinkUnderTermAndConditionInTheFooter);
+        status.addIsEnabled(hereLinkUnderTermAndConditionInTheFooter);
+        status.processStatus();
+    }
+
+    /**
+     * Gets 'Import Fees Deposit included' text.
+     * @return import fees deposit included text
+     */
+    public String getImportFeeDepositIncludedText() {
+        return importFeesDepositIncludedText.getText();
+    }
+
+    /**
+     * Prime has a different workflow for reaching review your order page.
+     */
+    public void reachToReviewYourOrderForPrime() {
+        //For CN Marketplace, we have to accept the authorization to continue further.
+        getPurchaseAuthorizationPage().acceptAuthorization();
+        // The primary action button is disable when the address data is loading, wait for it enabled.
+        if (orderSummaryPrimaryActionButton.isPresent() && !orderSummaryPrimaryActionButton.isEnabled()
+                && !deliverToThisAddressButtonForPrime.isPresent()) {
+            orderSummaryPrimaryActionButton.waitForElementToBeEnabled();
+        }
+        //If seller has a limited purchase quantity, then it will save the allowed quantity and proceed further
+        if (getAddressSelectionPage().isSaveQuantityButtonPresent()) {
+            getAddressSelectionPage().clickSaveQuantityButton();
+         }
+        if (deliverToThisAddressButtonForPrime.isPresent()) {
+            deliverToThisAddressButtonForPrime.click();
+        }
+        addressChangeLink.waitIsPresent();
+        //If seller has a limited purchase quantity, then it will save the allowed quantity and proceed further
+        if (getAddressSelectionPage().isSaveQuantityButtonPresent()) {
+            getAddressSelectionPage().clickSaveQuantityButton();
+         }
+        //TODO: rework once kamino payment token issue solved - https://issues.amazon.com/issues/D92206530
+        updateExpiryDateIfNeeded();
+        // The primary action button is disable when the payment data is loading, wait for it enabled.
+        if (orderSummaryPrimaryActionButton.isPresent() && !orderSummaryPrimaryActionButton.isEnabled()
+                && !getPaymentSelectionPage().isPaymentInstrumentRadioButtonPresent()) {
+            orderSummaryPrimaryActionButton.waitForElementToBeEnabled();
+        }
+        if (getPaymentSelectionPage().isPaymentInstrumentRadioButtonPresent()) {
+            getPaymentSelectionPage().selectPaymentRadioButtonIfNoSelected();
+            getPaymentSelectionPage().inputACCBCurrencyChoiceIfNeeded();
+            clickUseThisPaymentMethodButtonForPrimeIfPresent();
+            getPaymentSelectionPage().inputConfirmCardIfNeeded();
+            clickUseThisPaymentMethodButtonForPrimeIfPresent();
+            // Sometimes redirecting to billing address update page may occur.
+            getPaymentSelectionPage().updateBillingAddressIfNeeded();
+        }
+        paymentChangeLink.waitIsPresent();
+    }
+
+    /**
+     * Check if useThisPaymentMethodButtonForPrime is displayed, if so click the same.
+     */
+    public void clickUseThisPaymentMethodButtonForPrimeIfPresent() {
+        if (useThisPaymentMethodButtonForPrime.isPresent()) {
+            useThisPaymentMethodButtonForPrime.click();
+        }
+    }
+
+    /**
+     * Verify prime badge under Review items and delivery present.
+     */
+    public void verifyPrimeBadgeUnderReviewItemsAndDeliveryPresent() {
+        primeBadgeUnderReviewItemsAndDelivery.waitForElementToBeEnabled();
+        status.addIsDisplayed(primeBadgeUnderReviewItemsAndDelivery);
+        status.processStatus();
+    }
+
+    /**
+     * Verify prime Eligibility Message under Review items and delivery Absent.
+     */
+    public void verifyPrimeEligibilityMessageUnderReviewItemsAndDeliveryAbsent() {
+        status.addIsHiddenOrMissing(primeEligibilityMessageUnderReviewItemsAndDelivery);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Delivery Option presents based on the Placeholder text passed by caller.
+     * @param placeholderText the dynamic replaced text by caller.
+     */
+    public void verifyDeliveryOptionRadioButton(final String placeholderText) {
+        status.addIsDisplayed(new BasePageElement(driver,
+                chooseDeliveryOptionRadioButton.getName() + "_" + placeholderText,
+                String.format(chooseDeliveryOptionRadioButton.getXPath(), placeholderText)));
+        status.processStatus();
+    }
+
+    /**
+     * Get Ship speed options count inside Choose Delivery Option.
+     * @param orderIndex any integer starting from 0
+     * @return Ship Speed options count.
+     */
+    public int getShipSpeedOptionsInsideChooseDeliveryOption(int orderIndex) {
+        return new BasePageElement(driver,
+                shipOptionByName.getName() + "_" + orderIndex,
+                // Use the "" string as a pass in parameter here to match all ship options
+                String.format(shipOptionByName.getXPath(), orderIndex, "")).getElements().size();
+    }
+
+    /**
+     * Return the row text (including label and amount/price) by given 1st column's text.
+     * @param firstColumnText each row's first column text.
+     * @return the same row's text.
+     */
+    public String getOrderSummaryContentPriceByCell(String firstColumnText) {
+        waitForPageToLoad();
+        BasePageElement spcSummarySubTotalsByCell = new BasePageElement(driver,
+                spcOrderSummarySubTotalsByCell.getName() + "_" + firstColumnText,
+                String.format(spcOrderSummarySubTotalsByCell.getXPath(), firstColumnText));
+        spcSummarySubTotalsByCell.waitIsPresent();
+        spcSummarySubTotalsByCell.waitForTextNotBlank(5);
+        return spcSummarySubTotalsByCell.getText();
+    }
+
+    /**
+     * Return the presence of row text (including label and amount/price) by given 1st column's text.
+     * @param firstColumnText each row's first column text.
+     * @return true if its present.
+     */
+    public boolean isOrderSummaryContentPriceByCellPresent(String firstColumnText) {
+        waitForPageToLoad();
+        BasePageElement spcSummarySubTotalsByCell = new BasePageElement(driver,
+                spcOrderSummarySubTotalsByCell.getName() + "_" + firstColumnText,
+                String.format(spcOrderSummarySubTotalsByCell.getXPath(), firstColumnText));
+        return spcSummarySubTotalsByCell.isPresent();
+    }
+
+    /**
+     * Get price of all line items under SPC - order summary without Payment Total/Grand Total
+     * @return the text
+     */
+    public List<String> getAllSpcOrderSummaryPriceOfLineItemsWithoutGrandTotal() {
+        return spcOrderSummaryPriceOfLineItemsWithoutGrandTotal.getElements().stream()
+                .map(PageElement::getText).collect(Collectors.toList());
+    }
+
+    /**
+     * Get all items displayed under SPC - order summary along with Payment Total/Grand Total
+     * @return the List
+     */
+    public List<String> getAllSpcOrderSummaryLineItemsWithGrandTotal() {
+        waitForPageToLoad();
+        return spcOrderSummaryPriceOfLineItemsWithGrandTotal.getElements().stream()
+                .map(PageElement::getText).collect(Collectors.toList());
+    }
+
+    /**
+     * Verify 'FreeShipping Promo' or 'Flat Rate promo' Message present in SPC depending on the promotion program
+     * @param shippingBenefitName is "FREE shipping" or "Flat Rate Shipping"
+     * @return presence of promotion message or not
+     */
+    public boolean isShippingBenefitPromotionPresent(String shippingBenefitName) {
+        return new BasePageElement(driver,
+                shippingBenefitPromotionText.getName() + "_" + shippingBenefitName,
+                String.format(shippingBenefitPromotionText.getXPath(), shippingBenefitName)).isPresent();
+    }
+
+    /**
+     * Verify 'why don't qualify for free shipping' link enabled.
+     * @return true if qualify link is present/enabled else return false.
+     */
+    public boolean isQualifyForFreeShippingLinkPresent() {
+        return notQualifyFreeShippingLink.isEnabled();
+    }
+
+    /**
+     * Get the selected currency of ACCB card in 'Amazon Currency Converter' section under 'Order Summary' section
+     * @return currency text
+     */
+    public String getACCBSelectedCurrencyText() {
+        return accbSelectedCurrencyRadioButton.getText();
+    }
+
+    /**
+     * Method to decline the prime subscription if it is present.
+     */
+    public void declinePrimeSubscription() {
+        primeUpsellAreaInPaySelectPage.click();
+        primeUpsellAreaInPaySelectPage.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to decline the prime upsell popup if it is present.
+     */
+    public void declinePrimeUpsellPopup() {
+        primeUpsellPopupInReviewYourOrderPage.click();
+        primeUpsellPopupInReviewYourOrderPage.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to verify if PrimeUpsellAreaPage present or not.
+     * @return primeUpsellAreaInPaySelectPage present or not.
+     */
+    public boolean isPrimeUpsellAreaPagePresent() {
+        return primeUpsellAreaInPaySelectPage.isPresent(3);
+    }
+
+    /**
+     * Method to verify if PrimeUpsellPopup present or not.
+     * @return primeUpsellPopupInReviewYourOrderPage present or not.
+     */
+    public boolean isPrimeUpsellPopupPresent() {
+        return primeUpsellPopupInReviewYourOrderPage.isPresent(3);
+    }
+
+    /**
+     * Method to click change shipping address link on SPC page.
+     */
+    public void clickChangeShippingAddressLink() {
+        //Adding the below condition since new marketplace will have
+        //True SPC checkout CX where as AIS still not migrated to new TSPC
+        if (!changeShippingAddressLink.isPresent()) {
+            spcChangeShippingAddressLink.clickAndWaitForDisappear(spcChangeShippingAddressLink);
+            sectionalLoadingSpinner.waitForElementToDisappear();
+        } else {
+            changeShippingAddressLink.click();
+        }
+    }
+
+    /**
+     * Method to click 'change Payment Method' link on SPC page.
+     */
+    public void clickChangePaymentMethodLink() {
+        spcChangePaymentMethodLink.clickAndWaitForDisappear(spcChangePaymentMethodLink);
+        sectionalLoadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to click 'change Billing address' link on SPC page.
+     */
+    public void clickChangeBillingAddressLink() {
+        spcChangeBillingAddressLink.clickAndWaitForDisappear(sectionalLoadingSpinner);
+    }
+
+    /**
+     * Method to verify if "Gift Options" is displayed in SPC
+     * @param actionType action type either be Add Gift Options or Add Gift Wrap
+     */
+    public void verifyIfGiftWrapInReviewYourOrderPageSPCDisplayed(String actionType) {
+        //Adding this check here to wait for checkout page to fully load and ready to place order
+        SleepUtil.sleep(2000);
+        if (actionType.equalsIgnoreCase("AddGiftOptions")) {
+            status.addIsDisplayed(spcAddGiftOptionButton);
+        } else if (actionType.equalsIgnoreCase("AddGiftWrap")) {
+            status.addIsDisplayed(spcAddGiftWrapLink);
+        }
+        status.processStatus();
+    }
+
+    /**
+     * Method to click on 'Add Gift Wrap' or 'Add Gift Options' on SPC page.
+     * @param actionType action type either be Add Gift Options or Add Gift Wrap
+     */
+    public void clickGiftWrapOptionsInReviewYourOrderPageSPC(String actionType) {
+        if (actionType.equalsIgnoreCase("AddGiftOptions")) {
+            spcAddGiftOptionButton.waitForElementToBeEnabled();
+            spcAddGiftOptionButton.clickAndWait(spcGiftOptionSaveButton);
+        } else if (actionType.equalsIgnoreCase("AddGiftWrap")) {
+            spcAddGiftWrapLink.waitForElementToBeEnabled();
+            spcAddGiftWrapLink.clickAndWait(spcGiftOptionSaveButton);
+        }
+    }
+
+    /**
+     * Method to check mark 'Gift Wrap' - checkbox on SPC page.
+     * @param actionType action type either be Add Gift Options or Add Gift Wrap
+     */
+    public void addGiftWrapInReviewYourOrderPageSPC(String actionType) {
+        //Adding Sleep here since page Pop up loading is very quick.
+        SleepUtil.sleep(2000);
+        if (isGiftWrapOptionInGiftPopUpInSPCPresent(actionType)) {
+            spcGiftWrapCheckbox.click();
+        }
+        clickSpcGiftOptionSaveButton();
+    }
+
+    /**
+     * Method to click on the 'save button' in SPC gift options
+     */
+    public void clickSpcGiftOptionSaveButton() {
+        spcGiftOptionSaveButton.clickAndWaitForDisappear(spcGiftOptionSaveButton);
+        sectionalLoadingSpinner.waitForElementToDisappear();
+    }
+
+
+    /**
+     * Method to check if 'Gift Wrap' - checkbox on SPC page is present
+     * @param actionType action type either be Add Gift Options or Add Gift Wrap
+     * @return boolean of presence
+     */
+    public boolean isGiftWrapOptionInGiftPopUpInSPCPresent(String actionType) {
+        if (actionType.equalsIgnoreCase("AddGiftOptions")) {
+            if (!spcAddGiftOptionButton.isPresent()) {
+                clickGiftWrapOptionsInReviewYourOrderPageSPC(actionType);
+            }
+        } else if (actionType.equalsIgnoreCase("AddGiftWrap")) {
+            if (!spcAddGiftWrapLink.isPresent()) {
+                clickGiftWrapOptionsInReviewYourOrderPageSPC(actionType);
+            }
+        }
+        return spcGiftWrapCheckbox.isPresent();
+    }
+
+    /**
+     * Method to get the gift options message after addition
+     * @return text
+     */
+    public String getTheReviewSelectedGiftOptionsMessage() {
+        //Adding this check here to wait for checkout page to fully load and ready to place order
+        reviewSelectedGiftOptionsMessage.waitForElementToBeEnabled();
+        return reviewSelectedGiftOptionsMessage.getText();
+    }
+
+    /**
+     * Method to get the gift wrap message after addition
+     * @return text
+     */
+    public String getTheReviewSelectedGiftWrap() {
+        reviewSelectedGiftWrap.waitForElementToBeEnabled();
+        return reviewSelectedGiftWrap.getText();
+    }
+
+    /**
+     * Method to edit the gift wrap in spc
+     */
+    public void changeGiftOptionsInReviewYourOrderPageSPC() {
+        spcChangeGiftOptionLink.waitForElementToBeEnabled();
+        spcChangeGiftOptionLink.clickAndWait(spcGiftOptionSaveButton);
+        //Adding Sleep here since page Pop up loading is very quick.
+        SleepUtil.sleep(2000);
+    }
+
+    /**
+     * Method to click 'change Shipping address' by Name.
+     * @param addressName to parameterized
+     */
+    public void changeShippingAddressByAddressName(String addressName) {
+        BasePageElement changeShippingAddressButton = new BasePageElement(driver,
+                changeShippingAddressByAddressName.getName() + "_" + addressName,
+                String.format(changeShippingAddressByAddressName.getXPath(), addressName));
+        //TODO: PageSpinner only added to this method. It will be needed to add pageSpinner in place of loadingSpinner in all methods that depend on loadingSpinner. https://issues.amazon.com/issues/D103271413
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        if (isTrueSpcShippingAddressPanelPresent()) {
+            getAddressSelectionPage().deliverToThisAddressByAddressName(addressName);
+        } else {
+            while (true) {
+                if (changeShippingAddressButton.waitForElementToBeEnabled()) {
+                    changeShippingAddressButton.click();
+                    changeShippingAddressButton.waitForElementToDisappear();
+                    break;
+                } else {
+                    nextButtonInChooseAddress.click();
+                }
+            }
+        }
+    }
+
+    /**
+     * Method to click change Billing address by Name.
+     * @param addressName to parameterized
+     */
+    public void changeBillingAddressByAddressName(String addressName) {
+        BasePageElement changeBillingAddressRadioButton = new BasePageElement(driver,
+                chooseBillingAddressRadioButtonByName.getName() + "_" + addressName,
+                String.format(chooseBillingAddressRadioButtonByName.getXPath(), addressName));
+        changeBillingAddressRadioButton.click();
+        changeBillingAddressButton.click();
+        changeBillingAddressButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to change Quantity based on the quantity given in the parameter, in SPC Order Summary.
+     * @param quantity itemQuantity
+     */
+    public void changeQuantityInSPCOrderSummary(final String quantity) {
+        spcOrderSummaryQuantityDropDown.setSelectedOption(quantity);
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        SleepUtil.sleep(5000);
+    }
+
+    /**
+     * Method to verify 'Quantity Dropdown list along with Delete' option in the SPC Page.
+     */
+    public void verifyQuantityDropDownContentsInSPC() {
+        status.addIsDisplayed(spcOrderSummaryQuantityDropDown);
+        status.addIsDisplayed(spcOrderSummaryDeleteQuantity);
+        status.processStatus();
+    }
+
+    /**
+     * Method to verify and get the Multiple Address Change link in the SPC Page.
+     * @return no of change link present for multiple address checkout
+     */
+    public int verifyMultipleShippingAddressChangeLinkInSPC() {
+        List<PageElement> multiShippingAddressChangeLink = spcOrderSummaryMultiShippingAddressChangeLink.getElements();
+        for (int i = 0; i < multiShippingAddressChangeLink.size(); i++) {
+            status.addIsEnabled(multiShippingAddressChangeLink.get(i));
+            status.processStatus();
+            }
+        return spcOrderSummaryMultiShippingAddressChangeLink.countElements();
+    }
+
+    /**
+     * Gets Shipping Address Name text in SPC Page.
+     * @return shipping address Namet
+     */
+    public String getShippingAddressNameTextInSPC() {
+        spcShippingAddressNameText.waitForTextNotBlank(5);
+        return spcShippingAddressNameText.getText();
+    }
+
+    /**
+     * Method to get no of shipment Details during multi address shipment.
+     * @return no of shipment details present during multi address checkout
+     */
+    public int getShipmentDetailsCount() {
+        spcShipmentDetailsBox.isPresent(5);
+        return spcShipmentDetailsBox.countElements();
+    }
+
+    /**
+     * Gets Shipping Address Name text in SPC Page.
+     * @return Billing address Namet
+     */
+    public String getBillingAddressNameTextInSPC() {
+        spcBillingAddressNameText.isPresent(5);
+        return spcBillingAddressNameText.getText();
+    }
+
+    /**
+     * Gets Payment information in SPC Page.
+     * @return Payment information
+     */
+    public String getPaymentInformationInSPC() {
+        spcPaymentInformationText.isPresent(5);
+        return spcPaymentInformationText.getText();
+    }
+
+    /**
+     * Method to change shipping speed inside delivery option.
+     * @param orderIndex Starting with 0
+     */
+    public void changeShippingSpeedInsideDeliveryOption(int orderIndex) {
+        BasePageElement shipOptionRadioButtonByIndexElement = new BasePageElement(driver,
+                shipOptionRadioButton.getName() + "_" + orderIndex,
+                // Use the "" string as a pass in parameter here to match all ship options
+                String.format(shipOptionRadioButton.getXPath(), orderIndex, ""));
+        List<PageElement> availableShippingSpeed = shipOptionRadioButtonByIndexElement.getElements();
+        for (int i = 0; i < availableShippingSpeed.size(); i++) {
+            if (!availableShippingSpeed.get(i).isSelected()) {
+                availableShippingSpeed.get(i).click();
+                availableShippingSpeed.get(i).waitForElementToBeEnabled();
+                sectionalLoadingSpinner.waitForElementToDisappear();
+                waitForPageToLoad();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Method to change Priority shipping speed inside delivery option based on the Order index.
+     * @param orderIndex Starting with 0
+     */
+    public void selectPriorityShipOptionInSpc(int orderIndex) {
+        BasePageElement shipOptionRadioButtonByIndexElement = new BasePageElement(driver,
+                shipOptionRadioButton.getName() + "_" + orderIndex,
+                // Use the "" string as a pass in parameter here to match all ship options
+                String.format(shipOptionRadioButton.getXPath(), orderIndex, ""));
+        List<PageElement> availableShippingSpeed = shipOptionRadioButtonByIndexElement.getElements();
+        //Selecting the last ship option since Priority Ship Option is always Last option.
+        availableShippingSpeed.get(availableShippingSpeed.size() - 1).click();
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Get Same As Delivery Address Text under billing address in SPC page.
+     * @return same as Delivery Address Text
+     */
+    public String getSameAsDeliveryAddressTextUnderBillingAddress() {
+        spcSameAsDeliveryAddressTextUnderBillingAddress.isPresent(5);
+        return spcSameAsDeliveryAddressTextUnderBillingAddress.getText();
+    }
+
+    /**
+     * Method to get the Quantity in Order Summary Page.
+     * @return quantityText list of available quantity.
+     */
+    public List<String> getAllQuantityDisplayInSpc() {
+        List<PageElement> quantityDisplay = spcQuantityDisplayText.getElements();
+        List<String> quantityText = new ArrayList<String>();
+        for (int i = 0; i < quantityDisplay.size(); i++) {
+            quantityText.add(quantityDisplay.get(i).getSelectedOption().trim());
+        }
+        return quantityText;
+    }
+
+    /**
+     * Method to Get product title for the all Products added for checkout.
+     * @return productTitle
+     */
+    public List<String> getProductTitleInSPC() {
+        List<String> productTitle = new ArrayList<String>();
+        List<PageElement> orderSummaryProductTitle = spcOrderSummaryProductTitle.getElements();
+        for (int i = 0; i < orderSummaryProductTitle.size(); i++) {
+            productTitle.add(i, orderSummaryProductTitle.get(i).getText());
+        }
+        return productTitle;
+    }
+
+    /**
+     * Method to Get product Sold By for the all Products added for checkout.
+     * @return productSoldBy
+     */
+    public List<String> getProductSoldByTextInSPC() {
+        List<String> productSoldBy = new ArrayList<String>();
+        List<PageElement> orderSummaryProductSoldBy = spcOrderSummarySoldByText.getElements();
+        for (int i = 0; i < orderSummaryProductSoldBy.size(); i++) {
+            String[] soldByTextList = orderSummaryProductSoldBy.get(i).getText().split(":");
+            productSoldBy.add(i, soldByTextList[1].trim());
+        }
+        return productSoldBy;
+    }
+
+    /**
+     * Method to Get item Price for the all Products added for checkout.
+     * @return itemPrice
+     */
+    public List<String> getItemPriceTextInSPC() {
+        List<String> itemPrice = new ArrayList<String>();
+        List<PageElement> orderSummaryItemPrices = spcOrderSummaryItemPriceText.getElements();
+        for (int i = 0; i < orderSummaryItemPrices.size(); i++) {
+            //Few marektplace there is a space between currency and price in order summary page.
+            //hence replacing the extra space for the verification
+            itemPrice.add(i, orderSummaryItemPrices.get(i).getText().replaceAll(" ", ""));
+        }
+        return itemPrice;
+    }
+
+    /**
+     * Method to Get Add Gift Option Count for the all Products added for checkout.
+     * @return no of available gift option
+     */
+    public int getAddGiftOptionCountInReviewYourOrderMultiCheckout() {
+        List<PageElement> addGiftOptionButtons = addGiftOptionButton.getElements();
+        for (int i = 0; i < addGiftOptionButtons.size(); i++) {
+            status.addIsEnabled(addGiftOptionButtons.get(i));
+            status.processStatus();
+        }
+        return addGiftOptionButtons.size();
+    }
+
+    /**
+     * Method to Get Add Gift wrap link Count for the all Products added for checkout.
+     * @return no of available add gift wrap link
+     */
+    public int getChangeGiftOptionsCountInReviewYourOrderSingleCheckout() {
+        spcChangeGiftOptionLink.isPresent(5);
+        List<PageElement> addGiftWrapLinkElements = spcChangeGiftOptionLink.getElements();
+        for (int i = 0; i < addGiftWrapLinkElements.size(); i++) {
+            status.addIsEnabled(addGiftWrapLinkElements.get(i));
+            status.processStatus();
+        }
+        return addGiftWrapLinkElements.size();
+    }
+
+    /**
+     * Method to count the Product image in the Checkout page.
+     * @return no of available image
+     */
+    public int getProductImageCountInSPC() {
+        return spcOrderSummaryProductImage.countElements();
+    }
+
+    /**
+     * Is clicking on priority ship option works or not.
+     * @return boolean selection of priority ship option
+     */
+    public boolean isPriorityShipOptionSelected() {
+        return spcPriorityShipOptionSelected.isPresent();
+    }
+
+    /**
+     * Clicking on priority ship option in checkout after loading the spinner
+     */
+    public void clickPriorityShipOption() {
+        spcPriorityShipOption.clickAndWaitForDisappear(sectionalLoadingSpinner);
+        sectionalLoadingSpinner.waitForElementToDisappear();
+        SleepUtil.sleep(7000);
+    }
+
+    /**
+     * Is Expedite ship option present or not.
+     * @return boolean selection of expedited ship option
+     */
+    public boolean isExpeditedShipOptionPresent() {
+        return spcExpeditedShipOption.isPresent();
+    }
+
+    /**
+     * Verify order summary pricing line items are present.
+     */
+    public void verifyOrderSummaryPricingLineitemsPresent() {
+        status.addIsDisplayed(importFeesDepositTextUnderOrderSummary);
+        status.addIsDisplayed(orderSummaryItems);
+        status.addIsDisplayed(orderSummaryShipping);
+        status.addIsDisplayed(orderSummaryTotal);
+        status.processStatus();
+    }
+
+    /**
+     * Verify global store group level promise is present.
+     */
+    public void verifyGlobalStoreGroupLevelPromisePresent() {
+        status.addIsDisplayed(globalStoreGroupLevelPromise);
+        status.processStatus();
+    }
+
+    /**
+     * Verify global store badge is present.
+     */
+    public void verifyGlobalStoreBadgePresent() {
+        status.addIsDisplayed(globalStoreBadge);
+        status.processStatus();
+    }
+
+    /**
+     * Verify clicking on order summary GST string a popover appears.
+     */
+    public void verifyClickingGstStringPopoverAppears() {
+        orderSummaryGstDetailsText.clickAndWait(orderSummaryGstPopoverPrice);
+        status.addIsDisplayed(orderSummaryGstDetailsText);
+        status.processStatus();
+    }
+
+    /**
+     * Verify order summary GST string is present.
+     */
+    public void verifyOrderSummaryGstStringIsPresent() {
+        status.addIsDisplayed(orderSummaryGstText);
+        status.processStatus();
+    }
+
+    /**
+     * Is a given ship option radio button selected or not.
+     * @param asin asin details.
+     * @param shipOptionName ship option display name in SOSP page.
+     * @return is the given ship option displayed or not.
+     */
+    public boolean isShipOptionSelected(final String asin, final String shipOptionName) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", shipOptionRadioButtonByName.getName(), shipOptionName),
+                String.format(shipOptionRadioButtonByName.getXPath(), asin, shipOptionName)).isPresent(5);
+    }
+
+    /**
+     * Method to get Selected Shipping Speed Description in Order Summary.
+     * @param orderIndex starting from 0
+     * @return selectedShippingSpeedDescription
+     */
+    public String getSelectedShipOptionDescriptionInOrderSummary(int orderIndex) {
+        BasePageElement defaultShipOptionElement = new BasePageElement(driver,
+                defaultSelectedShipOption.getName() + "_" + orderIndex,
+                // Use the "" string as a pass in parameter here to match all ship options
+                String.format(defaultSelectedShipOption.getXPath(), orderIndex, ""));
+        defaultShipOptionElement.waitForTextNotBlank(5);
+        return defaultShipOptionElement.getText();
+    }
+
+    /**
+     * Get all ship options description lines for specified order.
+     * @param orderIndex starting from 0.
+     * @return ship options' description.
+     */
+    public List<String> getAllShipOptionsDescription(final int orderIndex) {
+        BasePageElement shipOptionName =  new BasePageElement(driver, shipOptionByName.getName() + "_" + orderIndex,
+                // Use the "" string as a pass in parameter here to match all ship options
+                String.format(shipOptionByName.getXPath(), orderIndex, ""));
+        shipOptionName.waitForTextNotBlank(5);
+        return shipOptionName.getElements().stream()
+                .map(element -> element.getText()).collect(Collectors.toList());
+    }
+
+    /**
+     * Method to select and get the selected Shipping Speed Description.
+     * @return selectedShippingSpeedDescription
+     */
+    public String getSelectedShippingSpeedDescriptionInSOSP() {
+        List<PageElement> availableShippingSpeed = sospShippingOptionRadioButton.getElements();
+        String shippingSpeedDescriptionValue = null;
+        //Sometimes noticed there is only Ship Options available even for FBA. To handle such case having the if logic
+        if (availableShippingSpeed.size() > 1) {
+            //Skipping the First Shipping Speed since its for Prime
+            for (int i = 1; i < availableShippingSpeed.size(); i++) {
+                shippingSpeedDescriptionValue = availableShippingSpeed.get(i).getValue("value");
+                if (!availableShippingSpeed.get(i).isSelected()) {
+                    availableShippingSpeed.get(i).click();
+                    break;
+                }
+            }
+        } else {
+            shippingSpeedDescriptionValue = availableShippingSpeed.get(0).getValue("value");
+        }
+        BasePageElement selectedShippingSpeedDesc = new BasePageElement(driver,
+                sospShippingSpeedDescription.getName() + "_" + shippingSpeedDescriptionValue,
+                String.format(sospShippingSpeedDescription.getXPath(), shippingSpeedDescriptionValue));
+        return selectedShippingSpeedDesc.getText().trim();
+    }
+
+    /**
+     * Method to click Gift wrap checkbox on the Gift Page.
+     */
+    public void checkGiftPageWrapCheckbox() {
+        if (giftPageWrapCheckbox.isPresent() && !giftPageWrapCheckbox.isSelected()) {
+            giftPageWrapCheckbox.click();
+        }
+    }
+
+    /**
+     * Method to check Gift wrap checkbox is selected on the Gift Page.
+     * @return true if the gift page wrap checkbox checked
+     */
+    public boolean isGiftWrapCheckboxSelected() {
+        return giftPageWrapCheckbox.isSelected();
+    }
+
+    /**
+     * Method to click Continue button on the Gift Page.
+     */
+    public void clickContinueButtonInGiftPage() {
+        giftPageContinueButton.click();
+    }
+
+    /**
+     * Method to get save & continue button count
+     * @return save & continue button
+     */
+    public int getGiftPageSaveAndContinueButtonCount() {
+        return giftPageContinueButton.getElements().size();
+    }
+
+    /**
+     * Method to get Gift Wrap Text in SPC Order Summary.
+     * @return gift message text
+     */
+    public String getGiftMessageText() {
+        spcGiftMessageText.waitForElementToBeEnabled();
+        return spcGiftMessageText.waitForTextNotBlank(3).getText();
+    }
+
+    /**
+     * Method to get Gift Message inside Gift Popup
+     * @return gift message text
+     */
+    public String getGiftMessageTextInsideGiftOptionsPopup() {
+        return giftPageMessageTextBox.getText();
+    }
+
+    /**
+     * Method to enter new Gift MEssage in Gift Page.
+     * @param giftMessage gift message to enter
+     */
+    public void addNewGiftMessage(final String giftMessage) {
+        List<PageElement> availableGiftPageMessageTextBox = giftPageMessageTextBox.getElements();
+        for (int i = 0; i < availableGiftPageMessageTextBox.size(); i++) {
+            giftPageContinueButton.waitForElementToBeEnabled();
+            availableGiftPageMessageTextBox.get(i).setText(giftMessage);
+        }
+    }
+
+    /**
+     * Method to enter new Gift MEssage in Gift Page.
+     */
+    public void clickGiftMessageTextBox() {
+        giftPageMessageTextBox.click();
+    }
+
+    /**
+     * Method to get Gift Wrap Text in SPC Order Summary.
+     * @return gift wrap text
+     */
+    public String getGiftWrapText() {
+        return spcGiftWrapText.getText();
+    }
+
+    /**
+     * Click continue in Gift Page and land to Place your Order Page for SPC user.
+     */
+    public void continueToPlaceYourOrderFromGiftPage() {
+        clickContinueButtonInGiftPage();
+        //For SPC Customer, Clicking Contiue button in SOSP Page sometimes leads to PrimeupSell Page
+        if (!placeYourOrderButton.isPresent() && primeUpsellAreaInPaySelectPage.isPresent(3)) {
+            primeUpsellAreaInPaySelectPage.clickAndWait(placeYourOrderButton);
+        }
+        placeYourOrderButton.waitForElementToBeEnabled();
+    }
+
+    /**
+     * Method to get Delivery Preference option in Order Summary based on the Parameter.
+     * @return deliveryPreference count
+     */
+    public int getDeliveryPreferenceCount() {
+        return spcDeliveryPreferenceRadioButton.countElements();
+    }
+
+    /**
+     * Method to change Delivery Preference in Order Summary based on the Parameter.
+     * @param deliveryPreference either shipmentcomplete or shipWhenever
+     */
+    public void changeDeliveryPreferenceInSPC(final String deliveryPreference) {
+        List<PageElement> availableDeliveryPreferences = spcDeliveryPreferenceRadioButton.getElements();
+        String deliveryPreferenceValue = null;
+        for (int i = 0; i < availableDeliveryPreferences.size(); i++) {
+            deliveryPreferenceValue = availableDeliveryPreferences.get(i).getValue("value");
+            if (!availableDeliveryPreferences.get(i).isSelected() &&
+                    deliveryPreferenceValue.equals(deliveryPreference)) {
+                availableDeliveryPreferences.get(i).clickAndWait(spcShipmentPromiseText);
+                sectionalLoadingSpinner.waitForElementToDisappear();
+            }
+        }
+    }
+
+    /**
+     * Method to change Delivery Preference in SOSP based on the Parameter.
+     * @param deliveryPreference either shipmentcomplete or shipWhenever
+     */
+    public void changeDeliveryPreferenceInSOSP(final String deliveryPreference) {
+        List<PageElement> availableDeliveryPreferences = sospDeliveryPreferenceRadioButton.getElements();
+        String deliveryPreferenceValue = null;
+        for (int i = 0; i < availableDeliveryPreferences.size(); i++) {
+            deliveryPreferenceValue = availableDeliveryPreferences.get(i).getValue("value");
+            if (!availableDeliveryPreferences.get(i).isSelected() &&
+                    deliveryPreferenceValue.equals(deliveryPreference)) {
+                availableDeliveryPreferences.get(i).click();
+            }
+        }
+    }
+
+    /**
+     * Get the count of Delivery Header Count (Delivery 1 of 2, Delivery 2 of 2).
+     * @return the Delivery Header count.
+     */
+    public int getSOSPDeliveryHeaderCount() {
+        return sospDeliveryHeaderText.getElements().size();
+    }
+
+    /**
+     * verify Shipment Promise Present in Order Summary.
+     */
+    public void verifyShipmentPromisePresent() {
+        spcShipmentPromiseText.getElements().stream().forEach(status::addIsDisplayed);
+        status.processStatus();
+    }
+
+    /**
+     * Get the count of Shipment Promise Count Present on the Order Summary Page.
+     * E.g. Data dostawy: 1 czerwca 2021 Jeśli zamówisz w ciągu 16 godz. i 30 min. (Szczegóły).
+     * @return the Shipment Promise count.
+     */
+    public int getShipmentPromiseCount() {
+        return spcShipmentPromiseText.getElements().size();
+    }
+
+    /**
+     * verify Sold By Text Present for all items in SOSP.
+     */
+    public void verifySoldByTexsPresentForAllItemsInSOSP() {
+        sospSoldByText.getElements().stream().forEach(status::addIsDisplayed);
+        status.processStatus();
+    }
+
+    /**
+     * verify Sold By Text Present for all items in SPC.
+     */
+    public void verifySoldByTexsPresentForAllItemsInSPC() {
+        spcOrderSummarySoldByText.getElements().stream().forEach(status::addIsDisplayed);
+        status.processStatus();
+    }
+
+    /**
+     * Method to select and get the Gift Wrap Description.
+     * @return giftPageWrapRadioButtonDescription
+     */
+    public String getSelectedGiftWrapDescriptionInGiftPage() {
+        List<PageElement> availableGiftWrapRadioButton = giftPageWrapRadioButton.getElements();
+        for (int i = 0; i < availableGiftWrapRadioButton.size(); i++) {
+            if (!availableGiftWrapRadioButton.get(i).isSelected()) {
+                availableGiftWrapRadioButton.get(i).click();
+                break;
+            }
+        }
+        return giftPageWrapRadioButtonDescription.getText().trim();
+    }
+
+    /**
+     * Method to click 'place your order' button.
+     */
+    public void clickPlaceYourOrderButton() {
+        placeYourOrderButton.click();
+        placeYourOrderButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to click 'Apply Promotion code' and enter 'promoCode' passed in parameter (in Review your order page).
+     * @param promoCode valid promotion code.
+     */
+    public void applyPromoCodeInReviewYourOrderPage(final String promoCode) {
+        if (promotionAppliedLabelInOrderSummary.isPresent()) {
+            return;
+        }
+        applyPromoCodeInput.setText(promoCode);
+        applyPromoCodeButton.click();
+        sectionalLoadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Verify orderingPreferenceCheckbox present.
+     */
+    public void verifyOrderingPreferenceCheckboxPresent() {
+        orderingPreferenceCheckbox.waitForElementToBeEnabled();
+        status.addIsDisplayed(orderingPreferenceCheckbox);
+        status.processStatus();
+    }
+
+    /**
+     * Method to get Order Total in SPC Order Summary before GC is applied.
+     * @return Order total line before GC is applied
+     */
+    public String getOrderSummaryOrderTotalBeforePayment() {
+        return orderSummaryTotalBeforePayment.getText();
+    }
+
+    /**
+     * Method to get Order Total in SPC Order Summary.
+     * @return Order total
+     */
+    public String getOrderSummaryOrderTotal() {
+        return orderSummaryTotal.getText();
+    }
+
+    /**
+     * Verify 'Payment Logo" present.
+     */
+    public void verifyPaymentLogoPresent() {
+        status.addIsDisplayed(spcPaymentLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'Gift Card Logo" present.
+     */
+    public void verifyGiftCardLogoPresent() {
+        status.addIsDisplayed(spcGiftCardLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'VAT Details Links" present.
+     */
+    public void verifyVatSeeDetailsLinkPresent() {
+        status.addIsDisplayed(vatDetailsLink);
+        status.processStatus();
+    }
+
+    /**
+     * Check if 'VAT Details Link' is present.
+     * @return presence
+     */
+    public boolean isVatSeeDetailsLinkPresent() {
+        return vatDetailsLink.isPresent();
+    }
+
+    /**
+     * Click 'VAT Details Link' and open VAT popup
+     */
+    public void clickVatSeeDetailsLink() {
+        vatDetailsLink.clickAndWaitWithRetries(vatPopover);
+    }
+
+    /**
+     * Verify 'Order Summary Title" present inside VAT Details Popover.
+     */
+    public void clickVATDetailLinkAndVerifyOrderSummaryTitle() {
+        vatDetailsLink.click();
+        if (vatPopover.isPresent(5)) {
+            driver.switchTo().frame(StringUtils.isNotBlank(vatPopover.getValue("name")) ?
+                    vatPopover.getValue("name") : vatPopover.getValue("id"));
+        }
+        status.addIsDisplayed(orderSummaryTitleInsideVatDetailsPopover);
+        status.processStatus();
+    }
+
+    /**
+     * Verify if GST/VAT/IFD Link is displayed in VAT popover to GST/VAT Eligible countries
+     * This is specific for tax inclusive MPs
+     * @param type is either "GST" or "VAT" depending on destination countries. Or it can be IFD
+     * @return hep link present or not present
+     */
+    public boolean isInfoLinkInVATPopoverPresent(String type) {
+        if (!vatPopover.waitIsPresent()) {
+            vatDetailsLink.click();
+        }
+        return new BasePageElement(driver, infoLinkInVATPopoverInSPC.getName() + "_" + type,
+                String.format(infoLinkInVATPopoverInSPC.getXPath(), type)).isPresent();
+    }
+
+    /**
+     * Gets the link href value of the help info link
+     * @param type is either "GST" or "VAT" depending on destination countries. Or it can be IFD
+     * @return href value.
+     */
+    public String getInfoURLInVATPopover(String type) {
+        return new BasePageElement(driver, infoLinkInVATPopoverInSPC.getName() + "_" + type,
+                String.format(infoLinkInVATPopoverInSPC.getXPath(), type)).getElement().getAttribute("href");
+    }
+
+    /**
+     * Return the row text (including label and amount/price) by given 1st column's text in VAT popover
+     * The line item is chosen corresponding to the popover title. This is specific for tax inclusive MPs
+     * @param popoverHeaderTitle Popover Order Summary title varies for AFN and MFN items
+     * @param firstColumnText each row's first column text.
+     * @return the same row's text.
+     */
+    public String getVATPopoverOrderSummaryContentPriceByCell(String popoverHeaderTitle, String firstColumnText) {
+        if (!vatPopover.waitIsPresent()) {
+            vatDetailsLink.click();
+        }
+        BasePageElement spcSummarySubTotalsByCell = new BasePageElement(driver,
+                vatPopoverOrderSummarySubtotalByCell.getName() + "_" + popoverHeaderTitle + "_" + firstColumnText,
+                String.format(vatPopoverOrderSummarySubtotalByCell.getXPath(), popoverHeaderTitle, firstColumnText));
+        spcSummarySubTotalsByCell.waitForTextNotBlank(5);
+        return spcSummarySubTotalsByCell.getText();
+    }
+
+    /**
+     * Return the row text (including label and amount/price) by given 1st column's text in VAT popover.
+     * The line item is chosen corresponding to the popover title. This is specific for tax inclusive MPs
+     * @param popoverHeaderTitle Popover Order Summary title varies for AFN and MFN items
+     * @param orderTotalText each row's first column text.
+     * @return the same row's text.
+     */
+    public String getVATPopoverOrderSummaryOrderTotal(String popoverHeaderTitle, String orderTotalText) {
+        if (!vatPopover.waitIsPresent()) {
+            vatDetailsLink.click();
+        }
+        BasePageElement spcSummarySubTotalsGrandTotal = new BasePageElement(driver,
+                vatPopoverOrderSummaryOrderTotal.getName() + "_" + popoverHeaderTitle + "_" + orderTotalText,
+                String.format(vatPopoverOrderSummaryOrderTotal.getXPath(), popoverHeaderTitle, orderTotalText));
+        spcSummarySubTotalsGrandTotal.waitForTextNotBlank(5);
+        return spcSummarySubTotalsGrandTotal.getText();
+    }
+
+    /**
+     * Return the row text (including label and amount/price) by given 1st column's text in VAT popover.
+     * This is specific for tax inclusive MPs
+     * @param popoverHeaderTitle Popover Order Summary title varies for AFN and MFN item
+     * @param firstColumnText each row's first column text.
+     * @return the same row's text.
+     */
+    public boolean isVATPopoverOrderSummaryContentByCellPresent(String popoverHeaderTitle, String firstColumnText) {
+        if (!vatPopover.waitIsPresent()) {
+            vatDetailsLink.click();
+        }
+        BasePageElement spcSummarySubTotalsByCell = new BasePageElement(driver,
+                vatPopoverOrderSummarySubtotalByCell.getName() + "_" + popoverHeaderTitle + "_" + firstColumnText,
+                String.format(vatPopoverOrderSummarySubtotalByCell.getXPath(), popoverHeaderTitle, firstColumnText));
+        return spcSummarySubTotalsByCell.isPresent();
+    }
+
+    /**
+     * Verify 'Amazon Logo" present on the Nav Bar.
+     * @param countryCode countryCode to verify on the logo
+     */
+    public void verifyAmazonLogoPresent(String countryCode) {
+        BasePageElement amazonLogo = new BasePageElement(driver,
+                navBarAmazonLogo.getName() + "_" + countryCode,
+                String.format(navBarAmazonLogo.getXPath(), countryCode));
+        status.addIsDisplayed(amazonLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'TSPC Shipping AddressPannel' Disabled for Non-Prime User.
+     */
+    public void verifyTrueSpcShippingAddressPannelDisplayed() {
+        status.addIsDisplayed(tspcShippingAddressPannel);
+        status.processStatus();
+    }
+
+    /**
+     * Click Details Link next to Shipment of x of y (Shipment 1 of 1).
+     */
+    public void clickFastTrackDetailsLink() {
+        spcFastTrackDetailsLink.waitForElementToBeEnabled();
+        spcFastTrackDetailsLink.click();
+    }
+
+    /**
+     * Verify 'Footer Legal Message" Present on the Order Summary Page.
+     */
+    public void verifyCheckoutFooterLegalMessagePresent() {
+        status.addIsDisplayed(spcFooterLegalMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Get AddressSelectionPage model.
+     * @return AddressSelectionPage instance.
+     */
+    public AddressSelectionPage getAddressSelectionPage() {
+        if (addressSelectionPage == null) {
+            addressSelectionPage = new AddressSelectionPage(driver);
+        }
+        return addressSelectionPage;
+    }
+
+    /**
+     * Get PaymentSelectionPage model.
+     * @return PaymentSelectionPage instance.
+     */
+    public GiftOptionsSelectionPage getGiftOptionsSelectionPage() {
+        if (giftOptionsSelectionPage == null) {
+            giftOptionsSelectionPage = new GiftOptionsSelectionPage(driver);
+        }
+        return giftOptionsSelectionPage;
+    }
+
+    /**
+     * Get PaymentSelectionPage model.
+     * @return PaymentSelectionPage instance.
+     */
+    public PaymentSelectionPage getPaymentSelectionPage() {
+        if (paymentSelectionPage == null) {
+            paymentSelectionPage = new PaymentSelectionPage(driver);
+        }
+        return paymentSelectionPage;
+    }
+
+    /**
+     * Get KYCWidgetPage model.
+     * @return KYCWidgetPage instance.
+     */
+    public KYCWidgetPage getKYCWidgetPage() {
+        if (kycWidgetPage == null) {
+            kycWidgetPage = new KYCWidgetPage(driver);
+        }
+        return kycWidgetPage;
+    }
+
+    /**
+     * Get SOSP page model.
+     * @return SospPage instance.
+     */
+    public SospPage getSospPage() {
+        if (sospPage == null) {
+            sospPage = new SospPage(driver);
+        }
+        return sospPage;
+    }
+
+    /**
+     * Verify 'Conditions of sale' link clicking and navigating to respective page
+     */
+    public void clickConditionsOfSaleLink() {
+       conditionsOfSaleLink.click();
+    }
+
+    /**
+     * Method to check Gift Save options button present or not.
+     * @return gift save options button present or not.
+     */
+    public boolean isGiftSaveOptionButtonPresent() {
+        giftPageContinueButton.waitForElementToBeEnabled();
+        return giftPageContinueButton.isPresent(3);
+    }
+
+    /**
+     * Get Purchase Authorization Page model.
+     * @return purchaseAuthorizationPage instance.
+     */
+    public PurchaseAuthorizationPage getPurchaseAuthorizationPage() {
+        if (purchaseAuthorizationPage == null) {
+            purchaseAuthorizationPage = new PurchaseAuthorizationPage(driver);
+        }
+        return purchaseAuthorizationPage;
+    }
+
+    /**
+     * Method to get Standard/Expedited ship option promise text.
+     * @return Standard/ Expedited Ship Option Date.
+     */
+    public String getStandardShipOptionPromiseText() {
+        return standardShipOptionPromiseText.getText();
+    }
+
+    /**
+     * Method to get Priority ship option promise text.
+     * @return Priority Ship Option Date.
+     */
+    public String getPriorityShipOptionPromiseText() {
+        return priorityShipOptionPromiseText.getText();
+    }
+
+    /**
+     * Method to get Group level shipment Promise text.
+     * @return Shipment Promise Date.
+     */
+    public String getGlobalStoreGroupLevelPromiseText() {
+        return globalStoreGroupLevelPromise.getText();
+    }
+
+    /**
+     * Method to verify Priority ship option.
+     * @return boolean Priority Ship Option is present or Not.
+     */
+    public boolean verifyPriorityShipOptionPresent() {
+        return spcPriorityShipOption.isPresent();
+    }
+
+    /**
+     * Method to verify Standard ship option.
+     * @return boolean Standard Ship Option is present or Not.
+     */
+    public boolean verifyStandardShipOptionPresent() {
+        return spcStandardShipOption.isPresent();
+    }
+
+    /**
+     * Method to verify "FREE Shipping Promo" or "Flat Rate Promo" text is present under Order summary in SPC Page.
+     * @param shippingBenefitName is "FREE shipping" or "Flat Rate Shipping"
+     * @return boolean "FREE Shipping Promo" text is present or Not.
+     */
+    public boolean verifyFreeShippingPromoTextPresentUnderOrderSummary(String shippingBenefitName) {
+        return new BasePageElement(driver,
+                freeShippingPromoUnderOrderSummary.getName() + "_" + shippingBenefitName,
+                String.format(freeShippingPromoUnderOrderSummary.getXPath(), shippingBenefitName)).isPresent();
+    }
+
+    /**
+     * Method to verify Promotion Label Present In OrderSummary.
+     * @return boolean Promotion Label is present or Not.
+     */
+    public boolean verifyPromotionLabelPresentInOrderSummary() {
+        return promotionAppliedLabelInOrderSummary.isPresent();
+    }
+
+    /**
+     * Method to get Shipping Speed Description by Asin Value in Order Summary.
+     * @param asin to Parameterized for xpath
+     * @return ShippingSpeedDescription
+     */
+    public String getSelectedShipOptionDescriptionByASIN(String asin) {
+        String shipOption = new BasePageElement(driver, shipOptionByAsin.getName(),
+                String.format(shipOptionByAsin.getXPath(), asin)).getText();
+        return shipOption;
+    }
+
+    /**
+     * Gets 'Gift Bag/Box' text.
+     * @return Gift Bag/Box Text
+     */
+    public String getGiftWrapCheckBoxTextInsideGiftOptionPopup() {
+        spcAddGiftOptionButton.clickAndWait(spcGiftOptionSaveButton);
+        return spcGiftPopUpGiftWrapText.getText();
+    }
+
+    /**
+     * Is Product Title Present inside Gift Option Pop up
+     * @return true if the product title present
+     */
+    public boolean isPresentProductTitleInsideGiftOptionPopUp() {
+        spcAddGiftOptionButton.clickAndWait(spcGiftOptionSaveButton);
+        return spcGiftPopupProductTitle.isPresent(3);
+    }
+
+    /**
+     * Method to verify TrueSpc Shipping Address Panel Present In SPC.
+     * @return boolean TrueSpc Shipping Address Panel Present is present or Not.
+     */
+    public boolean isTrueSpcShippingAddressPanelPresent() {
+        return tspcShippingAddressPannel.isPresent(5);
+    }
+
+   /**
+    * Verify prime badge under Review items and delivery is Absent.
+    */
+   public void verifyPrimeBadgeUnderReviewItemsAndDeliverySectionInSPCAbsent() {
+       status.addIsHiddenOrMissing(primeBadgeUnderReviewItemsAndDelivery);
+       status.processStatus();
+   }
+
+    /**
+     * Dismiss the "Offers" section Prime upsell if present and not hidden.
+     */
+    public void closeSPCPrimeOffer() {
+        if (!spcPrimeOfferButton.isHidden()) {
+            spcPrimeOfferButton.clickAndWaitForDisappear(spcPrimeOfferButton);
+            SleepUtil.sleep(5000);
+        }
+    }
+
+    /**
+     * Check if review items and delivery section active or collapsed.
+     * @return boolean status as per presence of Review items and delivery section.
+     */
+    public boolean isReviewItemsAndDeliverySectionCollapsed() {
+        return reviewItemsAndDeliverySection.isHidden();
+    }
+
+    /**
+     * Verify Amazon Rewards Visa or Store card promotion container is displayed.
+     * @return boolean of promotion container is displayed or not.
+     */
+    public boolean isAmazonRewardsVisaOrStorePromotionCardPresent() {
+        waitForPageToLoad();
+        return amazonRewardsVisaOrStorePromotionCardInSpcPage.isPresent();
+    }
+
+    /**
+     * Verify Amazon Pick Up Point Link Present in SPC.
+     * @return true if amazon pick up point present
+     */
+    public boolean isAmazonPickUpNextToShippingAddressPresent() {
+        return amazonPickUpNextToShippingAddress.isPresent();
+    }
+
+    /**
+     * Click Amazon Pick Up Point Link Present in SPC.
+     */
+    public void clickAmazonPickUpNextToShippingAddress() {
+        amazonPickUpNextToShippingAddress.click();
+    }
+
+    /**
+     * Method to verify if prime Ad - interstitial benefit content present or not before SPC page.
+     * @return prime Interstitial Ad Before SPC present or not.
+     */
+    public boolean isPrimeInterstitialAdBeforeSPC() {
+        primeInterstitialAdBeforeSPC.waitIsPresent();
+        return primeInterstitialAdBeforeSPC.isPresent(3);
+    }
+
+    /**
+     * Method to decline the prime benefit at interstitial page before SPC page.
+     */
+    public void declinePrimeBenefitAtInterstitial() {
+        primeInterstitialBenefitDecline.clickAndWaitForDisappear(primeInterstitialBenefitDecline);
+        waitForPageToLoad();
+    }
+
+    /**
+     * If the payment card shows warning message for expiry date, then this method will fix the date.
+     */
+    public void updateExpiryDateIfNeeded() {
+        if (getPaymentSelectionPage().isPaymentCardExpiryWarningPresent()) {
+            getPaymentSelectionPage().clickExpiryDateUpdateLink();
+            getPaymentSelectionPage().getAddCreditCardWidget().updatePaymentMethodExipryDate();
+        }
+    }
+
+    /**
+     * Check if KYC required 'ID required for customs clearance' alert banner present in checkout
+     * @return presence
+     */
+    public boolean isKYCRequiredAlertBannerInSPCPresent() {
+        return kycRequiredAlertBannerInCheckout.isPresent();
+    }
+
+    /** Method to Get No Gift Option Available for the all Products added for checkout.
+     * @return No gift option text */
+    public List<String> getNoGiftOptionInReviewYourOrderMultiCheckout() {
+        waitForPageToLoad();
+        return spcGiftOptionNotAvailableText.getElements().stream()
+                .map(PageElement::getText).collect(Collectors.toList()); }
+
+    /**
+     * Verify if Review and Items Delivery section is present for checkout.
+     * @return true if present
+     */
+    public boolean isReviewItemsAndDeliverySectionPresent() {
+        return reviewItemsAndDeliverySection.isPresent();
+    }
+
+    /**
+     * Check if Loading spinning is hidden.
+     */
+    public void isLoadingSpinnerHasDisappeared() {
+        sectionalLoadingSpinner.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to verify Standard ship option.
+     * @return boolean Standard Ship Option Exists or Not.
+     */
+    public boolean verifyStandardShipOptionExist() {
+        return spcStandardShipOption.doesExists();
+    }
+
+    /**
+     * Gets Payment Method in Checkout Summary.
+     * @return Payment Method Text
+     */
+    public String getPaymentMethodFromCheckOutSummary() {
+        paymentMethodInCheckoutSummary.isPresent(5);
+        return paymentMethodInCheckoutSummary.getText();
+    }
+
+    /**
+     * Method to verify Tango Shipping Address Panel Present In SPC.
+     * @return boolean Tango Shipping Address Panel Present is present or Not.
+     */
+    public boolean isTangoShippingAddressPanelPresent() {
+        return tangoShippingAddressPanel.doesExists();
+    }
+
+    /**
+     * Method to verify checkout final delivery Panel Presence in expanded view.
+     * @return boolean checkout final delivery Panel is present or Not.
+     */
+    public boolean isCheckoutFinalDeliveryPanelPresent() {
+        return checkoutFinalDeliveryPanel.doesExists();
+    }
+
+    /**
+     * Verify prime Eligibility Message under Review items and delivery Present.
+     * @return boolean Prime eligibility message for items under review and delivery details is present or Not
+     */
+    public boolean verifyPrimeEligibilityMessageUnderReviewItemsAndDeliveryPresent() {
+        return primeEligibilityMessageUnderReviewItemsAndDelivery.isPresent(10);
+    }
+}
