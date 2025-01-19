@@ -1,0 +1,98 @@
+package com.amazon.aeeqa.ui.pagemodels.mobileweb;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Mobile Web Cart Page Model.
+ *
+ * @author vllaks
+ */
+@PageName("cart")
+public class CartPageMobileWeb extends BasePageModel {
+
+    @Locator("DELETE_BUTTON_IN_ACTIVE_CART_BY_ASIN")
+    private static BasePageElement deleteButtonInActiveCartByASIN;
+
+    @Locator("ITEM_IMAGE_IN_ACTIVE_CART")
+    private static BasePageElement itemImageInActiveCart;
+
+    @Locator("SAVE_FOR_LATER_BUTTON_IN_ACTIVE_CART")
+    private static BasePageElement saveForLaterButtonInActiveCart;
+
+    @Locator("ITEM_IMAGE_IN_SAVED_FOR_LATER")
+    private static BasePageElement itemImageInSavedForLater;
+
+    @Locator("PROCEED_TO_CHECKOUT_BUTTON")
+    private static BasePageElement proceedToCheckoutButton;
+
+    /**
+     * Constructor Method for Class 'CartPageMobileWeb'.
+     * @param driver the driver
+     */
+    public CartPageMobileWeb(final WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(proceedToCheckoutButton);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to get the active items count in the Cart Mobile Web.
+     * @param asin item asin String
+     * @return delete button count
+     */
+    public int getActiveItemsCountInCartByASIN(String asin) {
+        BasePageElement deleteButtons = new BasePageElement(driver, deleteButtonInActiveCartByASIN.getName(),
+                String.format(deleteButtonInActiveCartByASIN.getXPath(), asin));
+        deleteButtons.waitIsPresent();
+        return deleteButtons.countElements();
+    }
+
+    /**
+     * Click item block by asin.
+     * @param asin test asin.
+     */
+    public void clickItemImageInActiveCart(String asin) {
+        BasePageElement imageBlock = new BasePageElement(driver,
+                itemImageInActiveCart.getName() + "-" + asin,
+                String.format(itemImageInActiveCart.getXPath(), asin));
+        imageBlock.waitIsPresent();
+        imageBlock.clickAndWaitForDisappear(imageBlock);
+    }
+
+    /**
+     * Proceed to checkout.
+     */
+    public void goToCheckout() {
+        verifyCurrentPage();
+        proceedToCheckoutButton.click();
+    }
+
+    /**
+     * Move item to saved for later and click the item block by asin.
+     * @param asin test asin.
+     */
+    public void moveItemToSavedForLaterAndClick(String asin) {
+        BasePageElement saveForLaterButton = new BasePageElement(driver,
+                saveForLaterButtonInActiveCart.getName() + "-" + asin,
+                String.format(saveForLaterButtonInActiveCart.getXPath(), asin));
+        BasePageElement imageBlock = new BasePageElement(driver,
+                itemImageInSavedForLater.getName() + "-" + asin,
+                String.format(itemImageInSavedForLater.getXPath(), asin));
+        saveForLaterButton.waitIsPresent();
+        saveForLaterButton.clickAndWait(imageBlock);
+        imageBlock.clickAndWaitForDisappear(imageBlock);
+    }
+
+}
