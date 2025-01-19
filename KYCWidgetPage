@@ -1,0 +1,196 @@
+package com.amazon.aeeqa.ui.pagemodels.checkout;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Checkout - KYC (Know Your Customer) Widget
+ *
+ * @author shrumand
+ */
+@PageName("checkout.kyc")
+public class KYCWidgetPage extends BasePageModel {
+
+    @Locator("KYC_WIDGET_TITLE")
+    private static BasePageElement kycWidgetTitle;
+
+    @Locator("KYC_WIDGET_ADD_NEW_ID_BUTTON")
+    private static BasePageElement kycAddNewIDButton;
+
+    @Locator("KYC_WIDGET_SELECT_ID_BUTTON")
+    private static BasePageElement kycSelectIDButton;
+
+    @Locator("KYC_WIDGET_PASSPORT_OPTION")
+    private static BasePageElement kycPassportOption;
+
+    @Locator("KYC_WIDGET_PASSPORT_SECTION")
+    private static BasePageElement kycPassportSection;
+
+    @Locator("KYC_CONTINUE_BUTTON")
+    private static BasePageElement kycContinueButton;
+
+    @Locator("SKIP_KYC_RADIO_BUTTON")
+    private static BasePageElement skipKYCRadioButton;
+
+    @Locator("KYC_REQUIRED_ALERT_BANNER_IN_KYC_SECTION")
+    private static BasePageElement kycRequiredAlertBannerInKYCSectionCheckout;
+
+    @Locator("KYC_SECTION_INFO_BOX")
+    private static BasePageElement kycSectionInfoBox;
+
+    @Locator("KYC_WIDGET_SECTION")
+    private static BasePageElement kycWidgetSection;
+
+    private PaymentSelectionPage paymentSelectionPage;
+
+    private CheckoutPage checkoutPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public KYCWidgetPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(kycWidgetTitle);
+        status.processStatus();
+    }
+
+    /**
+     * Get PaymentSelectionPage model.
+     * @return PaymentSelectionPage instance.
+     */
+    public PaymentSelectionPage getPaymentSelectionPage() {
+        if (paymentSelectionPage == null) {
+            paymentSelectionPage = new PaymentSelectionPage(driver);
+        }
+        return paymentSelectionPage;
+    }
+
+    /**
+     * Get CheckoutPage model.
+     * @return CheckoutPage instance.
+     */
+    public CheckoutPage getCheckoutPage() {
+        if (checkoutPage == null) {
+            checkoutPage = new CheckoutPage(driver);
+        }
+        return checkoutPage;
+    }
+
+    /**
+     * Click Skip KYC and continue to payment section.
+     */
+    public void continueToPaymentWidgetBySkippingKYCForKYCCountries() {
+        if (skipKYCRadioButton.isPresent(5)) {
+            skipKYCRadioButton.click();
+            kycContinueButton.waitForElementToBeEnabled();
+            kycContinueButton.click();
+        }
+    }
+
+    /**
+     * Click on Skip KYC Page if its Present and click on Continue to proceed to Checkout
+     */
+    public void clickOnSkipKYCPageIfPresentAndContinue() {
+        if (skipKYCRadioButton.isPresent(5)) {
+            skipKYCRadioButton.click();
+            kycContinueButton.waitForElementToBeEnabled();
+            //TODO: This will need change once KYC feature is launched and becomes a separate panel before payment
+            kycContinueButton.clickAndWait((getCheckoutPage().getPlaceYourOrderButton()));
+        }
+    }
+
+    /**
+     * Click on 'Skip KYC Page' if its Present.
+     */
+    public void clickOnSkipKYCButton() {
+        if (skipKYCRadioButton.isPresent(5)) {
+            skipKYCRadioButton.click();
+        }
+    }
+
+    /**
+     * Click on 'Continue' button in KYC
+     */
+    public void clickContinueButtonInKYCWidget() {
+        kycContinueButton.waitForElementToBeEnabled();
+        kycContinueButton.click();
+        kycContinueButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Check if KYC required 'ID required for customs clearance' alert banner present in KYC widget page
+     * @return presence
+     */
+    public boolean isKYCRequiredAlertBannerInKYCSectionPresent() {
+        return kycRequiredAlertBannerInKYCSectionCheckout.isPresent();
+    }
+
+    /**
+     * Get KYC section title
+     * @return String
+     */
+    public String getKYCWidgetTitle() {
+        kycWidgetTitle.waitForElementToBeEnabled();
+        return kycWidgetTitle.getText();
+    }
+
+    /**
+     * Get KYC info box information - "Customs regulations for Israel require the following information...."
+     * @return String
+     */
+    public String getKYCSectionInfoBoxText() {
+        return kycSectionInfoBox.getText();
+    }
+
+    /**
+     * Check if KYC "Add new ID button" is present
+     * @return presence
+     */
+    public boolean isKYCAddNewIDButtonPresent() {
+        kycWidgetTitle.waitIsPresent();
+        return kycAddNewIDButton.isPresent();
+    }
+
+    /**
+     * Click KYC "Select ID button" dropdown
+     */
+    public void clickKYCSelectIDButton() {
+        kycSelectIDButton.isPresent(2);
+        kycSelectIDButton.click();
+    }
+
+    /**
+     * Click Passport option in ID options
+     */
+    public void clickPassportOptionInID() {
+        kycPassportOption.clickAndWaitWithRetries(kycPassportSection, 5);
+    }
+
+    /**
+     * Check if passport section is present after clicking on 'Passport' option in KYC widget
+     * @return presence
+     */
+    public boolean isKYCPassportSectionPresent() {
+        return kycPassportSection.isPresent();
+    }
+
+    /**
+     * Check if KYC widget section is present after reaching the final SPC page.
+     * @return presence
+     */
+    public boolean isKYCWidgetSectionPresentInSPCPage() {
+        return kycWidgetSection.isPresent();
+    }
+
+}
