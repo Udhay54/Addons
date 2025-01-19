@@ -1,0 +1,99 @@
+package com.amazon.aeeqa.ui.pagemodels.everywherecart;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * EveryWhereCart Widget Page Model.
+ * @author kumarlll
+ */
+
+@PageName("everywherecart")
+public class EveryWhereCartWidget extends BasePageModel {
+
+    @Locator("EVERY_WHERE_CART_WIDGET")
+    private static BasePageElement everyWhereCartWidget;
+
+    @Locator("EVERY_WHERE_CART_WIDGET_ITEM_IMAGE")
+    private static BasePageElement everyWhereCartWidgetItemImage;
+
+    @Locator("GO_TO_BASKET_BUTTON_IN_EVERY_WHERE_CART")
+    private static BasePageElement goToBasketButtonInEveryWhereCart;
+
+    @Locator("EVERY_WHERE_CART_WIDGET_SUBTOTAL")
+    private static BasePageElement everyWhereCartWidgetSubtotal;
+
+    /**
+     * Default Constructor for AEE Base PageModel.
+     * @param driver - Web driver instance.
+     */
+    public EveryWhereCartWidget(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify whether the EWC widget is present in the Smart Wagon page
+     * @return boolean of EWC widget's presence
+     */
+    public boolean isEWCWidgetPresent() {
+        waitForPageToLoad();
+        return everyWhereCartWidget.isPresent();
+    }
+
+    /**
+     * Verify whether the goto basket button is present in the EWC widget
+     * @return boolean of goto basket button presence in the EWC Widget
+     */
+    public boolean verifyGoToBasketButtonInEWC() {
+        waitForPageToLoad();
+        return goToBasketButtonInEveryWhereCart.isPresent();
+    }
+
+    /**
+     * Click goto basket button in EWC widget
+     */
+    public void clickGoToBasketbuttonInEWCWidget() {
+        waitForPageToLoad();
+        goToBasketButtonInEveryWhereCart.click();
+    }
+
+    /**
+     * Method helps to click the EWC widget item image.
+     * @param asin to Parameterized for xpath
+     */
+    public void clickEWCWidgetItemImage(String asin) {
+        waitForPageToLoad();
+        new BasePageElement(driver, everyWhereCartWidgetItemImage.getName(),
+                String.format(everyWhereCartWidgetItemImage.getXPath(), asin)).click();
+    }
+
+    /**
+     * Method to get the EWC widget item title.
+     * @param asin to Parameterized for xpath
+     * @return Product title for the item in the EWC section
+     */
+    public String getEWCProductTitle(String asin) {
+        BasePageElement ewcProductTitle = new BasePageElement(driver, everyWhereCartWidgetItemImage.getName(),
+                String.format(everyWhereCartWidgetItemImage.getXPath(), asin));
+        return ewcProductTitle.getValue("alt").trim();
+    }
+
+    /**
+     * Method to verify the presence of Subtotal price in the EWC widget.
+     */
+    public void verifySubtotalPricePresent() {
+        status.addIsDisplayed(everyWhereCartWidgetSubtotal);
+        status.processStatus();
+    }
+
+    /**
+     * Method to get the font color of the product Subtotal text.
+     * @return everyWhereCartWidgetSubtotal font color.
+     */
+    public String getEWCProductSubtotalFontColor() {
+        return everyWhereCartWidgetSubtotal.getElement().getCssValue("color");
+    }
+}
