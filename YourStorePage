@@ -1,0 +1,38 @@
+package com.amazon.aeeqa.ui.pagemodels.home;
+
+import org.openqa.selenium.WebDriver;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+* Best selling Product Displaying Page
+*
+* @author meenasv
+*/
+
+@PageName("home.yourStorePage")
+public class YourStorePage extends BasePageModel {
+
+    @Locator("YOUR_STORE_ASIN_CARD")
+    private static BasePageElement yourStoreAsinCard;
+
+    @Locator("ADD_TO_CART_BUTTON")
+    private static BasePageElement addToCartButton;
+
+    /**
+      * Constructor with driver instance.
+      * @param driver the WebDriver instance.
+      */
+    public YourStorePage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Click on ASIN card and Verify Add to Cart Button in your store home page.
+     */
+    public void clickAsinCardAndVerifyAddToCard() {
+        yourStoreAsinCard.clickAndWait(addToCartButton);
+    }
+}
