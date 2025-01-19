@@ -1,0 +1,627 @@
+package com.amazon.aeeqa.ui.pagemodels.detail;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+import org.openqa.selenium.WebDriver;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This page will contains all elements in the Below The Fold(BTF) section in Detail page.
+ *
+ * @author Shruthika
+ */
+
+@PageName("detail")
+public class DetailPageBelowTheFold extends BasePageModel {
+
+    @Locator("TELL_US_LOWER_PRICE_LINK")
+    private static BasePageElement lowerPriceLink;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP")
+    private static BasePageElement lowerPricePopup;
+
+    @Locator(value = "TELL_US_LOWER_PRICE_POPUP_TITLE", stringId = "pricing-pdp-lower-price-title")
+    private static BasePageElement lowerPricePopupTitle;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_PRODUCT_TITLE")
+    private static BasePageElement lowerPricePopupProductTitle;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_SHARE_LINK")
+    private static BasePageElement lowerPricePopupShareLink;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_INFO")
+    private static BasePageElement lowerPricePopupInfo;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_WHERE_INFO")
+    private static BasePageElement lowerPricePopupWhereInfo;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_ONLINE_LABEL")
+    private static BasePageElement lowerPricePopupOnlineLabel;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_ONLINE_BUTTON")
+    private static BasePageElement lowerPricePopupOnlineButton;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_ONLINE_TABLE")
+    private static BasePageElement lowerPricePopupOnlineTable;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_OFFLINE_LABEL")
+    private static BasePageElement lowerPricePopupOfflineLabel;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_OFFLINE_BUTTON")
+    private static BasePageElement lowerPricePopupOfflineButton;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_OFFLINE_TABLE")
+    private static BasePageElement lowerPricePopupOfflineTable;
+
+    @Locator("TELL_US_LOWER_PRICE_POPUP_SUBMIT_BUTTON")
+    private static BasePageElement lowerPricePopupSubmitButton;
+
+    @Locator("FROM_THE_MANUFACTURER")
+    private static BasePageElement fromTheManufacturer;
+
+    @Locator(value = "PRODUCT_INFORMATION_BY_NAME")
+    private static BasePageElement productInformationByName;
+
+    @Locator(value = "ASIN_PRODUCT_INFORMATION")
+    private static BasePageElement asinProductInformation;
+
+    @Locator(value = "WARRANTY_AND_SUPPORT_SECTION", stringId = "dp-warranty-and-support")
+    private static BasePageElement warrantyAndSupportSection;
+
+    @Locator(value = "FEEDBACK_SECTION", stringId = "dp_feedback")
+    private static BasePageElement feedbackSection;
+
+    @Locator(value = "TECHNICAL_DETAILS_SECTION", stringId = "dp_pd_technical_details")
+    private static BasePageElement technicalDetailsSection;
+
+    @Locator(value = "ADDITIONAL_INFORMATION_SECTION_BEST_SELLER_RANKING", stringId = "dp-bestseller-rank")
+    private static BasePageElement additionalInformationSectionBestSeller;
+
+    @Locator(value = "ADDITIONAL_INFORMATION_SECTION_BEST_SELLER_RANK_LINK")
+    private static BasePageElement additionalInformationSectionBestSellerLink;
+
+    @Locator(value = "ADDITIONAL_INFORMATION_SECTION_CUSTOMER_REVIEWS_LINK")
+    private static BasePageElement additionalInformationSectionCustomerReviewsLink;
+
+    @Locator(value = "ADDITIONAL_INFORMATION_SECTION_CUSTOMER_REVIEWS_SECTION", stringId = "dp-customer-reviews")
+    private static BasePageElement additionalInformationSectionCustomerReviewsSection;
+
+    @Locator(value = "LEGAL_DISCLAIMER")
+    private static BasePageElement legalDisclaimer;
+
+    @Locator(value = "PRODUCT_DETAILS_SECTION")
+    private static BasePageElement productDetails;
+
+    @Locator(value = "PRODUCT_DETAILS_BY_NAME")
+    private static BasePageElement productDetailsByName;
+
+    @Locator(value = "PRODUCT_DETAILS_CUSTOMER_REVIEW")
+    private static BasePageElement productDetailsCustomerReview;
+
+    @Locator(value = "PRODUCT_DETAILS_CUSTOMER_REVIEWS_LINK")
+    private static BasePageElement productDetailsCustomerLink;
+
+    @Locator(value = "PRODUCT_DETAILS_BEST_SELLER", stringId = "dp-bestseller-rank")
+    private static BasePageElement productDetailsBestSeller;
+
+    @Locator(value = "PRODUCT_DETAILS_BEST_SELLER_LINK", stringId = "dp-bestseller-rank")
+    private static BasePageElement productDetailsBestSellerLink;
+
+    @Locator(value = "TECHNICAL_DETAILS_TABLE_ROW_DETAIL_NAME")
+    private static BasePageElement technicalDetailsTableDetailName;
+
+    @Locator(value = "TECHNICAL_DETAILS_TABLE_ROW_DETAIL_VALUE")
+    private static BasePageElement technicalDetailsTableDetailValue;
+
+    @Locator("PRIME_BADGE_IN_COMPARE_WITH_SIMILAR_ITEMS")
+    private static BasePageElement primeBadgeInCompareWithSimilarItems;
+
+    @Locator("COMPARE_WITH_SIMILAR_ITEMS_WIDGET")
+    private static BasePageElement compareWithSimilarItemsWidget;
+
+    @Locator("COMPARE_WITH_SIMILAR_ITEMS_PRICE_FIELD")
+    private static BasePageElement compareWithSimilarItemsPriceField;
+
+    @Locator("P13N_WIDGETS_PRICE_SYMBOL")
+    private static BasePageElement p13NWidgetsPriceSymbol;
+
+    @Locator("PROMOTION_MESSAGE_IN_SPECIAL_OFFERS_AND_PRODUCT_PROMOTIONS_SECTION")
+    private static BasePageElement promotionMessageInSpecialOffersAndProductPromotionsSection;
+
+    @Locator("SPECIAL_OFFERS_AND_PRODUCT_PROMOTIONS_WIDGET")
+    private static BasePageElement specialOffersAndProductPromotionsWidget;
+
+    @Locator("FREQUENTLY_BOUGHT_TOGETHER_ADD_TO_CART_BUTTON")
+    private static BasePageElement frequentlyBoughtTogetherAddToCartButton;
+
+    @Locator("FREQUENTLY_BOUGHT_TOGETHER_ITEM_IMAGE")
+    private static BasePageElement frequentlyBoughtTogetherItemImage;
+
+    @Locator(value = "ADDITIONAL_INFORMATION_SECTION_CUSTOMER_RATINGS_TEXT", stringId = "dp-customer-reviews")
+    private static BasePageElement additionalInformationSectionCustomerRatingsText;
+
+    @Locator(value = "AGS_GSFS_BELOW_THRESHOLD_MESSAGE")
+    private static BasePageElement agsGsfsBelowThresholdMessage;
+
+    @Locator("AGS_DEEP_CHECK_PROMISE_PRIMARY_DELIVERY_DATE")
+    private static BasePageElement deepCheckPromisePrimaryDeliveryDate;
+
+    @Locator ("AGS_DEEP_CHECK_PROMISE_SECONDARY_DELIVERY_DATE")
+    private static BasePageElement deepCheckPromiseSecondaryDeliveryDate;
+
+    private DetailPage detailPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public DetailPageBelowTheFold(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Constructor with a driver instance and an ASIN url.
+     * @param driver the WebDriver instance.
+     * @param asinUrl the ASIN url to navigate.
+     */
+    public DetailPageBelowTheFold(WebDriver driver, String asinUrl) {
+        super(driver);
+        setPageurl(asinUrl);
+        navigateToPage();
+    }
+
+    /**
+     * Get DetailPage model.
+     * @return DetailPage instance.
+     *
+     */
+    public DetailPage getDetailPage() {
+        if (detailPage == null) {
+            detailPage = new DetailPage(driver);
+        }
+        return detailPage;
+    }
+
+    /**
+     * Get the price displayed in Compare with similar items widget
+     * @return the text
+     */
+    public String getCompareWithSimilarItemsPriceText() {
+        scrollToElement(compareWithSimilarItemsPriceField);
+        return compareWithSimilarItemsPriceField.getText();
+    }
+
+    /**
+     * Get the count of price/ price symbol displayed in different types of P13N widgets in DP
+     * @return the count of P13N widgets' price
+     */
+    public int getAllP13NWidgetsPriceSymbolCountInDP() {
+        scrollToElement(getDetailPage().getBelowTheFoldSection().getCustomerReviewsSectionInBTF());
+        return p13NWidgetsPriceSymbol.countElements();
+    }
+
+    /**
+     * Get the price/ price symbol displayed in a P13N widgets by index in DP
+     * @param index is the index number of the P13N widget in loop
+     * @return the text
+     */
+    public String getP13NWidgetsPriceSymbolInDPByIndex(int index) {
+        scrollToElement(getDetailPage().getBelowTheFoldSection().getCustomerReviewsSectionInBTF());
+        BasePageElement p13NWidgetsPriceSymbolByIndex = new BasePageElement(driver,
+                p13NWidgetsPriceSymbol.getName() + "_BY_INDEX_" + index,
+                String.format("(" + p13NWidgetsPriceSymbol.getXPath() + ")" + "[" + index + "]"));
+        return p13NWidgetsPriceSymbolByIndex.getText();
+    }
+
+    /**
+     * Verify Technical Details section present.
+     */
+    public void verifyTechnicalDetailsSectionPresent() {
+        status.addIsDisplayed(technicalDetailsSection);
+        status.processStatus();
+    }
+
+    /**
+     * Return the row text matching the row Name of Product Information 'Technical Details' Table.
+     * @param rowName of the row item for each element.
+     * @return the text.
+     */
+    public String getProductInformationTextByName(String rowName) {
+        return new BasePageElement(driver,
+                productInformationByName.getName() + '_' + rowName,
+                String.format(productInformationByName.getXPath(), rowName)).getText();
+    }
+
+    /**
+     * Return if row matching the row Name is present in Product Information 'Technical Details' Table.
+     * @param rowName of the row item for each element.
+     * @return true if present
+     */
+    public boolean verifyProductInformationPresentByName(String rowName) {
+        return new BasePageElement(driver,
+                productInformationByName.getName() + '_' + rowName,
+                String.format(productInformationByName.getXPath(), rowName)).isPresent();
+    }
+
+    /**
+     * Get the ASIN number displayed in Product Information Section
+     * @return the text
+     */
+    public String getAsinProductInformationText() {
+        return asinProductInformation.getText();
+    }
+
+    /**
+     * Verify if asin number displayed in Product Information Section
+     */
+    public void verifyAsinProductInformationPresent() {
+        status.addIsDisplayed(asinProductInformation);
+        status.processStatus();
+    }
+
+    /**
+     * Get the table row detail name in technical details table (Ex. Brand, manufacturer)
+     * @return the text of rows displayed in technical details section
+     */
+    public List<String> getTechnicalDetailsTableDetailName() {
+        List<String> technicalDetailsTableDetailNameList = new ArrayList<String>();
+        for (PageElement row : technicalDetailsTableDetailName.getElements()) {
+            technicalDetailsTableDetailNameList.add(row.getElement().getText());
+        }
+        return technicalDetailsTableDetailNameList;
+    }
+
+    /**
+     * Get the table row detail value in technical details table (Ex. Samsung)
+     * @return the text of rows displayed in technical details section
+     */
+    public List<String> getTechnicalDetailsTableDetailValue() {
+        List<String> technicalDetailsTableDetailValueList = new ArrayList<String>();
+        for (PageElement row : technicalDetailsTableDetailValue.getElements()) {
+            technicalDetailsTableDetailValueList.add(row.getElement().getText());
+        }
+        return technicalDetailsTableDetailValueList;
+    }
+
+    /**
+     * Verify Best seller ranking present in Additional Information section
+     */
+    public void verifyAdditionalInformationBestSellerPresent() {
+        status.addIsDisplayed(additionalInformationSectionBestSeller);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Best seller link present in Additional Information section
+     */
+    public void verifyAdditionalInformationBestSellerLinkPresent() {
+        status.addIsDisplayed(additionalInformationSectionBestSellerLink);
+        status.processStatus();
+    }
+
+    /**
+     * Check if Customer review section is present in Additional Information section
+     * @return if Customer review section is present in Additional Information section
+     */
+    public boolean verifyCustomerReviewSectionInAdditionalInformationPresent() {
+        return additionalInformationSectionCustomerReviewsSection.isPresent();
+    }
+
+    /**
+     * Verify Customer review link present in Additional Information section
+     */
+    public void verifyAdditionalInformationCustomerReviewLinkPresent() {
+        status.addIsDisplayed(additionalInformationSectionCustomerReviewsLink);
+        status.processStatus();
+    }
+
+    /**
+     * Get the Customer Reviews Section text In Additional Information
+     * @return the text
+     */
+    public String getCustomerReviewsSectionInAdditionalInformationText() {
+        status.addIsDisplayed(additionalInformationSectionCustomerReviewsSection);
+        status.processStatus();
+        return additionalInformationSectionCustomerReviewsSection.getText();
+    }
+
+    /**
+     * Verify Warranty & support section present.
+     */
+    public void verifyWarrantyAndSupportSectionPresent() {
+        status.addIsDisplayed(warrantyAndSupportSection);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Feedback section present.
+     */
+    public void verifyFeedbackSectionPresent() {
+        status.addIsDisplayed(feedbackSection);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "tell us about lower price?" popup is displayed
+     */
+    public void verifyLowerPricePopupPresent() {
+        lowerPriceLink.clickAndWait(lowerPricePopup);
+        status.addIsDisplayed(lowerPricePopup);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Tell us about lower price?" popup title is present or not on Detail Page
+     * @return true if displayed.
+     */
+    public boolean isLowerPricePopupTitle() {
+        lowerPricePopupTitle.waitForElementToBeEnabled();
+        return lowerPricePopupTitle.isPresent();
+    }
+
+    /**
+     * Get the product title of "tell us about lower price?" popup
+     * @return the text
+     */
+    public String getLowerPricePopupProductTitle() {
+        lowerPricePopupProductTitle.waitForElementToBeEnabled();
+        return lowerPricePopupProductTitle.getText();
+    }
+
+    /**
+     * Click the share URL in "tell us about lower price?" popup and get URL
+     * @return the link.
+     */
+    public String getLowerPricePopupShareLink() {
+        lowerPricePopupShareLink.click();
+        return driver.getCurrentUrl();
+    }
+
+    /**
+     * Get the information described in "tell us about lower price?" popup
+     * @return the text
+     */
+    public String getLowerPricePopupInfo() {
+        lowerPricePopupInfo.isPresent();
+        return lowerPricePopupInfo.getText();
+    }
+
+    /**
+     * Get the information described under "Where did you see a lower price?" in the popup
+     * @return the text
+     */
+    public String getLowerPricePopupWhereInfo() {
+        return lowerPricePopupWhereInfo.getText();
+    }
+
+    /**
+     * Get the "Website (Online)" text
+     * @return the text
+     */
+    public String getLowerPricePopupOnlineLabel() {
+        return lowerPricePopupOnlineLabel.getText();
+    }
+
+    /**
+     * Click the Website (Online) radio button in "tell us about lower price?" popup and verify it is present
+     */
+    public void verifyLowerPricePopupOnlineTablePresent() {
+        lowerPricePopupOnlineButton.click();
+        status.addIsDisplayed(lowerPricePopupOnlineTable);
+        status.processStatus();
+    }
+
+    /**
+     * Get the "Store (Offline)" text
+     * @return the text
+     */
+    public String getLowerPricePopupOfflineLabel() {
+        return lowerPricePopupOfflineLabel.getText();
+    }
+
+    /**
+     * Click the Store (Offline) radio button in "tell us about lower price?" popup and verify it is present
+     */
+    public void verifyLowerPricePopupOfflineTablePresent() {
+        lowerPricePopupOfflineButton.click();
+        status.addIsDisplayed(lowerPricePopupOfflineTable);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Submit Feedback" button is displayed in "tell us about lower price?" in the popup
+     */
+    public void verifyLowerPricePopupSubmitPresent() {
+        status.addIsDisplayed(lowerPricePopupSubmitButton);
+        status.processStatus();
+    }
+
+    /**
+     * Return the text matching the Name in Product Details Section
+     * @param name of the item for each element in product details section.
+     * @return the text.
+     */
+    public boolean getProductDetailsByName(String name) {
+        //Browser is not fetching productDetailsByName properly, so trying out various scrollToElement
+        waitForPageToLoad();
+        scrollToElement(getDetailPage().getBelowTheFoldSection().getCustomerReviewsSectionInBTF());
+        productDetails.waitIsPresent();
+        scrollToElement(productDetails);
+        return new BasePageElement(driver,
+                productDetailsByName.getName() + '_' + name,
+                String.format(productDetailsByName.getXPath(), name)).waitIsPresent();
+    }
+
+    /**
+     * Verify if Customer Reviews displayed in Product Details Section
+     */
+    public void verifyCustomerReviewsInProductDetailsPresent() {
+        scrollToElement(productDetails);
+        status.addIsDisplayed(productDetailsCustomerReview);
+        status.processStatus();
+    }
+
+    /**
+     * Verify if Customer Reviews Link is displayed in Product Details Section
+     */
+    public void verifyCustomerReviewsLinkInProductDetailsPresent() {
+        scrollToElement(productDetails);
+        status.addIsDisplayed(productDetailsCustomerLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify if Product Details Section is Present
+     * @return product details section
+     */
+    public boolean isProductDetailsSectionPresent() {
+        scrollToElement(productDetails);
+        return productDetails.isPresent();
+    }
+
+    /**
+     * Verify if Best seller is displayed in Product Details Section
+     */
+    public void verifyBestSellerInProductDetailsPresent() {
+        scrollToElement(productDetails);
+        status.addIsDisplayed(productDetailsBestSeller);
+        status.processStatus();
+    }
+
+    /**
+     * Verify if Best seller Link is displayed in Product Details Section
+     */
+    public void verifyBestSellerLinkInProductDetailsPresent() {
+        scrollToElement(productDetails);
+        status.addIsDisplayed(productDetailsBestSellerLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "From the Manufacturer" Section is displayed
+     */
+    public void verifyFromTheManufacturerSectionPresent() {
+        status.addIsDisplayed(fromTheManufacturer);
+        status.processStatus();
+    }
+
+    /**
+     * Verify "Legal Disclaimer" Section is displayed
+     */
+    public void verifyLegalDisclaimerSectionPresent() {
+        status.addIsDisplayed(legalDisclaimer);
+        status.processStatus();
+    }
+
+    /**
+     * Click 'See Top 100 in Categories' Link under Product Details Section
+     */
+    public void clickSeeTop100InCategoriesLink() {
+        productDetailsBestSellerLink.waitForElementToBeEnabled();
+        for (PageElement bestSellerLink :productDetailsBestSellerLink.getElements()) {
+            if (bestSellerLink.getText().contains("100")) {
+                bestSellerLink.click();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Verify prime badge absent in compare with similar items widget.
+     */
+    public void verifyPrimeBadgeAbsentInCompareWithSimilarItemsWidget() {
+        waitForPageToLoad();
+        scrollToElement(compareWithSimilarItemsWidget);
+        compareWithSimilarItemsWidget.waitIsPresent();
+        status.addIsHiddenOrMissing(primeBadgeInCompareWithSimilarItems);
+        status.processStatus();
+    }
+
+    /**
+     * Click 'Frequently Bought Together Add to Cart' button.
+     */
+    public void clickFrequentlyBoughtTogetherAddToCartButton() {
+        verifyCurrentPage();
+        frequentlyBoughtTogetherAddToCartButton.click();
+    }
+
+    /**
+     * Get the Item Image Count under Frequently Bought Together section
+     * @return Item Image Count under Frequently Bought Together section
+     */
+    public int getFrequentlyBoughtTogetherItemImageCount() {
+        return frequentlyBoughtTogetherItemImage.countElements();
+    }
+
+    /**
+     * Get the Image Source text of 'Frequently Bought Together' Items
+     * @param imageIndex - Image Index of an item under 'Frequently Bought Together' section
+     * @return Image Source text of 'Frequently Bought Together' Items
+     */
+    public String getFrequentlyBoughtTogetherItemImageSource(int imageIndex) {
+        BasePageElement imageSourceByIndex = new BasePageElement(driver,
+                frequentlyBoughtTogetherItemImage.getName() + "-" + imageIndex,
+                String.format("(%s)[%d]", frequentlyBoughtTogetherItemImage.getXPath(), imageIndex));
+        return imageSourceByIndex.getElement().getAttribute("src").split("I/")[1].split("\\._")[0];
+    }
+
+    /**
+     * Get the Customer Average Ratings from In Additional Information section.
+     * @return the Average Customer Reviews out of text
+     */
+     public String getAverageCustomerReviewsOutOfTextInformationSection() {
+         additionalInformationSectionCustomerRatingsText.isPresent();
+         return additionalInformationSectionCustomerRatingsText.getElement().getAttribute("title");
+     }
+
+     /**
+      * Verify GSFS Below Threshold free Delivery Message is present or not.
+      * @param freeInternationalShipMessage specific to a global store
+      * @return String value based on Free Delivery message presence.
+      */
+     public boolean isGSFSBelowThresholdFstMessagePresent(String freeInternationalShipMessage) {
+         agsGsfsBelowThresholdMessage.waitForElementToBeEnabled();
+         return new BasePageElement(driver, agsGsfsBelowThresholdMessage.getName(),
+                 String.format(agsGsfsBelowThresholdMessage.getXPath(), freeInternationalShipMessage)).isPresent();
+       }
+
+     /**
+      * Method to get Deep Check Promise secondary delivery date  in detail page
+      * @return Priority Delivery date
+      */
+     public String getDCPPriorityDeliveryDateInDetailPage() {
+         deepCheckPromiseSecondaryDeliveryDate.waitForElementToBeEnabled();
+         return deepCheckPromiseSecondaryDeliveryDate.getText();
+     }
+
+     /**
+      * Method to get Deep Check Promise secondary delivery date count in detail page
+      * @return Duplicate deep check promise count
+      */
+     public String getDCPStandardDeliveryDateInDetailPage() {
+         deepCheckPromisePrimaryDeliveryDate .waitForElementToBeEnabled();
+         return deepCheckPromisePrimaryDeliveryDate.getText();
+     }
+
+     /**
+      * Get Secondary Deep Check Promise message for GS offer.
+      * @return DeepCheckPromise Date text.
+      */
+     public String getDCPSecondaryText() {
+         return deepCheckPromiseSecondaryDeliveryDate.getText();
+     }
+
+     /**
+      * Get Primary Deep Check Promise message for GS offer.
+      * @return DeepCheckPromise Date text.
+      */
+     public String getDCPPrimaryText() {
+         return deepCheckPromisePrimaryDeliveryDate.getText();
+     }
+}
