@@ -1,0 +1,89 @@
+package com.amazon.aeeqa.ui.pagemodels.mobileapp;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.utils.ScrollDirectionEnum;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Mobile App Detail Page Model
+ * @author vllaks
+ *
+ */
+@PageName("detail")
+public class DetailPageMobileApp extends BasePageModel {
+
+    @Locator("ADD_TO_CART_BUTTON")
+    private static BasePageElement addToCartButton;
+
+    @Locator("TOTAL_LANDED_COST_DETAILS_LINK")
+    private static BasePageElement totalLandedCostDetailsLink;
+
+    @Locator("PRIME_BADGE_BELOW_MAIN_PRICE")
+    private static BasePageElement primeBadgeBelowMainPrice;
+
+    @Locator("FREE_SHIPPING_MESSAGE")
+    private static BasePageElement freeShippingMessage;
+
+    /**
+     * Parameterized Class Constructor.
+     * @param driver the driver
+     */
+    public DetailPageMobileApp(final WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Method to click 'Add to Cart' button.
+     */
+    public void clickAddToCartButton() {
+        swipeTopToBottom();
+        setNativeContext();
+        scrollPageUntilElementIsFound(addToCartButton, ScrollDirectionEnum.SWIPE_DOWN);
+        addToCartButton.click();
+    }
+
+    /**
+     * Verify total landed cost "Details" link present in Mobile.
+     * @throws Exception Element not Scrolled Exception
+     */
+    public void verifyTotalLandedCostDetailsLinkPresentAndClickable() throws Exception {
+        scrollPageUntilElementIsFound(addToCartButton, totalLandedCostDetailsLink, ScrollDirectionEnum.SWIPE_DOWN);
+        status.addIsEnabled(totalLandedCostDetailsLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify PrimeBadge is Disabled.
+     * @throws Exception Element not scrolled exception
+     */
+    public void verifyPrimeBadgeAbsent() throws Exception {
+            scrollPageUntilElementIsFound(addToCartButton, primeBadgeBelowMainPrice, ScrollDirectionEnum.SWIPE_DOWN);
+            status.addIsDisabled(primeBadgeBelowMainPrice);
+            status.processStatus();
+    }
+
+    /**
+     * Method to get Country Eligible Text. Its the same element have IFD and Shipping price.
+     * @return the IFD & Shipping message.
+     * @throws Exception Element not Scrolled Exception
+     */
+    public String getCountryEligibleText() throws Exception {
+        scrollPageUntilElementIsFound(addToCartButton, totalLandedCostDetailsLink, ScrollDirectionEnum.SWIPE_DOWN);
+        totalLandedCostDetailsLink.waitIsPresent();
+        return totalLandedCostDetailsLink.getText();
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     * @throws Exception Element not Scrolled Exception
+     */
+    public void verifyAddToCartButtonPresent() {
+        scrollPageUntilElementIsFound(addToCartButton, ScrollDirectionEnum.SWIPE_DOWN);
+        status.addIsDisplayed(addToCartButton);
+        status.processStatus();
+    }
+}
