@@ -1,0 +1,649 @@
+package com.amazon.aeeqa.ui.pagemodels.home;
+
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.helper.BrowserDriverHelper;
+import com.amazon.aeeqa.utils.SleepUtil;
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Home Page Model.
+ *
+ * @author tingyong
+ */
+@PageName("home.glow")
+public class GlowWidget extends BasePageModel {
+
+    // Class Level Variable declarations.
+    private static final String LOCATION_INITIAL_TEXT = "Select your address";
+
+    // Locator Declarations with quoted "g2s2_variable_name".
+    @Locator("GLOW_DELIVER_TO_ADDRESS_NAME")
+    private static BasePageElement glowDeliverToAddressName;
+
+    @Locator("GLOW_WIDGET_BLOCK")
+    private static BasePageElement glowWidgetBlock;
+
+    @Locator("GLOW_CURRENT_LOCATION_TEXT")
+    private static BasePageElement glowCurrentLocationText;
+
+    @Locator("GLOW_ADDRESS_IN_LIST")
+    private static BasePageElement glowAddressInList;
+
+    @Locator("GLOW_POPOVER_EXISTING_ADDRESS_BLOCK")
+    private static BasePageElement glowPopoverExistingAddressBlock;
+
+    @Locator("GLOW_ADDRESS_SELECTED")
+    private static BasePageElement glowAddressSelected;
+
+    @Locator("GLOW_COUNTRY_LIST_SELECT")
+    private static BasePageElement glowCountryListSelect;
+
+    @Locator("GLOW_COUNTRY_LIST_DROPDOWN")
+    private static BasePageElement glowCountryListDropdown;
+
+    @Locator("GLOW_COUNTRY_ITEM")
+    private static BasePageElement glowCountryItem;
+
+    @Locator("GLOW_COUNTRY_SELECTED")
+    private static BasePageElement glowCountrySelected;
+
+    @Locator("GLOW_ZIP_CODE_INPUT")
+    private static BasePageElement glowZipCodeInput;
+
+    @Locator("GLOW_ZIP_CODE_APPLY_BUTTON")
+    private static BasePageElement glowZipCodeApplyButton;
+
+    @Locator("GLOW_ZIP_CODE_CONFIRMATION_TEXT")
+    private static BasePageElement glowZipCodeConfirmationText;
+
+    @Locator("GLOW_LOCATION_TOAST_POPOVER")
+    private static BasePageElement glowLocationToastPopover;
+
+    @Locator("MANAGE_ADDRESS_LINK_INSIDE_GLOW")
+    private static BasePageElement manageAddressLinkInsideGlow;
+
+    @Locator(value = "GLOW_INVALID_ZIP_ERROR_MESSAGE", stringId = "glow-toaster-postal-code-input-error")
+    private static BasePageElement glowInvalidZipErrorMessage;
+
+    @Locator("GLOW_SIGN_IN_BUTTON")
+    private static BasePageElement glowSignInButton;
+
+    @Locator("CHOOSE_YOUR_LOCATION_NAV_BUTTON")
+    private static BasePageElement chooseYourLocationNavButton;
+
+    @Locator("ADDRESS_DONE_BUTTON")
+    private static BasePageElement addressDoneButton;
+
+    @Locator("ADDRESS_CHANGE_CONFIRM_BUTTON")
+    private static BasePageElement addressChangeConfirmButton;
+
+    @Locator(value = "GLOW_CHOOSE_YOUR_LOCATION_HEADING_TEXT", stringId = "glux_address_section_text")
+    private static BasePageElement glowChooseYourLocationHeadingText;
+
+    @Locator(value = "GLOW_ADDRESS_SELECTION_SUB_TEXT", stringId = "glux_address_section_sub_text")
+    private static BasePageElement glowAddressSelectionSubText;
+
+    @Locator("GLOW_SEE_ALL_ADDRESS_LINK")
+    private static BasePageElement glowSeeAllAddressLink;
+
+    @Locator("GLOW_SELECT_CITY_DROPDOWN")
+    private static BasePageElement glowSelectCityDropDown;
+
+    @Locator("GLOW_CITY_LIST_SELECT")
+    private static BasePageElement glowCityListSelect;
+
+    @Locator("GLOW_COUNTRY_LIST_DROPDOWN_DEFAULT_TEXT")
+    private static BasePageElement glowCountryListDropdownDefaultText;
+
+    @Locator("GLOW_DIVIDER_ENTER_ZIP_CODE_TEXT")
+    private static BasePageElement glowDividerEnterZipCodeText;
+
+    @Locator("GLOW_ZIP_CODE_CITY_DROPDOWN")
+    private static BasePageElement glowZipCodeCityDropdown;
+
+    @Locator("GLOW_ZIP_CODE_CITY_SELECT")
+    private static BasePageElement glowZipCodeCitySelect;
+
+    @Locator("GLOW_SELECT_CITY_NAME_FROM_DROP_DOWN")
+    private static BasePageElement glowSelectCityNameFromDropDown;
+
+    @Locator("GLOW_TOAST_DISMISS_BUTTON")
+    private static BasePageElement glowToastDismissButton;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public GlowWidget(WebDriver driver) {
+        super(driver);
+        waitForPageToLoad();
+    }
+
+    @Override
+    public boolean isOnView() {
+        return chooseYourLocationNavButton.isPresent();
+    }
+
+    /**
+     * Change location to a country outside of US.
+     * @param countryName the target country name.
+     */
+    public void changeLocationUsingGlow(final String countryName) {
+        if (BrowserDriverHelper.isSelectSetOptionSupported()) {
+            clickChooseYourLocationNavButtonWithRetry();
+            glowCountryListDropdown.waitForElementToBeEnabled();
+            waitForPageToLoad();
+            glowCountryListSelect.setSelectedOption(countryName);
+        } else {
+            selectCountryByClickingWhenSelectSetOptionNotSupported(countryName);
+        }
+        if (addressDoneButton.isPresent()) {
+            addressDoneButton.click();
+            addressDoneButton.waitForElementToDisappear();
+        }
+    }
+
+    /**
+     * Change location to default location.
+     * @param sourceCountryCode country code of the MP
+     * @param zipCode is the zipcode of the MP in test
+     */
+    public void changeLocationToDefaultLocation(String sourceCountryCode, String zipCode) {
+        chooseYourLocationNavButton.waitForElementToBeEnabled();
+        waitForPageToLoad();
+        chooseYourLocationNavButton.clickAndWaitWithRetries(glowZipCodeInput);
+        glowZipCodeInput.click();
+        glowZipCodeInput.setText(zipCode);
+        // In AU marketplace need to select city / state after entering zip code
+        if (sourceCountryCode.equals("AU")) {
+            verifyAndClickZipCodeCityInDropDown();
+        }
+        glowZipCodeApplyButton.waitForElementToBeEnabled();
+        glowZipCodeApplyButton.clickAndWaitForDisappear(glowZipCodeApplyButton);
+        if (addressChangeConfirmButton.isPresent()) {
+            try {
+                addressChangeConfirmButton.waitIsPresent();
+                addressChangeConfirmButton.clickAndWaitForDisappear(addressChangeConfirmButton);
+            } catch (Exception e) {
+                addressDoneButton.click();
+                addressDoneButton.waitForElementToDisappear();
+            }
+        }
+    }
+
+    /**
+     * Change location from address list.
+     * @param changeToAddressName by address name.
+     */
+    public void changeLocationFromAddressList(final String changeToAddressName) {
+        chooseYourLocationNavButton.waitForElementToBeEnabled();
+        waitForPageToLoad();
+        BasePageElement address = new BasePageElement(driver,
+                String.format("%s-%s", glowAddressInList.getName(), changeToAddressName),
+                String.format(glowAddressInList.getXPath(), changeToAddressName));
+        clickChooseYourLocation(address);
+        if (!addressDoneButton.isPresent()) {
+            address.clickAndWaitForDisappear(address);
+            return;
+        }
+        if (glowSeeAllAddressLink.getValue("style").contains("inline")) {
+            glowSeeAllAddressLink.click();
+        }
+        address.clickAndWaitWithRetries(new BasePageElement(driver,
+                String.format("%s-%s", glowAddressSelected.getName(), changeToAddressName),
+                String.format(glowAddressSelected.getXPath(), changeToAddressName)));
+        if (addressChangeConfirmButton.waitIsPresent()) {
+            addressChangeConfirmButton.clickAndWaitForDisappear(addressChangeConfirmButton);
+        } else {
+            addressDoneButton.click();
+            addressDoneButton.waitForElementToDisappear();
+        }
+    }
+
+    /**
+     * Return whether the current location is default domestic location.
+     * @return if default location or not.
+     * @param zipCode is the zipcode of the MP in test
+     */
+    public boolean isCurrentLocationDefaultLocation(String zipCode) {
+        String locationText = getCurrentLocationText();
+        return locationText.contains(zipCode)
+                || locationText.contains(LOCATION_INITIAL_TEXT);
+    }
+
+    /**
+     * Get deliver to address name.
+     * @return current deliver to addres name text.
+     */
+    public String getDeliverToAddressNameText() {
+        glowDeliverToAddressName.waitIsPresent();
+        return glowDeliverToAddressName.getText();
+    }
+
+    /**
+     * Get current location text.
+     * @return current location string on GLOW.
+     */
+    public String getCurrentLocationText() {
+        return glowCurrentLocationText.getText();
+    }
+
+    /**
+     * Verify AIS Toast after transition from US-AIS.
+     */
+    public void verifyToastPopOverAppear() {
+        glowLocationToastPopover.waitIsPresent();
+        status.addIsDisplayed(glowLocationToastPopover);
+        status.processStatus();
+    }
+
+    private void selectCountryByClickingWhenSelectSetOptionNotSupported(final String countryName) {
+        chooseYourLocationNavButton.waitForElementToBeEnabled();
+        waitForPageToLoad();
+        clickChooseYourLocationNavButtonWithRetry();
+        glowCountryListDropdown.waitForElementToBeEnabled();
+        waitForPageToLoad();
+        BasePageElement countryItemFilledWithCountryName = new BasePageElement(driver,
+                String.format("%s_%s", glowCountryItem.getName(), countryName),
+                String.format(glowCountryItem.getXPath(), countryName));
+        clickGlowCountryListDropdownWithRetry(countryItemFilledWithCountryName);
+        countryItemFilledWithCountryName.clickAndWait(glowCountrySelected);
+    }
+
+    private void clickChooseYourLocationNavButtonWithRetry() {
+        chooseYourLocationNavButton.clickAndWaitWithRetries(glowCountryListDropdown);
+    }
+
+    private void clickGlowCountryListDropdownWithRetry(final BasePageElement countryItemFilledWithCountryName) {
+        glowCountryListDropdown.clickAndWaitWithRetries(countryItemFilledWithCountryName, 1);
+    }
+
+    /**
+     * Click chooseYourLocationNavButton and wait for glowZipCodeApplyButton.
+     */
+    public void clickChooseYourLocation() {
+        clickChooseYourLocation(glowZipCodeApplyButton);
+    }
+
+    /**
+     * Click chooseYourLocationNavButton and wait for City Name drop down button.
+     */
+    public void clickChooseYourLocationAndWaitForCityNameDropDown() {
+        clickChooseYourLocation(glowSelectCityDropDown);
+    }
+
+    /**
+     * Click chooseYourLocationNavButton and wait for certain element to be present.
+     * @param waitForElement the element to be present.
+     */
+    private void clickChooseYourLocation(final BasePageElement waitForElement) {
+        chooseYourLocationNavButton.waitForElementToBeEnabled();
+        try {
+            chooseYourLocationNavButton.clickAndWaitWithRetries(waitForElement);
+        } catch (ElementClickInterceptedException e) {
+            // Some new marketplace's GLOW design is poor to get ElementClickInterceptedException
+            chooseYourLocationNavButton.click(true);
+            waitForElement.waitIsPresent();
+        }
+    }
+
+    /**
+     * Method to Change Location to Local address.
+     * @param zipCode some zip code to type in.
+     */
+    public void changeLocationToLocalAddress(final String zipCode) {
+        verifyZipcodeInputEnabled(zipCode);
+        glowZipCodeApplyButton.waitForElementToBeEnabled();
+        glowZipCodeApplyButton.click();
+        if (addressDoneButton.isPresent()) {
+            addressDoneButton.click();
+            addressDoneButton.waitForElementToDisappear();
+        } else {
+            glowZipCodeApplyButton.waitForElementToDisappear();
+        }
+    }
+
+    /**
+     * Method to Change Location to Local address.
+     * @param cityName stored in the test data address.
+     */
+    public void changeLocationToLocalAddressWithCityName(final String cityName) {
+        glowSelectCityDropDown.click();
+        glowSelectCityNameFromDropDown.waitForElementToBeEnabled();
+        new BasePageElement(driver, glowSelectCityNameFromDropDown.getName() + "-" + cityName,
+                String.format(glowSelectCityNameFromDropDown.getXPath(), cityName)).click();
+        if (addressDoneButton.isPresent()) {
+            addressDoneButton.click();
+            addressDoneButton.waitForElementToDisappear();
+        } else {
+            glowSelectCityDropDown.waitForElementToDisappear();
+        }
+    }
+
+    /**
+     * Verify the zipcode/postal code input enabled.
+     * @param inputKeys some zip code to type in.
+     */
+    public void verifyZipcodeInputEnabled(final String inputKeys) {
+        glowZipCodeInput.waitIsPresent();
+        status.addIsEnabled(glowZipCodeInput);
+        status.processStatus();
+        glowZipCodeInput.setText(inputKeys);
+    }
+
+    /**
+     * Method to Enter Zip Code and Perform Apply.
+     * @param inputKeys some zip code to type in.
+     */
+    public void enterZipCodeAndApply(final String inputKeys) {
+        verifyZipcodeInputEnabled(inputKeys);
+        glowZipCodeApplyButton.waitForElementToBeEnabled();
+        glowZipCodeApplyButton.click();
+        SleepUtil.sleep(1000);
+    }
+
+    /**
+     * Method helps to Verify Country Drop Down list present in the Glow Widget.
+     */
+    public void verifyCountryDropDownListPresent() {
+        glowCountryListDropdown.waitForElementToBeEnabled();
+        status.addIsEnabled(glowCountryListDropdown);
+        status.processStatus();
+    }
+
+    /**
+     * Click Manage Address link inside Glow Widget.
+     */
+    public void clickManageAddressLinkInsideGlow() {
+        //Adding Sleep to make the test stable
+        SleepUtil.sleep(1000);
+        manageAddressLinkInsideGlow.click();
+    }
+
+    /**
+    * Verify Invalid Zip Code Error message display.
+    */
+   public void verifyInvalidZipCodeErrorMessagePresent() {
+       glowInvalidZipErrorMessage.waitForElementToBeEnabled();
+       status.addIsDisplayed(glowInvalidZipErrorMessage);
+       status.processStatus();
+   }
+
+    /**
+    * Verify Choose Your Location Heading Present inside the glow widget.
+    */
+   public void verifyChooseYourLocationHeadingPresent() {
+       glowChooseYourLocationHeadingText.waitForElementToBeEnabled();
+       status.addIsDisplayed(glowChooseYourLocationHeadingText);
+       status.processStatus();
+   }
+
+    /**
+    * Verify Address Selection Sub Text "SignIn to See Product availability based,
+    * on your location" text present above the Sign In button.
+    */
+   public void verifyAddressSelectionSubTextPresent() {
+       glowAddressSelectionSubText.waitForElementToBeEnabled();
+       status.addIsDisplayed(glowAddressSelectionSubText);
+       status.processStatus();
+   }
+
+    /**
+    * Verify See All Address Link Present inside the glow widget.
+    */
+   public void verifySeeAllAddressLinkPresent() {
+       glowSeeAllAddressLink.waitForElementToBeEnabled();
+       status.addIsDisplayed(glowSeeAllAddressLink);
+       status.processStatus();
+   }
+
+   /**
+    * Perform Amazon Sign-in using Sign IN button inside Glow.
+    */
+   public void clickSignInButtonInsideGlow() {
+       //Adding Sleep to make the test stable
+       SleepUtil.sleep(1000);
+       glowSignInButton.waitForElementToBeEnabled();
+       glowSignInButton.click();
+   }
+
+   /**
+    * Verify Given Address Present in the Glow Widget Saved Address List.
+    * @param addressName AddressName to Verify
+    */
+   public void verifyAddressNameInGlowWidgetAddressList(String addressName) {
+       //Adding Sleep to make the test stable
+       SleepUtil.sleep(1000);
+       BasePageElement address = new BasePageElement(driver,
+               String.format("%s-%s", glowAddressInList.getName(), addressName),
+               String.format(glowAddressInList.getXPath(), addressName));
+       status.addIsDisplayed(address);
+       status.processStatus();
+   }
+
+   /**
+    * Method helps to Verify content inside the Glow.
+    */
+   public void verifyGlowModalContent() {
+       //Adding Sleep to make the test stable
+       SleepUtil.sleep(1000);
+       status.addIsEnabled(glowZipCodeApplyButton);
+       status.addIsDisplayed(glowZipCodeInput);
+       status.addIsDisplayed(manageAddressLinkInsideGlow);
+       status.processStatus();
+   }
+
+   /**
+    * Method helps to check postal code button present in glow or not.
+    * @return true when the postal code button is present
+    */
+   public boolean verifyZipCodeApplyButtonPresent() {
+       SleepUtil.sleep(1000);
+       return glowZipCodeApplyButton.isPresent();
+   }
+
+   /**
+    * Method helps to check Existing Address block is present in glow Popover or not.
+    * @return true when the Existing Address block is present in glow Popover
+    */
+   public boolean verifyGlowPopoverExistingAddressBlockPresent() {
+       return glowPopoverExistingAddressBlock.isPresent();
+   }
+
+   /**
+    * Method to click glow link.
+    */
+   public void clickGlowLink() {
+       chooseYourLocationNavButton.click();
+   }
+
+    /**
+     * Method to get glow text.
+     * @return glow address text
+     */
+    public String getGlowText() {
+        return chooseYourLocationNavButton.getText();
+    }
+
+   /**
+    * Method to click city inside the city drop down.
+    */
+   public void verifyAndClickCityInCityDropDown() {
+       glowSelectCityDropDown.clickAndWait(glowCityListSelect);
+       glowCityListSelect.clickAndWaitForDisappear(glowCityListSelect);
+       if (addressDoneButton.isPresent()) {
+           addressDoneButton.click();
+           addressDoneButton.waitForElementToDisappear();
+       }
+   }
+
+   /**
+    * Verify the dropdown box input enabled.
+    */
+   public void verifyDropdownBoxEnabled() {
+       status.addIsDisplayed(glowZipCodeInput);
+       status.processStatus();
+   }
+
+     /**
+      * Method to get Glow popover "Done" Button Text
+      * @return Glow popover "Done" Button Text
+      */
+     public String getGlowPopoverDoneButtonText() {
+     addressDoneButton.waitForElementToBeEnabled();
+     return addressDoneButton.getText();
+      }
+
+    /**
+      * Method to get Glow popover ZipCode Divider "Or Enter US ..." Text
+      * @return Glow popover ZipCode Divider "Or Enter US ..." Text
+      */
+    public String getGlowPopoverZipCodeDividerText() {
+    glowDividerEnterZipCodeText.waitForElementToBeEnabled();
+    return glowDividerEnterZipCodeText.getText();
+    }
+
+     /**
+      * Method to get Glow popover Country Dropdown "Ship Outside of US" Text
+      * @return Glow popover Country Dropdown Text
+      */
+     public String getGlowPopoverCountryDropdownText() {
+         glowCountryListDropdownDefaultText.waitForElementToBeEnabled();
+         return glowCountryListDropdownDefaultText.getText();
+      }
+
+     /**
+      * Method to get Glow popover "Manage Address" link Text
+      * @return Glow popover "Manage Address" link Text
+      */
+
+    public String getManageAddressText() {
+    manageAddressLinkInsideGlow.waitForElementToBeEnabled();
+    return manageAddressLinkInsideGlow.getText();
+    }
+
+   /**
+    * Method helps to check Zipcode box present or not
+    * @return true when the Zipcode box is present
+    */
+   public boolean isZipCodeBoxPresent() {
+       return glowZipCodeApplyButton.isPresent();
+   }
+
+   /**
+    * Method helps to check deliver text present or not.
+    * @return true when the deliver text is present.
+    */
+   public boolean isDeliveryToTextPresent() {
+       return glowDeliverToAddressName.isPresent();
+   }
+
+   /**
+    * Method helps to check glow widget is present or not.
+    * @return true when glow widget is present
+    */
+   public boolean isGlowWidgetPresent() {
+       return glowWidgetBlock.isPresent();
+   }
+
+    /**
+     * Method helps to get glow widget block text
+     * @return Glow widget text
+     */
+    public String getGlowWidgetBlockText() {
+        return glowWidgetBlock.getText();
+    }
+
+    /**
+     * Method to click city inside the city drop down when zip or post code is entered.
+     */
+    public void verifyAndClickZipCodeCityInDropDown() {
+        waitForPageToLoad();
+        glowZipCodeCityDropdown.isPresent();
+        glowZipCodeCityDropdown.clickAndWaitWithRetries(glowZipCodeCitySelect, 3);
+        glowZipCodeCitySelect.click();
+        glowZipCodeCitySelect.waitIsPresent();
+    }
+
+    /**
+     * Method helps to check Manage address link is present in glow
+     * @return true when Manage address link is present
+     */
+    public boolean isManageAddressLinkDisplayed() {
+        //Adding Sleep to make the test stable
+        SleepUtil.sleep(1000);
+        return manageAddressLinkInsideGlow.isPresent();
+    }
+
+   /**
+    * Eligible zip code
+    */
+   private String getEligibleZipCode(String countryCode) {
+       if (countryCode.equals("AU")) {
+           return "3760";
+       } else if (countryCode.equals("SG")) {
+           return "140077";
+       } else { //UK Zipcode
+           return "GU16 7HF";
+       }
+   }
+
+   /**
+    * Method to change default zipcode to eligible zipcode
+    * @param countryCode "country code of the MP"
+    */
+   public void changeDefaultZipcodeToEligibleZipcode(String countryCode) {
+       chooseYourLocationNavButton.waitForElementToBeEnabled();
+       waitForPageToLoad();
+       chooseYourLocationNavButton.clickAndWaitWithRetries(glowZipCodeInput);
+       glowZipCodeInput.click();
+       glowZipCodeInput.setText(getEligibleZipCode(countryCode));
+       // In AU marketplace need to select city / state after entering zip code
+       if (countryCode.equals("AU")) {
+           verifyAndClickZipCodeCityInDropDown();
+       }
+       glowZipCodeApplyButton.waitForElementToBeEnabled();
+       glowZipCodeApplyButton.clickAndWaitForDisappear(glowZipCodeApplyButton);
+   }
+
+    /**
+     * Method to select the address from the address list.
+     */
+   public void selectDefaultLocationFromGlow() {
+       chooseYourLocationNavButton.waitForElementToBeEnabled();
+       waitForPageToLoad();
+       clickChooseYourLocationNavButtonWithRetry();
+       glowPopoverExistingAddressBlock.waitForElementToBeEnabled();
+       glowPopoverExistingAddressBlock.clickAndWaitForDisappear(glowPopoverExistingAddressBlock);
+       waitForPageToLoad();
+   }
+
+   /**
+    * Method to click Address done button.
+    */
+   public void clickAddressDoneButton() {
+       addressDoneButton.clickAndWaitForDisappear(glowSignInButton);
+   }
+
+   /**
+    * Method to return whether Select City dropdown is present in Glow.
+    * @return glowSelectCityDropdown present or not
+    */
+   public boolean isGlowSelectCityDropdownDisplayed() {
+       return glowSelectCityDropDown.isPresent();
+   }
+
+    /**
+     * Method to click dismiss button in glow toast popover.
+     */
+    public void clickGlowToastDismissButton() {
+        if (glowLocationToastPopover.doesExists()) {
+        glowToastDismissButton.clickAndWaitForDisappear(glowLocationToastPopover);
+        }
+    }
+}
