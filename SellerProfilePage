@@ -1,0 +1,575 @@
+package com.amazon.aeeqa.ui.pagemodels.spp;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * SPP Page Model.
+ *
+ * @author othogat
+ */
+@PageName("spp")
+public class SellerProfilePage extends BasePageModel {
+
+    @Locator("SELLER_HEADING_TEXT")
+    private static BasePageElement sellerHeadingText;
+
+    @Locator("AGS_SELLER_STOREFRONT_LINK")
+    private static BasePageElement agsSellerStoreFrontLink;
+
+    @Locator("AGS_SELLER_DESCRIPTION")
+    private static BasePageElement agsSellerDescription;
+
+    @Locator(value = "ASK_A_QUESTION_BUTTON", stringId = "aag_ss_contact_seller_ask_question")
+    private static BasePageElement askAQuestionButton;
+
+    @Locator("SHIPPING_HEADING_TAB")
+    private static BasePageElement shippingHeadingTab;
+
+    @Locator("RETURNS_HEADING_TAB")
+    private static BasePageElement returnsHeadingTab;
+
+    @Locator("POLICIES_HEADING_TAB")
+    private static BasePageElement policiesHeadingTab;
+
+    @Locator("SPP_SHIPPING_TAB_CONTENT")
+    private static BasePageElement shippingTabContent;
+
+    @Locator("AGS_SELLER_RETURN_POLICY_LINK")
+    private static BasePageElement agsReturnPolicyLink;
+
+    @Locator("RETURNS_CONTACT_SELLER_LINK")
+    private static BasePageElement contactSellerLink;
+
+    @Locator("RETURNS_ONLINE_RETURN_CENTER_LINK")
+    private static BasePageElement onlineReturnCenterLink;
+
+    @Locator("POLICIES_PRIVACY_AND_SECURITY_CONTENT")
+    private static BasePageElement privacyAndSecurityContent;
+
+    @Locator("POLICIES_SELLER_PRIVACY_POLICY_CONTENT")
+    private static BasePageElement sellerPrivacyPoclicyContent;
+
+    @Locator("HELP_HEADING_TAB")
+    private static BasePageElement helpHeadingTab;
+
+    @Locator("CONTACT_AMAZON_HELP_LINK")
+    private static BasePageElement contactAmazonHelpLink;
+
+    @Locator("SEARCH_AMAZON_HELP_LINK")
+    private static BasePageElement searchAmazonHelpLink;
+
+    @Locator("PRODUCTS_HEADING_TAB")
+    private static BasePageElement productsHeadingTab;
+
+    @Locator("SEE_ALL_PRODUCTS_LINK")
+    private static BasePageElement seeAllProductsLink;
+
+    @Locator("FEEDBACK_HEADING_TAB")
+    private static BasePageElement feedbackHeadingTab;
+
+    @Locator("LEAVE_SELLER_FEEDBACK_LINK")
+    private static BasePageElement leaveSellerFeedbackLink;
+
+    @Locator("SELLER_RATINGS_IN_SPP")
+    private static BasePageElement sppSellerRatings;
+
+    @Locator ("SEE_MORE_LINK_UNDER_RETURN_TAB")
+    private static BasePageElement seeMoreLinkUnderReturnTab;
+
+    @Locator ("FREQUENTLY_ASKED_QUESTIONS_TAB")
+    private static BasePageElement frequentlyAskedQuestionsTab;
+
+    @Locator ("FREQUENTLY_ASKED_QUESTIONS_TAB_CONTENT")
+    private static BasePageElement frequentlyAskedQuestionsTabContent;
+
+    @Locator ("BUSINESS_NAME_TEXT")
+    private static BasePageElement businessNameText;
+
+    @Locator ("BUSINESS_NAME_VALUE")
+    private static BasePageElement businessNameValue;
+
+    @Locator ("SELLER_LIFETIME_RATING_FEEDBACK")
+    private static BasePageElement sellerLifetimeRatingFeedback;
+
+    @Locator ("SHIPPING_RATES_AND_POLICIES_LINK")
+    private static BasePageElement shippingRatesAndPoliciesLink;
+
+    @Locator ("FEEDBACK_STAR_REVIEW")
+    private static BasePageElement feedbackStarReview;
+
+    @Locator ("A_TO_Z_SEE_FULL_DETAILS_LINK")
+    private static BasePageElement aToZSeeFullDetailsLink;
+
+    @Locator ("A_TO_Z_GUARANTEE_SECTION")
+    private static BasePageElement aToZGuaranteeSection;
+
+    @Locator(value = "SELLER_PHONE_NUMBER_TEXT")
+    private static BasePageElement sellerPhoneNumberText;
+
+    @Locator(value = "SELLER_PHONE_NUMBER_VALUE")
+    private static BasePageElement sellerPhoneNumberValue;
+
+    @Locator(value = "SELLER_VAT_NUMBER_TEXT")
+    private static BasePageElement sellerVatNumberText;
+
+    @Locator(value = "SELLER_VAT_NUMBER_VALUE")
+    private static BasePageElement sellerVatNumberValue;
+
+    @Locator("ABOUT_SELLER_CONTENT")
+    private static BasePageElement aboutSellerContent;
+
+    @Locator(value = "SELLER_BUSINESS_TYPE_LABEL")
+    private static BasePageElement sellerBusinessTypeLabel;
+
+    @Locator(value = "SELLER_BUSINESS_TYPE_VALUE")
+    private static BasePageElement sellerBusinessTypeValue;
+
+    @Locator("GIFT_WRAP_GIFT_MESSAGING_HEADING")
+    private static BasePageElement giftWrapGfitMessagingHeading;
+
+    @Locator("GIFT_WRAP_HEADING")
+    private static BasePageElement giftWrapHeading;
+
+    @Locator("GIFT_WRAP_CONTENT")
+    private static BasePageElement giftWrapContent;
+
+    @Locator("GIFT_MESSAGE_HEADING")
+    private static BasePageElement giftMessageHeading;
+
+    @Locator("GIFT_MESSAGE_CONTENT")
+    private static BasePageElement giftMessageContent;
+
+    @Locator("OTHER_POLICIES")
+    private static BasePageElement otherPolicies;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public SellerProfilePage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        status.addIsDisplayed(sellerHeadingText);
+        status.addIsDisplayed(agsSellerStoreFrontLink);
+        status.addIsDisplayed(agsSellerDescription);
+        status.processStatus();
+    }
+
+    /**
+     * Verify 'Ask a question' button.
+     */
+    public void verifyAskAQuestionButtonPresent() {
+        status.addIsEnabled(askAQuestionButton);
+        status.processStatus();
+    }
+
+    /**
+     * Click 'Ask a question' button.
+     */
+    public void clickAskAQuestionButton() {
+        askAQuestionButton.waitIsPresent();
+        askAQuestionButton.click();
+    }
+
+    /**
+     * Shipping Heading Tab Present and is Selected or not.
+     * @return true if the tab is selected
+     */
+    public boolean isShippingHeadingTabPresentAndSelected() {
+        status.addIsEnabled(shippingHeadingTab);
+        status.processStatus();
+        if (shippingHeadingTab.getValue("class").contains("active")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Verify the content under Shipping Tab is present.
+     */
+    public void verifyShippingTabContentPresent() {
+        shippingHeadingTab.waitIsPresent();
+        shippingHeadingTab.click();
+        status.addIsDisplayed(shippingTabContent);
+        status.processStatus();
+    }
+
+    /**
+     * Verify the content under Returns Tab is present.
+     */
+    public void verifyReturnsTabContentPresent() {
+        returnsHeadingTab.waitIsPresent();
+        returnsHeadingTab.click();
+        if (seeMoreLinkUnderReturnTab.isPresent()) {
+            seeMoreLinkUnderReturnTab.click();
+        }
+        status.addIsDisplayed(agsReturnPolicyLink);
+        status.addIsDisplayed(contactSellerLink);
+        status.addIsDisplayed(onlineReturnCenterLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify the content under Policies Tab is present.
+     */
+    public void verifyPoliciesTabContentPresent() {
+        policiesHeadingTab.waitIsPresent();
+        policiesHeadingTab.click();
+        privacyAndSecurityContent.waitIsPresent();
+        status.addIsDisplayed(privacyAndSecurityContent);
+        sellerPrivacyPoclicyContent.waitIsPresent();
+        status.addIsDisplayed(sellerPrivacyPoclicyContent);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Help Tab is present and can be clicked.
+     */
+    public void verifyHelpTabPresent() {
+        helpHeadingTab.waitIsPresent();
+        helpHeadingTab.click();
+        status.addIsDisplayed(helpHeadingTab);
+        status.processStatus();
+    }
+
+    /**
+     * Click Contact Amazon Help link under Help Tab.
+     */
+    public void clickContactAmazonHelpLink() {
+        contactAmazonHelpLink.waitIsPresent();
+        contactAmazonHelpLink.clickAndWaitForDisappear(contactAmazonHelpLink);
+    }
+
+    /**
+     * Click Search Amazon Help link under Help Tab.
+     */
+    public void clickSearchAmazonHelpLink() {
+        searchAmazonHelpLink.waitIsPresent();
+        searchAmazonHelpLink.clickAndWaitForDisappear(searchAmazonHelpLink);
+    }
+
+    /**
+     * Verify Products Tab is present.
+     */
+    public void verifyProductsTabPresent() {
+        productsHeadingTab.waitIsPresent();
+        status.addIsDisplayed(productsHeadingTab);
+        status.processStatus();
+    }
+
+    /**
+     * Click See All Products link under Products Tab.
+     */
+    public void clickSeeAllProductsLink() {
+        seeAllProductsLink.waitIsPresent();
+        seeAllProductsLink.click();
+    }
+
+    /**
+     * Helps to identify Feedback Tab is present.
+     * @return presence of Feedback Tab in seller profile page.
+     */
+    public boolean isFeedbackTabPresent() {
+    return feedbackHeadingTab.isPresent();
+    }
+
+    /**
+     * Helps to identify Leave Seller Feedback link is present.
+     * @return presence of Leave Seller Feedback link in seller profile page.
+     */
+    public boolean isLeaveSellerFeedbackLinkPresent() {
+    return leaveSellerFeedbackLink.isPresent();
+    }
+
+    /**
+     * Click Leave Seller Feedback link under Feedback Tab.
+     */
+    public void clickLeaveSellerFeedbackLink() {
+        leaveSellerFeedbackLink.waitIsPresent();
+        leaveSellerFeedbackLink.click();
+    }
+
+    /**
+     * Helps to identify Seller Ratings section is present.
+     * @return presence of Seller Ratings section in seller profile page.
+     */
+    public boolean isSellerRatingsPresent() {
+    return sppSellerRatings.isPresent();
+    }
+
+    /**
+     * Click Frequently Asked Questions Tab.
+     * @param faqTitle to Parameterized for xpath
+     */
+    public void clickFrequentlyAskedQuestionsTab(String faqTitle) {
+        BasePageElement faqTitleText = new BasePageElement(driver, frequentlyAskedQuestionsTab.getName(),
+                String.format(frequentlyAskedQuestionsTab.getXPath(), faqTitle));
+        faqTitleText.isPresent();
+        faqTitleText.click();
+    }
+
+    /**
+     * Helps to identify Frequently asked questions content is present.
+     * @return presence of Frequently asked question content in seller profile page.
+     */
+    public boolean isFrequentlyAskedQuestionsPresent() {
+    return frequentlyAskedQuestionsTabContent.isPresent();
+    }
+
+    /**
+     * Helps to identify Business name text is present.
+     * @param businessNameTextInSPP to Parameterized for xpath.
+     * @return presence of Business name text in seller profile page.
+     */
+    public boolean isBusinessNameTextPresent(String businessNameTextInSPP) {
+        return new BasePageElement(driver, businessNameText.getName(),
+                String.format(businessNameText.getXPath(), businessNameTextInSPP)).isPresent();
+    }
+
+    /**
+     * Get Business name value text in SPP
+     * @param businessNameTextInSPP to Parameterized for xpath.
+     * @return Business name value text.
+     */
+    public String getBusinessNameValueInSPP(String businessNameTextInSPP) {
+        BasePageElement sppBusinessNameValueString = new BasePageElement(driver, businessNameValue.getName(),
+                String.format(businessNameValue.getXPath(), businessNameTextInSPP));
+        return sppBusinessNameValueString.getText();
+    }
+
+    /**
+     * Get Positive Lifetime Rating Feedback text in SPP
+     * @return Positive Lifetime Rating Feedback text.
+     */
+    public String getSellerLifetimeRatingFeedbackTextInSPP() {
+        return sellerLifetimeRatingFeedback.getText();
+    }
+
+    /**
+     * Click Positive Lifetime Rating Feedback link.
+     */
+    public void clickSellerLifetimeRatingFeedbackLink() {
+        sellerLifetimeRatingFeedback.click();
+    }
+
+    /**
+     * Get Shipping policies content text in SPP
+     * @return Shipping policies content text.
+     */
+    public String getShippingPoliciesTextInSPP() {
+        return shippingTabContent.getText();
+    }
+
+    /**
+     * Click Positive Lifetime Rating Feedback link.
+     */
+    public void clickShippingRatesAndPoliciesLink() {
+        shippingRatesAndPoliciesLink.click();
+    }
+
+    /**
+     * Helps to identify Feedback Star Ratings  is present.
+     * @return presence of Feedback Star Ratings in seller profile page.
+     */
+    public boolean isFeedbackStarRatingPresent() {
+    return feedbackStarReview.isPresent();
+    }
+
+    /**
+     * Helps to identify Returns and Refund section is present.
+     * @return presence of Returns and Refund section in seller profile page.
+     */
+    public boolean isReturnsAndRefundSectionPresent() {
+    return returnsHeadingTab.isPresent();
+    }
+
+    /**
+     * Helps to identify AtoZ Guarantee section is present.
+     * @return presence of AtoZ Guarantee section in seller profile page.
+     */
+    public boolean isAToZGuaranteeSectionPresent() {
+    return aToZGuaranteeSection.isPresent();
+    }
+
+    /**
+     * Click AtoZ Guarantee link
+     */
+    public void clickAToZSeeFullDetailsLink() {
+        aToZSeeFullDetailsLink.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Verify if Phone Number is present in SPP.
+     * @param phoneNumberText parameterized for xpath.
+     * @return displayed or not.
+     */
+    public boolean isPhoneNumberTextPresent(String phoneNumberText) {
+        sellerPhoneNumberText.waitForElementToBeEnabled();
+        return new BasePageElement(driver, sellerPhoneNumberText.getName(),
+                String.format(sellerPhoneNumberText.getXPath(), phoneNumberText)).isPresent();
+    }
+
+    /**
+     * Get Phone number value text in SPP
+     * @param phoneNumberValue parameterized for xpath.
+     * @return Phone number value text.
+     */
+    public String getPhoneNumberValue(String phoneNumberValue) {
+        BasePageElement sppPhoneNumberValueString = new BasePageElement(driver, sellerPhoneNumberValue.getName(),
+                String.format(sellerPhoneNumberValue.getXPath(), phoneNumberValue));
+        return sppPhoneNumberValueString.getText();
+    }
+
+    /**
+     * Verify if VAT Number is present in SPP.
+     * @param vatNumberText parameterized for xpath.
+     * @return displayed or not.
+     */
+    public boolean isVATNumberTextPresent(String vatNumberText) {
+        sellerVatNumberText.waitForElementToBeEnabled();
+        return new BasePageElement(driver, sellerVatNumberText.getName(),
+                String.format(sellerVatNumberText.getXPath(), vatNumberText)).isPresent();
+    }
+
+    /**
+     * Get VAT number value text in SPP
+     * @param vatNumberValue parameterized for xpath.
+     * @return VAT number value text.
+     */
+    public String getVATNumberValue(String vatNumberValue) {
+        BasePageElement sppVatNumberValueString = new BasePageElement(driver, sellerVatNumberValue.getName(),
+                String.format(sellerVatNumberValue.getXPath(), vatNumberValue));
+        return sppVatNumberValueString.getText();
+    }
+
+    /**
+     * Verify Seller name is present.
+     */
+    public void verifySellerNameIsPresent() {
+        status.addIsDisplayed(sellerHeadingText);
+        status.processStatus();
+    }
+
+    /**
+     * Get Seller name text
+     * @return Seller name text
+     */
+    public String getSellerName() {
+        return sellerHeadingText.getText();
+    }
+
+    /**
+     * Get aboutSellerContent text
+     * @return aboutSellerContent text
+     */
+    public String getAboutSellerContent() {
+        return aboutSellerContent.getText();
+    }
+
+    /**
+     * Verify if Business Type is present in SPP.
+     * @param businessTypeLabel parameterized for xpath.
+     * @return displayed or not.
+     */
+    public boolean isBusinessTypeLabelPresent(String businessTypeLabel) {
+        return new BasePageElement(driver, sellerBusinessTypeLabel.getName(),
+                String.format(sellerBusinessTypeLabel.getXPath(), businessTypeLabel)).isPresent();
+    }
+
+    /**
+     * Get Business type value text in SPP
+     * @param businessTypeLabel parameterized for xpath.
+     * @return Business type value text.
+     */
+    public String getBusinessTypeValue(String businessTypeLabel) {
+        BasePageElement sppBusinessTypeValue = new BasePageElement(driver, sellerBusinessTypeValue.getName(),
+                String.format(sellerBusinessTypeValue.getXPath(), businessTypeLabel));
+        return sppBusinessTypeValue.getText();
+    }
+
+    /**
+     * Method to get Seller name heading text in Seller page
+     * @return Seller name heading text
+     */
+    public String getSellerNameHeadingText() {
+        sellerHeadingText.waitForElementToBeEnabled();
+        return sellerHeadingText.getText();
+    }
+
+    /**
+     * Helps to identify Gift wrap and gift message heading  is present.
+     * @return presence of Gift wrap gift message heading in seller profile page.
+     */
+    public boolean isGiftWrapAndGiftMessageHeadingPresent() {
+        return giftWrapGfitMessagingHeading.isPresent();
+    }
+
+    /**
+     * Helps to identify Gift wrap heading is present.
+     * @return presence of Gift wrap heading in seller profile page.
+     */
+    public boolean isGiftWrapHeadingPresent() {
+        giftWrapHeading.waitIsPresent();
+        return giftWrapHeading.isPresent();
+    }
+
+    /**
+     * Helps to identify Gift wrap content is present.
+     * @return presence of Gift wrap content in seller profile page.
+     */
+    public boolean isGiftWrapContentPresent() {
+        giftWrapContent.waitIsPresent();
+        return giftWrapContent.isPresent();
+    }
+
+    /**
+     * Helps to identify Gift Message heading is present.
+     * @return presence of Gift Message heading in seller profile page.
+     */
+    public boolean isGiftMessageHeadingPresent() {
+        giftMessageHeading.waitIsPresent();
+        return giftMessageHeading.isPresent();
+    }
+
+    /**
+     * Helps to identify Gift message content is present.
+     * @return presence of Gift message content in seller profile page.
+     */
+    public boolean isGiftMessageContentPresent() {
+        giftMessageContent.waitIsPresent();
+        return giftMessageContent.isPresent();
+    }
+
+    /**
+     * Click other policies tab.
+     */
+    public void clickOtherPoliciesTab() {
+        otherPolicies.waitIsPresent();
+        otherPolicies.click();
+    }
+
+    /**
+     * Helps to identify Gift Wrap and Gift Messaging section is displayed
+     * @return presence of Gift Wrap and Gift Messaging section in seller profile page.
+     */
+    public boolean isGiftWrapSectionPresent() {
+        return isGiftWrapAndGiftMessageHeadingPresent() &&
+                isGiftWrapHeadingPresent() &&
+                isGiftWrapContentPresent() &&
+                isGiftMessageHeadingPresent() &&
+                isGiftMessageContentPresent();
+    }
+}
