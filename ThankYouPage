@@ -1,0 +1,188 @@
+package com.amazon.aeeqa.ui.pagemodels.thankyoupage;
+
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Thank you Page Model.
+ *
+ * @author vllaks
+ */
+@PageName("thank_you")
+public class ThankYouPage extends BasePageModel {
+
+    @Locator("THANK_YOU_PAGE_MESSAGE_CENTER_LINK")
+    private static BasePageElement thankyouPageMessageCenterLink;
+
+    @Locator("THANK_YOU_PAGE_CHECK_YOUR_EMAIL_TEXT")
+    private static BasePageElement thankyouPageCheckYourEmailText;
+
+    @Locator("THANK_YOU_PAGE_DELIVERY_DATE")
+    private static BasePageElement thankyouPageDeliveryDate;
+
+    @Locator("THANK_YOU_PAGE_PRODUCT_TITLE_TEXT")
+    private static BasePageElement thankyouPageProductTitleText;
+
+    @Locator("THANK_YOU_PAGE_REVIEW_YOUR_ORDER_LINK")
+    private static BasePageElement thankyouPageReviewYourOrderLink;
+
+    @Locator("THANK_YOU_PAGE_ORDER_NUMBER_TEXT")
+    private static BasePageElement thankyouPageOrderNumberText;
+
+    @Locator("THANK_YOU_PAGE_HEADER_TEXT")
+    private static BasePageElement thankyouPageHeaderText;
+
+    @Locator("THANK_YOU_PAGE_ADDRESS_TEXT")
+    private static BasePageElement thankyouPageAddressText;
+
+    @Locator("THANK_YOU_PAGE_PRODUCT_IMAGE")
+    private static BasePageElement thankyouProductImage;
+
+    @Locator("DUPLICATE_ORDER_PAGE_PROGRESS_BAR")
+    private static BasePageElement duplicateOrderPageProgressBar;
+
+    @Locator("PLACE_THIS_DUPLICATE_ORDER_BUTTON")
+    private static BasePageElement placeThisDuplicateOrderButton;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public ThankYouPage(WebDriver driver) {
+        super(driver);
+    }
+
+
+    /**
+     * verify expected delivery address text Present for the Order in Thank you Page.
+     * @param addressText to verify expected text contains in address section
+     * @return returns True if the expected text present in the Address section
+     */
+    public boolean verifyAddressTextPresentInThankyouPage(String addressText) {
+        return new BasePageElement(driver, thankyouPageAddressText.getName(),
+                String.format(thankyouPageAddressText.getXPath(), addressText)).isPresent();
+    }
+
+    /**
+     * verify Review Your Order Link Present for all the Order in Thank you Page.
+     */
+    public void verifyReviewYourOrderLinkPresentInThankyouPage() {
+        thankyouPageReviewYourOrderLink.getElements().stream().forEach(status::addIsEnabled);
+        status.processStatus();
+    }
+
+    /**
+     * verify Order Number Present for all the Order in Thank you Page.
+     */
+    public void verifyOrderNumberTextInThankyouPage() {
+        thankyouPageOrderNumberText.getElements().stream().forEach(status::addIsDisplayed);
+        status.processStatus();
+    }
+
+    /**
+     * verify Delivery Date for all the Order in Thank you Page.
+     */
+    public void verifyDeliveryDateInThankyouPage() {
+        thankyouPageDeliveryDate.getElements().stream().forEach(status::addIsDisplayed);
+        status.processStatus();
+    }
+
+    /**
+     * verify Product Title displays for all the Items in Thank you Page.
+     */
+    public void verifyProductTitleInThankyouPage() {
+        thankyouPageProductTitleText.getElements().stream().forEach(status::addIsDisplayed);
+        status.processStatus();
+    }
+
+    /**
+     * verify Message Center Link Present in Thank you Page.
+     */
+    public void verifyMessageCenterLinkPresentInThankyouPage() {
+        List<PageElement> messageCenterLinks = thankyouPageMessageCenterLink.getElements();
+        for (PageElement messageCenterLink : messageCenterLinks) {
+            if (messageCenterLink.isPresent()) {
+                status.addIsEnabled(messageCenterLink);
+                status.processStatus();
+            }
+        }
+    }
+
+    /**
+     * verify Check Your Email Text Present in Thank you Page.
+     */
+    public void verifyCheckYourEmailTextInThankyouPage() {
+        List<PageElement> checkYourEmailTexts = thankyouPageCheckYourEmailText.getElements();
+        for (PageElement checkYourEmailText : checkYourEmailTexts) {
+            if (checkYourEmailText.isPresent()) {
+                status.addIsDisplayed(checkYourEmailText);
+                status.processStatus();
+            }
+        }
+    }
+
+    /**
+     * verify Success Message Text Present in Thank you Page.
+     */
+    public void verifySuccessMessageInThankyouPage() {
+        thankyouPageHeaderText.waitForTextNotBlank(15);
+        status.addIsDisplayed(thankyouPageHeaderText);
+        status.processStatus();
+    }
+
+    /**
+     * Method to click Review Your Order Link present in Thank you Page.
+     */
+    public void clickReviewYourOrderLinkPresentInThankyouPage() {
+        thankyouPageReviewYourOrderLink.click();
+    }
+
+    /**
+     * verify Product Image Present in Thank you Page.
+     */
+    public void verifyProductImageInThankyouPage() {
+        status.addIsDisplayed(thankyouProductImage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Duplicate Order page Progress bar if duplicate order placed.
+     * @return Duplicate Order Page Progress Bar is present
+     */
+    public boolean isDuplicateOrderPageProgressBarPresent() {
+        return duplicateOrderPageProgressBar.isPresent();
+    }
+
+    /**
+     * Click Place This Duplicate order Button.
+     */
+    public void clickPlaceThisDuplicateOrderButton() {
+        placeThisDuplicateOrderButton.click();
+    }
+
+    /**
+     * Get expected delivery address text Present for the Order in Thank you Page.
+     * @param addressText to get expected Address text contains in address section
+     * @return returns the expected Address text present in the Address section
+     */
+    public String getAddressTextInThankyouPage(String addressText) {
+         BasePageElement addressTextInThankyouPage =  new BasePageElement(driver, thankyouPageAddressText.getName(),
+                String.format(thankyouPageAddressText.getXPath(), addressText));
+         return addressTextInThankyouPage.getText();
+    }
+
+    /**
+     *  Verify if ThankYou page is visible by checking the product image.
+     */
+    public void waitForThankYouPage() {
+        thankyouProductImage.waitForElementToBeEnabled();
+    }
+
+}
