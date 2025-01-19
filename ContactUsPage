@@ -1,0 +1,102 @@
+package com.amazon.aeeqa.ui.pagemodels.contactus;
+
+import com.amazon.dtk.element.PageElement;
+import org.openqa.selenium.WebDriver;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Contact Us page.
+ *
+ * @author shrumand
+ */
+@PageName("contactus")
+public class ContactUsPage extends BasePageModel {
+
+    @Locator("CUSTOMER_SERVICE_MAIN_SIC_OPTIONS")
+    private static BasePageElement customerServiceMainSICOptions;
+
+    @Locator("HELP_TOPICS_SECTION_IN_CUSTOMER_SERVICE")
+    private static BasePageElement helpTopicsSection;
+
+    @Locator("HELP_TOPIC_ITEM_IN_CUSTOMER_SERVICE")
+    private static BasePageElement helpTopicsItem;
+
+    private ContactUsPage contactUsPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public ContactUsPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Get ContactUs page model.
+     * @return ContactUs instance.
+     *
+     */
+    public ContactUsPage getContactUsPage() {
+        if (contactUsPage == null) {
+            contactUsPage = new ContactUsPage(driver);
+        }
+        return contactUsPage;
+    }
+
+    /**
+     * Get total count of Main SIC options in H&F Contact Us page
+     * @return count of Main SIC options.
+     */
+    public int getCustomerServiceMainSICOptionsCount() {
+        customerServiceMainSICOptions.waitIsPresent();
+        return customerServiceMainSICOptions.countElements();
+    }
+
+    /**
+     * Get Main SIC options in H&F Contact Us page list
+     * @return list of all options in the main section
+     */
+    public List<String> getCustomerServiceMainSICOptionsList() {
+        List<String> mainSICOptionsList = new ArrayList<String>();
+        customerServiceMainSICOptions.waitIsPresent();
+        for (PageElement row : customerServiceMainSICOptions.getElements()) {
+            mainSICOptionsList.add(row.getText());
+        }
+        return mainSICOptionsList;
+    }
+
+    /**
+     * Check if help topics section is present in H&F Contact Us page
+     * @return presence
+     */
+    public boolean isHelpTopicsSectionPresent() {
+        customerServiceMainSICOptions.waitIsPresent();
+        return helpTopicsSection.isPresent();
+    }
+
+    /**
+     * Get total count of Main SIC options in H&F Contact Us page
+     * @return count of Main SIC options.
+     */
+    public int getCustomerServiceHelpTopicsCount() {
+        customerServiceMainSICOptions.waitIsPresent();
+        return helpTopicsItem.countElements();
+    }
+
+    /**
+     * Get Help topics list in H&F Contact Us page
+     * @return list of all topics under Help Topics
+     */
+    public List<String> getHelpTopicsList() {
+        List<String> helpTopicsList = new ArrayList<String>();
+        for (PageElement row : helpTopicsItem.getElements()) {
+            helpTopicsList.add(row.getText());
+        }
+        return helpTopicsList;
+    }
+}
