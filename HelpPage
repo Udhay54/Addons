@@ -1,0 +1,99 @@
+package com.amazon.aeeqa.ui.pagemodels.help;
+
+import org.openqa.selenium.WebDriver;
+import java.util.List;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.dtk.element.PageElement;
+import com.google.common.collect.Lists;
+
+/**
+ * Help Page Model
+ *
+ * @author vllaks
+ *
+ */
+@PageName("help")
+public class HelpPage extends BasePageModel {
+
+    @Locator("HELP_CONTENT_HEADING_TEXT")
+    private static BasePageElement helpContentHeadingText;
+
+    @Locator("HELP_PAGE_LANDING_TEXT")
+    private static BasePageElement helpPageLandingText;
+
+    @Locator("ALL_LINKS_INSIDE_HELP_PAGE")
+    private static BasePageElement allHelpLinksInsideHelpPage;
+
+    @Locator("HELP_PAGE_CONTENT")
+    private static BasePageElement helpPageContent;
+
+    @Locator(value = "GIFT_CARDS_HELP_PAGE_TITLE")
+    private static BasePageElement giftCardsHelpPageTitle;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public HelpPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Getter method of helpPageContent PageElement.
+     * @return helpPageContent PageElement.
+     */
+    public BasePageElement getHelpPageContent() {
+        return helpPageContent;
+    }
+
+    /**
+     * Method to get the Import Fees Depost Text on the Help page.
+     *
+     * @return Import Fees Deposit Text on the Help page
+     */
+    public String getHelpPageContentHeadingText() {
+        return helpContentHeadingText.getText();
+    }
+
+    /**
+     * Method to verify Help page landing Text on the Help page.
+     * @param headerText Landing Page Header Text E.g Hello, What can we help you.
+     */
+    public void verifyHelpPageLandingText(String headerText) {
+         status.addIsDisplayed(new BasePageElement(driver, helpPageLandingText.getName() + "_" + headerText,
+                String.format(helpPageLandingText.getXPath(), headerText)));
+         status.processStatus();
+    }
+
+    /**
+     * Get the URLs of the Help page Links
+     * @return URLs.
+     */
+    public List<String> getURLsOfHelpPageLinks() {
+        List<String> urls = Lists.newArrayList();
+         for (PageElement element : allHelpLinksInsideHelpPage.getElements()) {
+             urls.add(element.getElement().getAttribute("href"));
+         }
+         return urls;
+     }
+
+    /**
+     * Method helps to verify help page Content present on the Help page.
+     * @return boolean help page Content present or not.
+     */
+    public boolean isHelpPageContentPresent() {
+         return helpPageContent.isPresent();
+    }
+
+    /**
+     * Get the Gift Cards Help Page Title.
+     * @return Gift Cards Help Page Title text
+     */
+    public String getGiftCardsHelpPageTitleText() {
+        return giftCardsHelpPageTitle.getText();
+    }
+}
