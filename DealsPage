@@ -1,0 +1,45 @@
+package com.amazon.aeeqa.ui.pagemodels.Deals;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Deals Page Model.
+ *
+ * @author pavethr
+ */
+@PageName("deals")
+public class DealsPage extends BasePageModel {
+
+    @Locator("ASIN_LEVEL_PRIME_BADGE")
+    private static BasePageElement asinLevelPrimeBadge;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public DealsPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields
+     */
+    @Override
+    public void verifyCurrentPage() {
+        waitForPageToLoad();
+        status.processStatus();
+    }
+
+    /**
+     * Verify ASIN Level prime badge absent on Deals page.
+     */
+    public void verifyPrimeBadgeAbsentInASINLevel() {
+        verifyCurrentPage();
+        status.addIsHiddenOrMissing(asinLevelPrimeBadge);
+        status.processStatus();
+    }
+}
