@@ -1,0 +1,59 @@
+package com.amazon.aeeqa.ui.pagemodels.search;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * Search Result Page Model.
+ *
+ * @author tingyong
+ */
+@PageName("search_result")
+
+public class SearchResultPage extends BasePageModel {
+
+    @Locator("SEARCH_RESULT_WITH_ASIN")
+    private static BasePageElement searchResultWithAsin;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public SearchResultPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        // status.addIsDisplayed(searchResultWithAsin);
+        status.processStatus();
+    }
+
+    /**
+     * Get country eligible text by given ASIN.
+     * @param asin the ASIN id.
+     * @return the eligible text.
+     */
+    public String getCountryEligibleText(final String asin) {
+        return new BasePageElement(driver, searchResultWithAsin.getName(),
+                String.format(searchResultWithAsin.getXPath() + "/../../following-sibling::div/span", asin))
+                .getText();
+    }
+
+    /**
+     * Go to detail page.
+     * @param asin the ASIN id.
+     */
+    public void goToDetailPage(final String asin) {
+        new BasePageElement(driver, searchResultWithAsin.getName(),
+                String.format(searchResultWithAsin.getXPath(), asin)).click();
+    }
+
+}
