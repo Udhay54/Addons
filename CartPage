@@ -1,0 +1,1721 @@
+package com.amazon.aeeqa.ui.pagemodels.cart;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.amazon.aeeqa.utils.SleepUtil;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.element.PageElement;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+
+/**
+ * Cart Page Model.
+ *
+ * @author mehalaak
+ */
+@PageName("cart")
+public class CartPage extends BasePageModel {
+
+    // String Declarations below.
+    public static final String SAVED_FOR_LATER_DIV_ID = "sc-saved-cart-items";
+    public static final String ACTIVE_CART_FORM_ID = "activeCartViewForm";
+    public static final String SAVED_FOR_LATER_FORM_ID = "savedCartViewForm";
+    public static final String ACTIVE_CART_ACTION_TYPE_SFL = "save-for-later";
+    public static final String ACTIVE_CART_ACTION_TYPE_DEL = "delete";
+    public static final String SAVED_FOR_LATER_TYPE_DEL = "delete";
+    public static final String SAVED_FOR_LATER_MOVE_TO_CART = "move-to-cart";
+
+    // Locator Declarations below, with "variable-name" quoted.
+    @Locator("PROCEED_TO_CHECKOUT_BUTTON")
+    private static BasePageElement proceedToCheckoutButton;
+
+    @Locator("PRIME_BADGE_IN_ACTIVE_CART")
+    private static BasePageElement primeBadgeInActiveCart;
+
+    @Locator("PRIME_BADGE_IN_SAVE_FOR_LATER")
+    private static BasePageElement primeBadgeInSaveForLater;
+
+    @Locator("SHIPPING_MESSAGE_IN_CART")
+    private static BasePageElement shippingMessageInCart;
+
+    @Locator("PROMOTION_CONTAINER_IN_CART")
+    private static BasePageElement promotionContainerInCart;
+
+    @Locator("PRODUCT_PRICE_IN_ACTIVE_CART")
+    private static BasePageElement productPriceInActiveCart;
+
+    @Locator("PRODUCT_PRICE_IN_SAVE_FOR_LATER")
+    private static BasePageElement productPriceInSaveForLater;
+
+    @Locator(value = "SAVE_FOR_LATER_LINK", stringId = "rcx-sc-items-save-for-later")
+    private static BasePageElement saveForLaterLink;
+
+    @Locator("DELETE_BUTTON_IN_ACTIVE_CART")
+    private static BasePageElement deleteButtonInActiveCart;
+
+    @Locator("DELETE_BUTTON_IN_ACTIVE_CART_BY_ASIN")
+    private static BasePageElement deleteButtonInActiveCartByASIN;
+
+    @Locator(value = "SAVE_FOR_LATER_IMPORT_FEES_DEPOSIT_LINK", stringId = "ags-ifd-deposit-label")
+    private static BasePageElement saveForLaterImportFeesDepositLink;
+
+    @Locator("SAVE_FOR_LATER_IMPORT_FEES_DEPOSIT_INCLUDED_TEXT")
+    private static BasePageElement saveForLaterImportFeesDepositIncludedText;
+
+    @Locator("SAVE_FOR_LATER_IMPORT_FEES_DEPOSIT_POPOVER_IFD_PRICE")
+    private static BasePageElement saveForLaterImportFeesDepositPopoverIFDPrice;
+
+    @Locator("SAVE_FOR_LATER_IMPORT_FEES_DEPOSIT_POPOVER")
+    private static BasePageElement saveForLaterImportFeesDepositPopover;
+
+    @Locator("SAVE_FOR_LATER_SHIP_AND_SOLD_BY_TEXT")
+    private static BasePageElement saveForLaterShipAndSoldByText;
+
+    @Locator(value = "DELETE_BUTTON_IN_SAVED_FOR_LATER", stringId = "rcx-sc-addr-book-del-conf-submit-val-delete")
+    private static BasePageElement deleteButtonInSavedForLater;
+
+    @Locator("CART_IMPORT_FEES_DEPOSIT_POPOVER")
+    private static BasePageElement cartImportFeesDepositPopover;
+
+    @Locator("CART_IMPORT_FEES_DEPOSIT_TEXT_ALL_MARKETPLACES")
+    private static BasePageElement cartImportFeesDepositTextAllMarketplaces;
+
+    @Locator(value = "CART_IMPORT_FEES_DEPOSIT_POPOVER_PRICE_DETAILS", stringId = "ags-ifd-total-label")
+    private static BasePageElement cartImportFeesDepositPopoverPriceDetails;
+
+    @Locator(value = "GIFT_OPTION_NOT_AVAILABLE_TEXT", stringId = "rcx-sc-gift-not-available")
+    private static BasePageElement giftOptionNotAvailableText;
+
+    @Locator("GIFT_OPTION_CHECKBOX")
+    private static BasePageElement giftOptionCheckbox;
+
+    @Locator(value = "GIFT_OPTION_AVAILABLE_TEXT", stringId = "rcx-sc-this-will-be-a-gift")
+    private static BasePageElement giftOptionAvailableText;
+
+    @Locator(value = "GIFT_OPTION_LEARN_MORE_LINK", stringId = "rcx-sc-mp-bfp-input-learn-more-link")
+    private static BasePageElement giftOptionLearnMoreLink;
+
+    @Locator("CART_SHIP_AND_SOLD_TEXT")
+    private static BasePageElement cartShipAndSoldText;
+
+    @Locator("AGS_PRIME_BADGE_IN_ACTIVE_CART")
+    private static BasePageElement agsPrimeBadgeInActiveCart;
+
+    @Locator("GRANT_PERMISSION_BUTTON")
+    private static BasePageElement grantPermissionButton;
+
+    @Locator("ITEM_QUANTITY_IN_ACTIVE_CART")
+    private static BasePageElement itemQuantityInActiveCart;
+
+    @Locator("QUANTITY_DROPDOWN_LIST")
+    private static BasePageElement quantityDropdownList;
+
+    @Locator("GLOBAL_STORE_BADGE")
+    private static BasePageElement globalStoreBadge;
+
+    @Locator("ORDER_CONTAINS_GIFT_CHECKBOX")
+    private static BasePageElement orderContainsGiftCheckbox;
+
+    @Locator("SUPER_SAVER_SHIPPING_MESSAGE_IN_ACTIVE_CART")
+    private static BasePageElement superSaverShippingMessageInActiveCart;
+
+    @Locator(value = "MESSAGE_IN_CART_GUTTER")
+    private static BasePageElement messageInCartGutter;
+
+    @Locator("LINK_IN_CART_GUTTER")
+    private static BasePageElement linkInCartGutter;
+
+    @Locator("CART_GUTTER_PROGRESS_BAR")
+    private static BasePageElement cartGutterProgressBar;
+
+    @Locator("CART_GUTTER_PROGRESS_BAR_THRESHOLD")
+    private static BasePageElement cartGutterProgressBarThreshold;
+
+    @Locator("MESSAGE_LINES_IN_ACTIVE_CART")
+    private static BasePageElement messageLinesInActiveCart;
+
+    @Locator("PRODUCT_AVAILABILITY_COLOR")
+    private static BasePageElement productAvailabilityColor;
+
+    @Locator("SAVED_FOR_LATER_PRODUCT_IMAGE")
+    private static BasePageElement savedForLaterProductImage;
+
+    @Locator("SAVED_FOR_LATER_PRODUCT_TITLE")
+    private static BasePageElement savedForLaterProductTitle;
+
+    @Locator("CART_PRODUCT_IMAGE")
+    private static BasePageElement cartProductImage;
+
+    @Locator("CART_PRODUCT_TITLE")
+    private static BasePageElement cartProductTitle;
+
+    @Locator("SAVED_FOR_LATER_HEADING_TEXT")
+    private static BasePageElement savedForLaterHeadingText;
+
+    @Locator("ITEMS_MOVED_FROM_ACTIVE_CART_TEXT")
+    private static BasePageElement itemsMovedFromActiveCartText;
+
+    @Locator("SAVED_FOR_LATER_AND_ACTIVE_CART_ITEMS_DATA")
+    private static BasePageElement savedForLaterAndActiveCartItemData;
+
+    @Locator("SAVED_FOR_LATER_PRODUCT_TITLE_LINK")
+    private static BasePageElement savedForLaterProductTitleLink;
+
+    @Locator("SAVED_FOR_LATER_PRODUCT_IMAGE_LINK")
+    private static BasePageElement savedForLaterProductImageLink;
+
+    @Locator("ACTIVE_CART_SUBTOTAL_QUANTITY_LABEL")
+    private static BasePageElement activeCartSubtotalQuantityLabel;
+
+    @Locator("ACTIVE_CART_SUBTOTAL_BUYBOX_QUANTITY_LABEL")
+    private static BasePageElement activeCartSubtotalBuyboxQuantityLabel;
+
+    @Locator("ACTIVE_CART_SUBTOTAL_PRICE")
+    private static BasePageElement activeCartSubtotalPrice;
+
+    @Locator("ACTIVE_CART_SUBTOTAL_BUYBOX_PRICE")
+    private static BasePageElement activeCartSubtotalBuyboxPrice;
+
+    @Locator("CART_PRODUCT_TITLE_LINK")
+    private static BasePageElement activeCartProductTitleLink;
+
+    @Locator("CART_PRODUCT_IMAGE_LINK")
+    private static BasePageElement activeCartProductImageLink;
+
+    @Locator(value = "SHOPPING_CART_EMPTY_HEADING", stringId = "rcx-sc-general-cart-is-empty")
+    private static BasePageElement shoppingCartEmptyHeading;
+
+    @Locator("CART_EMPTY_MESSAGE")
+    private static BasePageElement cartEmptyMessage;
+
+    @Locator("ACTIVE_CART_AND_SAVED_FOR_LATER_BEST_SELLER_BADGE")
+    private static BasePageElement activeCartAndSavedForLaterBestSellerBadge;
+
+    @Locator("PRODUCT_DETAILS_LINK_INSIDE_QTY_LIMIT_ALERT_MESSAGE")
+    private static BasePageElement productDetailsLinkInsideQtyLimitAlertMessage;
+
+    @Locator("CART_QUANTITY_LIMIT_ALERT_MESSAGE")
+    private static BasePageElement cartQuantityLimitAlertMessage;
+
+    @Locator("QUANTITY_TEXT_BOX")
+    private static BasePageElement quantityTextBox;
+
+    @Locator("QUANTITY_UPDATE_BUTTON")
+    private static BasePageElement quantityUpdateButton;
+
+    @Locator("SAVED_FOR_LATER_PRODUCT_AVAILABILITY_COLOR")
+    private static BasePageElement productAvailabilityColorOfSFLItem;
+
+    @Locator(value = "UNRECOGNIZED_EMPTY_CART_HEADING", stringId = "rcx-sc-your-amazon-cart-is-empty")
+    private static BasePageElement emptyCartHeadingForUnrecognized;
+
+    @Locator(value = "EMPTY_CART_SHOP_TODAYS_DEALS_LINK", stringId = "rcx-sc-shop-todays-deals")
+    private static BasePageElement emptyCartShopTodaysDealsLink;
+
+    @Locator("EMPTY_CART_SIGN_IN_TO_YOUR_ACCOUNT_BUTTON")
+    private static BasePageElement emptyCartSignInButton;
+
+    @Locator("EMPTY_CART_SIGN_UP_NOW_BUTTON")
+    private static BasePageElement emptyCartSignUpButton;
+
+    @Locator(value = "GIFT_OPTION_NOT_AVAILABLE_LEARN_MORE_LINK_IN_CART", stringId = "rcx-sc-no-gift-learn-more")
+    private static BasePageElement giftOptionNotAvailableLearnMoreLinkInCart;
+
+    @Locator(value = "LEARN_MORE_LINK_INSIDE_IMPORT_FEES_DEPOSIT_POPOVER", stringId = "ags-learn-more")
+    private static BasePageElement learnMoreLinkImportFeesDepositPopOverInCart;
+
+    @Locator("AMAZON_GLOBAL_STORE_LINK_IN_CART")
+    private static BasePageElement amazonGlobalStoreLinkInCart;
+
+    @Locator("LEGAL_TEXT_IN_IFD_POPOVER")
+    private static BasePageElement legalTextInIFDPopover;
+
+    @Locator("AMAZON_GLOBAL_STORE_LINK_IN_SAVE_FOR_LATER")
+    private static BasePageElement amazonGlobalStoreLinkInSaveForLater;
+
+    @Locator(value = "PRICE_WARNING_MESSAGE_IN_SAVED_FOR_LATER", stringId = "rcx-sc-is-temporary-place")
+    private static BasePageElement priceAndAvailabilityWarningMessage;
+
+    @Locator(value = "GIFT_OR_PROMO_CODE_MESSAGE_IN_SAVED_FOR_LATER", stringId = "rcx-sc-have-gc-or-promo")
+    private static BasePageElement redeemGiftCardOrPromoCodeMessage;
+
+    @Locator(value = "PRICE_WARNING_LEARN_MORE_LINK_IN_SAVED_FOR_LATER")
+    private static BasePageElement priceWarningLearnMoreLinkInSavedForLater;
+
+    @Locator(value = "SAVED_FOR_LATER_DEFAULT_WISHLIST")
+    private static BasePageElement defaultWishListInSavedForLater;
+
+    @Locator(value = "SAVED_FOR_LATER_MOVE_TO_WISHLIST_LINK")
+    private static BasePageElement savedForLaterMoveToWishlistLink;
+
+    @Locator(value = "SAVED_FOR_LATER_CREATE_NEW_WISHLIST_BUTTON")
+    private static BasePageElement createNewWishlistAndMoveItem;
+
+    @Locator(value = "SAVED_FOR_LATER_ITEM_MOVED_TO_WISHLIST_TEXT", stringId = "rcx-sc-moved-to-wishlist")
+    private static BasePageElement itemMovedToWishlistText;
+
+    @Locator(value = "CART_SMART_WAGON_CART_BUTTON")
+    private static BasePageElement smartWagonCartButton;
+
+    @Locator(value = "FREE_RETURNS_IN_ACTIVE_CART")
+    private static BasePageElement freeReturnsInActiveCart;
+
+    @Locator(value = "FREE_RETURNS_IN_SAVE_FOR_LATER")
+    private static BasePageElement freeReturnsInSaveForLater;
+
+    @Locator(value = "SAVED_FOR_LATER_MOVE_TO_CART_LINK")
+    private static BasePageElement savedForLaterMoveToCartLink;
+
+    @Locator("ITEMS_MOVED_FROM_SFL_TEXT")
+    private static BasePageElement itemsMovedFromSflText;
+
+    @Locator("ONLY_IN_STOCK_ORDER_NOW")
+    private static BasePageElement onlyInStockOrderNow;
+
+    @Locator(value = "P13N_WIDGETS_IN_CART")
+    private static BasePageElement p13NWidgetsInCart;
+
+    @Locator(value = "P13N_WIDGETS_TITLE_IN_CART")
+    private static BasePageElement p13NWidgetsTitleInCart;
+
+    @Locator(value = "ELIGIBLE_FOR_FREE_SHIPPING_IN_SAVE_FOR_LATER")
+    private static BasePageElement eligibleForFreeShippingInSaveForLater;
+
+    @Locator(value = "SHIPPING_MESSAGE_IN_CART_BY_ASIN")
+    private static BasePageElement shippingMessageInCartByAsin;
+
+    @Locator(value = "SHIPPING_MESSAGE_IN_SFL_BY_ASIN")
+    private static BasePageElement shippingMessageInSflByAsin;
+
+    @Locator(value = "CREATE_LIST_BUTTON_IN_SFL")
+    private static BasePageElement createListButton;
+
+    @Locator(value = "CREATE_LIST_LINK_IN_SFL")
+    private static BasePageElement createListlink;
+
+    @Locator(value = "CREATE_LIST_SUBMIT_BUTTON_IN_SFL")
+    private static BasePageElement createListSubmitButton;
+
+    @Locator(value = "CANCEL_BUTTON_IN_CREATE_NEW_LIST")
+    private static BasePageElement cancelButtonInCreateNewList;
+
+    @Locator("CART_DATA_ASIN")
+    private static BasePageElement cartDataAsin;
+
+    @Locator("AMAZON_REWARDS_VISA_PROMOTION_CARD")
+    private static BasePageElement amazonRewardsVisaPromotionCard;
+
+    @Locator("SHIPPING_MESSAGE_IN_CART_FLC")
+    private static BasePageElement shippingMessageInCartFlc;
+
+    @Locator("PRICE_PER_UNIT_SFL")
+    private static BasePageElement pricePerUnitSfl;
+
+    @Locator("PRICE_PER_UNIT_IN_SAVE_FOR_LATER")
+    private static BasePageElement pricePerUnitInSaveForLater;
+
+    @Locator(value = "SHOPPING_CART_HEADING_TEXT")
+    private static BasePageElement shoppingCartHeadingText;
+
+    @Locator("CART_ITEM_CHECKBOX")
+    private static BasePageElement cartItemCheckbox;
+
+    @Locator("DESELECT_ALL_ITEMS_LINK")
+    private static BasePageElement deselectAllItemsLink;
+
+    @Locator(value = "PRODUCT_PRICE_OF_P13N_WIDGETS_IN_CART")
+    private static BasePageElement productPriceOfP13NWidgetsInCart;
+
+    @Locator("PRICE_PER_UNIT_CART")
+    private static BasePageElement pricePerUnitCart;
+
+    @Locator("VIRTUAL_BUNDLE_MESSAGE_IN_SAVE_FOR_LATER")
+    private static BasePageElement virtualBundleMessageInSaveForLater;
+
+    @Locator("VIRTUAL_BUNDLE_MESSAGE_IN_CART")
+    private static BasePageElement virtualBundleMessageInCart;
+
+    @Locator("SAVE_FOR_LATER_GRID_VIEW")
+    private static BasePageElement saveForLaterGridView;
+
+    @Locator("MOVE_DELETE_ITEMS_FROM_SFL")
+    private static BasePageElement moveDeleteItemsFromSfl;
+
+    @Locator("ELIGIBLE_FOR_FREE_SHIPPING_TEXT_IN_CART")
+    private static BasePageElement eligibleForFreeShippingTextInCart;
+
+    @Locator("ELIGIBLE_FOR_FREE_SHIPPING_TEXT_IN_SFL")
+    private static BasePageElement eligibleForFreeShippingTextInSFL;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public CartPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(proceedToCheckoutButton);
+        status.processStatus();
+    }
+
+    /**
+     * Get active cart sub-total quantity.
+     * @return active cart sub-total quantity text.
+     */
+    public String getActiveCartSubtotalQuantity() {
+        activeCartSubtotalQuantityLabel.waitForTextNotBlank(5);
+        return activeCartSubtotalQuantityLabel.getText();
+    }
+
+    /**
+     * Get active cart subtotal price.
+     * @return active cart subtotal price text.
+     */
+    public String getActiveCartSubtotalPrice() {
+        activeCartSubtotalPrice.waitForTextNotBlank(5);
+        return  activeCartSubtotalPrice.getText();
+    }
+
+    /**
+     * Get cart buy-box sub-total price.
+     * @return cart buy-box sub-total price text.
+     */
+    public String getActiveCartBuyboxSubtotalPrice() {
+        activeCartSubtotalBuyboxPrice.waitForTextNotBlank(5);
+        return activeCartSubtotalBuyboxPrice.getText();
+    }
+
+    /**
+     * Get cart buy-box sub-total quantity.
+     * @return cart buy-box sub-total quantity text.
+     */
+    public String getActiveCartBuyboxSubtotalQuantity() {
+        activeCartSubtotalBuyboxQuantityLabel.waitForTextNotBlank(5);
+        return activeCartSubtotalBuyboxQuantityLabel.getText();
+    }
+
+    /**
+     * Verify if Prime Badge is present in Active Cart.
+     * @return displayed or not.
+     */
+    public boolean isPrimeBadgeDisplayedInActiveCart() {
+         verifyCurrentPage();
+         return primeBadgeInActiveCart.isPresent();
+    }
+
+    /**
+     * Verify if Prime Badge is present in Save For Later area.
+     * @param asin to Parameterized for xpath.
+     * @return displayed or not.
+     */
+    public boolean isPrimeBadgeDisplayedInSaveForLater(String asin) {
+        primeBadgeInSaveForLater.waitForElementToBeEnabled();
+        return new BasePageElement(driver, primeBadgeInSaveForLater.getName(),
+                String.format(primeBadgeInSaveForLater.getXPath(), asin)).isPresent();
+    }
+
+    /**
+     * Verify if Free returns message is present in Active Cart.
+     * @return displayed or not.
+     */
+    public boolean isFreeReturnsMessagePresentInActiveCart() {
+        return freeReturnsInActiveCart.isPresent();
+    }
+
+    /**
+     * Verify if Free returns message is present in Save For Later
+     * @return displayed or not.
+     */
+    public boolean isFreeReturnsMessagePresentInSaveForLater() {
+        return freeReturnsInSaveForLater.isPresent();
+    }
+
+    /**
+     * Get Free returns message in Active Cart.
+     * @return Free Returns text in Active Cart.
+     */
+    public String getFreeReturnsMessageInActiveCart() {
+        return freeReturnsInActiveCart.getText();
+    }
+
+    /**
+     * Get Free returns message in Save For Later.
+     * @return Free Return text in SFL.
+     */
+    public String getFreeReturnsMessageInSFL() {
+        return freeReturnsInSaveForLater.getText();
+    }
+
+    /**
+     * Get Eligible For Free Shipping text in Active Cart.
+     * @param eligibilityText "Free shipping" eligibility text in Active Cart.
+     * @return Eligible For Free Shipping text present or not.
+     */
+    public boolean isEligibleForFreeShippingTextInActiveCart(String eligibilityText) {
+         verifyCurrentPage();
+         BasePageElement shippingMessageInCartElement =  new BasePageElement(driver, shippingMessageInCart.getName(),
+                 String.format(shippingMessageInCart.getXPath(), eligibilityText));
+         shippingMessageInCartElement.waitIsPresent();
+         return shippingMessageInCartElement.isPresent();
+    }
+
+    /**
+     * Get Shipping Benefit text, "FREE Shipping" or "Flat Rate Delivery" in Active Cart.
+     * @param eligibilityText eligible shipping text in Active Cart.
+     * @return Eligibility Shipping text.
+     */
+    public String getShippingBenefitTextInActiveCart(String eligibilityText) {
+         verifyCurrentPage();
+        BasePageElement shippingMessageInCartElement =  new BasePageElement(driver, shippingMessageInCart.getName(),
+                String.format(shippingMessageInCart.getXPath(), eligibilityText));
+        shippingMessageInCartElement.waitIsPresent();
+        return shippingMessageInCartElement.getText();
+    }
+
+    /**
+     * Proceed to checkout.
+     */
+    public void goToCheckout() {
+        verifyCurrentPage();
+        proceedToCheckoutButton.click();
+    }
+
+    /**
+     * Verify promotion container is displayed in Cart page.
+     * @return boolean of promotion container is displayed or not.
+     */
+    public boolean isPromotionContainerDisplayed() {
+        verifyCurrentPage();
+        return promotionContainerInCart.isPresent();
+    }
+
+    /**
+     * Get currency code in active cart.
+     * @param asin parameterized asin
+     * @return currency code in active cart
+     */
+    public String getCurrencyInActiveCart(String asin) {
+        String productPriceText = new BasePageElement(driver, productPriceInActiveCart.getName(),
+                String.format(productPriceInActiveCart.getXPath(), asin)).getText();
+        return getSelectedCurrency(productPriceText);
+    }
+
+    /**
+     * Get currency code in Save For Later.
+     * @return currency code in Save For Later
+     */
+    public String getCurrencyInSaveForLater() {
+        String productPriceText = productPriceInSaveForLater.getText();
+        return getSelectedCurrency(productPriceText);
+    }
+
+    /**
+     * Get currency code in Subtotal Buybox - FLC widget
+     * @return currency code in Subtotal Buybox - FLC widget
+     */
+    public String getCurrencyInSubtotalBuybox() {
+        String productPriceText = activeCartSubtotalBuyboxPrice.getText().trim();
+        return getSelectedCurrency(productPriceText);
+    }
+
+    /**
+     * Get currency code in Subtotal in the bottom of active cart
+     * @return currency code in Subtotal in the bottom of active cart
+     */
+    public String getCurrencyInSubtotalBelowCart() {
+        String productPriceText = activeCartSubtotalPrice.getText().trim();
+        return getSelectedCurrency(productPriceText);
+    }
+
+    /**
+     * Get selected currency code.
+     * @param productPriceText Block String
+     * @return selected currency code
+     */
+    private String getSelectedCurrency(String productPriceText) {
+        return productPriceText.replaceAll("[0-9,.\\s]", "");
+    }
+
+    /**
+     * Clicks on Save for later link.
+     */
+    public void clickSaveForLater() {
+        saveForLaterLink.clickAndWait(deleteButtonInSavedForLater);
+        waitForPageToLoad();
+    }
+
+    /**
+     * Move all the Items to Save For Later in Active Cart.
+     */
+    public void moveItemstoSaveForLaterInActiveCart() {
+        while (saveForLaterLink.isEnabled()) {
+            saveForLaterLink.clickAndWait(deleteButtonInSavedForLater);
+            driver.navigate().refresh();
+            waitForPageToLoad();
+        }
+    }
+
+    /**
+     * Delete item in Active cart by ASIN
+     * @param asin to be parameterized to delete respective item
+     */
+    public void deleteItemInActiveCartByASIN(String asin) {
+        proceedToCheckoutButton.waitForElementToBeEnabled();
+        new BasePageElement(driver, deleteButtonInActiveCartByASIN.getName() + "_" + asin,
+                String.format(deleteButtonInActiveCartByASIN.getXPath(), asin)).click();
+    }
+
+    /**
+     * Delete all items in Active cart.
+     */
+    public void deleteAllItemsInActiveCart() {
+        proceedToCheckoutButton.waitForElementToBeEnabled();
+        while (deleteButtonInActiveCart.isEnabled()) {
+            deleteButtonInActiveCart.click();
+            driver.navigate().refresh();
+            waitForPageToLoad();
+        }
+    }
+
+    /**
+     * Delete items in Saved For Later.
+     */
+    public void deleteItemsInSavedForLater() {
+        while (deleteButtonInSavedForLater.isEnabled()) {
+            deleteButtonInSavedForLater.click();
+            driver.navigate().refresh();
+            waitForPageToLoad();
+        }
+    }
+
+    /**
+     * Delete items in Saved For Later without refreshing the page to get save for later heading text
+     */
+    public void  deleteItemsInSavedForLaterWithoutRefresh() {
+        while (deleteButtonInSavedForLater.waitForElementToBeEnabled()) {
+            deleteButtonInSavedForLater.click();
+            waitForPageToLoad();
+        }
+    }
+
+    /**
+     * Method helps to verify the Import Fees Deposit PopOver is present or not
+     *
+     */
+    public void verifyImportFeesDepositPopoverPresentSaveForLater() {
+        scroll(0, 700);
+        waitForPageToLoad();
+        saveForLaterImportFeesDepositLink.click();
+        status.addIsDisplayed(saveForLaterImportFeesDepositPopover);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to verify the Import Fees Deposit link is present or not.
+     *
+     */
+    public void verifyImportFeesDepositLinkPresent() {
+        status.addIsDisplayed(saveForLaterImportFeesDepositLink);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to get the Import Fees Deposit Included text for the AGS Saved For Later offer.
+     * @return import fees deposit included text
+     */
+    public String getImportFeesDepositIncludedText() {
+        saveForLaterImportFeesDepositIncludedText.waitForElementToBeEnabled();
+        return saveForLaterImportFeesDepositIncludedText.getText();
+    }
+
+    /**
+     * Method helps to get the Import Fees Deposit Popover IFD Price text for AGS Saved for Later Offer.
+     * @return import fees deposit Popover IFD Price text
+     */
+    public String getImportFeesDepositPopoverIFDPrice() {
+        saveForLaterImportFeesDepositLink.clickAndWait(saveForLaterImportFeesDepositPopoverIFDPrice);
+        return saveForLaterImportFeesDepositPopoverIFDPrice.getText();
+    }
+
+    /**
+     * Verify (['Shipped from']) 'sold by: xxx' ('xxx' is source country specific, like 'Amazon US'),
+     * text present.
+     * @param sellerNameText the dynamic replaced text by caller.
+     */
+    public void verifyShipAndSoldByTextPresent(final String sellerNameText) {
+        status.addIsDisplayed(new BasePageElement(driver,
+                saveForLaterShipAndSoldByText.getName() + "_" + sellerNameText,
+                String.format(saveForLaterShipAndSoldByText.getXPath(), sellerNameText)));
+        status.processStatus();
+    }
+
+    /**
+     * Verify IFD text is displayed in Cart page.
+     * @param asin to Parameterized for xpath.
+     * @param mpSpecificImportFeeDepositText to Parameterized for xpath.
+     * @return boolean of IFD text is displayed or not.
+     */
+    public boolean isImportFeesDepositTextDisplayed(String asin, String mpSpecificImportFeeDepositText) {
+        return new BasePageElement(driver, cartImportFeesDepositTextAllMarketplaces.getName(),
+                cartImportFeesDepositTextAllMarketplaces.getXPath().replaceAll("%s", asin)).isPresent();
+       /* return new BasePageElement(driver, cartImportFeesDepositTextAllMarketplaces.getName(),
+                cartImportFeesDepositTextAllMarketplaces.
+                        getXPath().replaceAll("%s", asin))
+                .getText().equals(mpSpecificImportFeeDepositText);*/
+    }
+
+    /**
+     * Method helps to Verify the IFD Popover is present in the Cart Page
+     * @param asin to Parameterized for xpath.
+     * @return boolean of IFD popover is displayed or not.
+     */
+    public boolean verifyCartImportFeesDepositPopoverPresent(String asin) {
+        new BasePageElement(driver, cartImportFeesDepositTextAllMarketplaces.getName(),
+                cartImportFeesDepositTextAllMarketplaces.getXPath().replaceAll("%s", asin))
+                .click();
+        return cartImportFeesDepositPopover.doesExists();
+    }
+
+    /**
+     * Method helps to Verify the inner details of the IFD Popover in the Cart Page
+     * @param asin to Parameterized for xpath
+     * @param priceTagField this holds type of Field.
+     * @return Price of Individual fields in the IFD popover.
+     */
+    public String verifyCartImportFeesDepositPopoverDetails(String asin, String priceTagField) {
+        new BasePageElement(driver, cartImportFeesDepositTextAllMarketplaces.getName(),
+                cartImportFeesDepositTextAllMarketplaces.getXPath().replaceAll("%s", asin))
+                .clickAndWait(cartImportFeesDepositPopover);
+        return new BasePageElement(driver, cartImportFeesDepositPopoverPriceDetails.getName(),
+                String.format(cartImportFeesDepositPopoverPriceDetails.getXPath(), priceTagField)).getText();
+    }
+
+    /**
+     * Method helps to Verify the inner details of the IFD Popover in Saver For Later
+     * @param asin to Parameterized for xpath
+     * @param priceTagField this holds type of Field.
+     * @return Price of Individual fields in the IFD popover.
+     */
+    public String verifySaveForLaterImportFeesDepositPopoverDetails(String asin, String priceTagField) {
+        scroll(0, 700);
+        saveForLaterImportFeesDepositLink.clickAndWait(cartImportFeesDepositPopover);
+        return new BasePageElement(driver, cartImportFeesDepositPopoverPriceDetails.getName(),
+                String.format(cartImportFeesDepositPopoverPriceDetails.getXPath(), priceTagField)).getText();
+    }
+
+    /**
+     * Method helps to get the Gift Option Not Available Text in cart Page of the GS Item
+     * @return gift option not available text
+     */
+    public String getGiftOptionNotAvailableText() {
+        return giftOptionNotAvailableText.getText();
+    }
+
+    /**
+     * Verify cart's (['Shipped from']) 'sold by: xxx' ('xxx' is source country specific, like 'Amazon US'),
+     * text present.
+     * @param shipAndSoldText the dynamic replaced text by caller.
+     */
+    public void verifyShipAndSoldGlobalStoreSellerTextPresent(final String shipAndSoldText) {
+        status.addIsDisplayed(new BasePageElement(driver, cartShipAndSoldText.getName() + "_" + shipAndSoldText,
+                String.format(cartShipAndSoldText.getXPath(), shipAndSoldText)));
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to get the total price in active cart (including IFD in AGS tests)
+     * @param asin to Parameterized for xpath
+     * @param currencyDecimalSeparator - country specific decimal separator in item price
+     * @return Active cart price
+     */
+    public String getTotalPriceInActiveCart(String asin, String currencyDecimalSeparator) {
+        return new BasePageElement(driver, productPriceInActiveCart.getName(),
+                String.format(productPriceInActiveCart.getXPath(), asin)).getText().
+                replaceAll("[\\r\\n]+", currencyDecimalSeparator);
+    }
+
+    /**
+     * Method helps to Verify if Prime badge is present on Cart page for AGS item.
+     * @param asin to Parameterized for xpath
+     * @return boolean of prime badge is displayed or not.
+     */
+    public boolean verifyAgsPrimebadgeIsPresent(String asin) {
+        return new BasePageElement(driver, agsPrimeBadgeInActiveCart.getName(),
+                String.format(agsPrimeBadgeInActiveCart.getXPath(), asin)).isPresent();
+    }
+
+    /**
+     * There is a grant permission step for CN global selling when proceeding to checkout.
+     */
+    public void grantPermission() {
+        if (grantPermissionButton.isPresent(3)) {
+            grantPermissionButton.click();
+        }
+    }
+
+    /**
+     * Get the quantity added to Cart of the specified asin.
+     * @param asin item asin string.
+     * @return the asin's quantity added to Cart.
+     */
+    public String getItemQuantityInCart(final String asin) {
+        BasePageElement quantityInCart = new BasePageElement(driver, "Quantity-in-cart-of-" + asin,
+                String.format(itemQuantityInActiveCart.getXPath(), asin));
+        quantityInCart.waitForTextNotBlank(3);
+        return quantityInCart.getText();
+    }
+
+    /**
+     * Get Quantity for all the items in Active Cart.
+     * @return selected quantity in active Cart
+     */
+    public List<String> getQuantityList() {
+        List<PageElement> quantityDropdownLists = quantityDropdownList.getElements();
+        List<String> itemQuantityList = new ArrayList<String>();
+        for (int i = 0; i < quantityDropdownLists.size(); i++) {
+            itemQuantityList.add(i, quantityDropdownLists.get(i).getSelectedOption().trim());
+        }
+        return itemQuantityList;
+    }
+
+    /**
+     * Verify global store badge is present in Cart Page.
+     */
+    public void verifyGlobalStoreBadgePresent() {
+        status.addIsDisplayed(globalStoreBadge);
+    }
+
+    /**
+     * Verify message and link present in Cart gutter.
+     * @param text the expected Cart gutter message.
+     * @param verifyLinkPresent verify the link in the gutter or not.
+     */
+    public void verifyMessageAndLinkInCartGutter(final String text, boolean verifyLinkPresent) {
+        status.addIsDisplayed(new BasePageElement(driver, messageInCartGutter.getName(),
+                String.format(messageInCartGutter.getXPath(), text)));
+        if (verifyLinkPresent) {
+            status.addIsEnabled(linkInCartGutter);
+        }
+        status.processStatus();
+    }
+
+    /**
+     * Is given message present or not in Cart gutter.
+     * @param text the expected Cart gutter message.
+     * @return is the message in Cart gutter present or not.
+     */
+    public boolean isMessageInCartGutterPresent(final String text) {
+        return new BasePageElement(driver, messageInCartGutter.getName(),
+                String.format(messageInCartGutter.getXPath(), text)).isPresent();
+    }
+
+    /**
+     * Get alert message in Cart gutter.
+     * @param text the expected Cart gutter message.
+     * @return text message in Cart gutter.
+     */
+    public String getMessageInCartGutter(String text) {
+        return new BasePageElement(driver, messageInCartGutter.getName(),
+                String.format(messageInCartGutter.getXPath(), text)).getText();
+    }
+
+    /**
+     * Is Progress bar present or not in Cart gutter.
+     * @return is Progress bar in Cart gutter present or not.
+     */
+    public boolean isProgressBarInCartGutterPresent() {
+        return cartGutterProgressBar.isPresent();
+    }
+
+    /**
+     * Get the number of the percentage present in progress bar in Cart gutter.
+     * @return % number present in progress bar in Cart gutter
+     */
+    public String getProgressBarInCartGutterPercentage() {
+        return cartGutterProgressBar.getElement().getAttribute("data-progress-percentage");
+    }
+
+    /**
+     * Get the text containing threshold / COP
+     * @param placeholder can be either threshold value or currency symbol
+     * @return presence
+     */
+    public boolean getProgressBarThresholdIsPresentInCartGutter(String placeholder) {
+        return new BasePageElement(driver, cartGutterProgressBarThreshold.getName(),
+                String.format(cartGutterProgressBarThreshold.getXPath(), placeholder)).isPresent();
+    }
+
+    /**
+     * Clicks on gift wrap checkbox.
+     */
+    public void clickAddGiftWrapCheckbox() {
+        waitForPageToLoad();
+        orderContainsGiftCheckbox.waitForElementToBeEnabled();
+        orderContainsGiftCheckbox.click();
+    }
+
+    /**
+     * Clicks on gift wrap checkbox on the Item Level.
+     */
+    public void clickAddGiftWrapCheckboxOnItemLevel() {
+        giftOptionCheckbox.click();
+    }
+
+    /**
+     * Get Super Saver Shipping message.
+     * @return Super Saver Shipping text.
+     */
+    public String getSuperSaverShippingMessageInActiveCart() {
+        return superSaverShippingMessageInActiveCart
+                .waitForTextNotBlank(3).getText();
+    }
+
+    /**
+     * Get all message lines for a given asin in Active Cart/SavedForLater Items.
+     * @param asin item asin string.
+     * @param pageType pass the parameter as either cart of savedForLater
+     * @return a list of text.
+     */
+    public List<String> getMessageLinesForItemsInActiveCartOrSavedForLater(final String pageType, final String asin) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", messageLinesInActiveCart.getName() + "_" + pageType, asin),
+                String.format(messageLinesInActiveCart.getXPath(), asin)).getElements().stream()
+                .map(PageElement::getText).map(String::trim).collect(Collectors.toList());
+    }
+
+    /**
+     * Is given asin/product availability color expected or not.
+     * @param asin item asin string.
+     * @param colorTypeByCss expected color css.
+     * @return is the product availability color expected or not.
+     */
+    public boolean isProductAvailabilityByExpectedColor(final String asin, final String colorTypeByCss) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", productAvailabilityColor.getName(), asin),
+                String.format(productAvailabilityColor.getXPath(), asin))
+                .getElement().getAttribute("class").contains(colorTypeByCss);
+    }
+
+    /**
+     * Method helps to get the active items count in the Cart.
+     * @param asin item asin String
+     * @return delete button count
+     */
+    public int getActiveItemsCountInCartByASIN(String asin) {
+        return new BasePageElement(driver, deleteButtonInActiveCartByASIN.getName() + "_" + asin,
+                String.format(deleteButtonInActiveCartByASIN.getXPath(), asin)).countElements();
+    }
+
+    /**
+     * Method helps to get the Saved For Later() Heading Text.
+     * @return SavedForLaterHeading Text
+     */
+    public String getSavedForLaterHeadingText() {
+        waitForPageToLoad();
+        return savedForLaterHeadingText.getText();
+    }
+
+    /**
+     * Method helps to get the item Order in the Saved for later or Cart Page depends on the Action.
+     * @param asin to Parameterized for xpath
+     * @param action action can be either savedforlater or cart
+     * @return Item Order
+     */
+    public String getItemOrderInSavedForLaterOrActiveCart(String action, String asin) {
+        BasePageElement itemInActiveCartAndSFL = new BasePageElement(driver,
+                savedForLaterAndActiveCartItemData.getName(),
+                String.format(savedForLaterAndActiveCartItemData.getXPath(), action, asin));
+        itemInActiveCartAndSFL.waitForElementToBeEnabled();
+        return itemInActiveCartAndSFL.getValue("data-item-index");
+    }
+
+    /**
+     * Method helps to get the item Title in the Saved for later.
+     * @param asin to Parameterized for xpath
+     * @return Item Title
+     */
+    public String getProductTitleForSavedForLaterItem(String asin) {
+        return new BasePageElement(driver, savedForLaterProductTitle.getName(),
+                String.format(savedForLaterProductTitle.getXPath(), asin)).getText().trim();
+    }
+
+    /**
+     * Method helps to verify and get the item image and image title in the Saved for later.
+     * @param asin to Parameterized for xpath
+     * @return Item image title
+     */
+    public String verifyProductImagePresentAndGetTitleForSavedForLaterItem(String asin) {
+        BasePageElement productImage = new BasePageElement(driver, savedForLaterProductImage.getName(),
+                String.format(savedForLaterProductImage.getXPath(), asin));
+        status.addIsDisplayed(productImage);
+        status.processStatus();
+        return productImage.getValue("alt").trim();
+    }
+
+    /**
+     * Method helps to get the item Title in the active cart.
+     * @param asin to Parameterized for xpath
+     * @return Item Title of active cart item
+     */
+    public String getProductTitleForActiveCartItem(String asin) {
+        return new BasePageElement(driver, cartProductTitle.getName(),
+                String.format(cartProductTitle.getXPath(), asin)).getText().trim();
+    }
+
+    /**
+     * Method helps to verify and get the item image and image title in the active cart.
+     * @param asin to Parameterized for xpath
+     * @return Item image title of active cart itme
+     */
+    public String verifyProductImagePresentAndGetTitleForActiveCartItem(String asin) {
+        BasePageElement productImage = new BasePageElement(driver, cartProductImage.getName(),
+                String.format(cartProductImage.getXPath(), asin));
+        status.addIsDisplayed(productImage);
+        status.processStatus();
+        return productImage.getValue("alt").trim();
+    }
+
+    /**
+     * Method helps to verify the particular item is moved to Saved For Later.
+     * @param asin to Parameterized for xpath
+     * @param action to be parameterized as "sc-saved-cart-items" for SavedForLater items
+     */
+    public void verifyItemMovedToSavedForLater(String action, String asin) {
+        BasePageElement savedForLaterItem = new BasePageElement(driver, savedForLaterAndActiveCartItemData.getName(),
+                String.format(savedForLaterAndActiveCartItemData.getXPath(), action, asin));
+        waitForPageToLoad();
+        savedForLaterItem.waitForElementToBeEnabled();
+        status.addIsDisplayed(savedForLaterItem);
+        status.processStatus();
+    }
+
+    /**
+     * Get Product Price in Save For Later.
+     * @return Product Price in Save For Later
+     */
+    public String getProductPriceInSaveForLater() {
+        String productPriceText = productPriceInSaveForLater.getText();
+        return productPriceText;
+    }
+
+    /**
+     * Method helps to click the Product Title for Saved For Later Item.
+     * @param asin to Parameterized for xpath
+     */
+    public void clickProductTitleForSavedForLaterItem(String asin) {
+        new BasePageElement(driver, savedForLaterProductTitleLink.getName(),
+                String.format(savedForLaterProductTitleLink.getXPath(), asin, asin)).click();
+        proceedToCheckoutButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Method helps to click the Product Image for Saved For Later Item.
+     * @param asin to Parameterized for xpath
+     */
+    public void clickProductImageForSavedForLaterItem(String asin) {
+        new BasePageElement(driver, savedForLaterProductImage.getName(),
+                String.format(savedForLaterProductImage.getXPath(), asin)).click();
+        proceedToCheckoutButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Method helps to get the Item has moved to Save for Later Text.
+     * @param asin to Parameterized for xpath
+     * @param action Action to perform either save-for-later or delete
+     * @return Item has moved to Save for Later Text
+     */
+    public String getSuccessMessageOfMoveFromCartSFLAndDeleteAction(String asin, String action) {
+        return new BasePageElement(driver, itemsMovedFromActiveCartText.getName(),
+                String.format(itemsMovedFromActiveCartText.getXPath(), asin, action)).getText();
+    }
+
+    /**
+     * Method helps to click the Product Image for Active Cart Item.
+     * @param asin to Parameterized for xpath
+     */
+    public void clickProductImageForActiveCartItem(String asin) {
+        proceedToCheckoutButton.waitForElementToBeEnabled();
+        new BasePageElement(driver, activeCartProductImageLink.getName(),
+                String.format(activeCartProductImageLink.getXPath(), asin, asin)).click();
+    }
+
+    /**
+     * Method helps to click the Product Title for Active Cart Item.
+     * @param asin to Parameterized for xpath
+     */
+    public void clickProductTitleForActiveCartItem(String asin) {
+        proceedToCheckoutButton.waitForElementToBeEnabled();
+        new BasePageElement(driver, activeCartProductTitleLink.getName(),
+                String.format(activeCartProductTitleLink.getXPath(), asin, asin)).click();
+    }
+
+    /**
+     * Verify Gift Option in Cart.
+     */
+    public void verifyGiftOptionInCart() {
+        status.addIsEnabled(giftOptionCheckbox);
+        status.addIsDisplayed(giftOptionAvailableText);
+        status.addIsDisplayed(giftOptionLearnMoreLink);
+        status.processStatus();
+    }
+
+    /**
+     * Click Learn More link for Gift Option
+     */
+    public void clickLearnMoreGiftOption() {
+        giftOptionLearnMoreLink.click();
+    }
+
+    /**
+     * Method helps to Verify the item Title present in the active cart.
+     * @param asin to Parameterized for xpath
+     */
+    public void verifyActiveCartItemProductTitle(String asin) {
+        proceedToCheckoutButton.waitForElementToBeEnabled();
+        BasePageElement cartTitle = new BasePageElement(driver, cartProductTitle.getName(),
+                String.format(cartProductTitle.getXPath(), asin));
+        status.addIsDisplayed(cartTitle);
+        status.processStatus();
+    }
+
+    /**
+     * Clicks on See Details in Cart Gutter.
+     */
+    public void clickSeeDetailsLinkInCartGutter() {
+        linkInCartGutter.click();
+    }
+
+    /**
+     * Method helps to verify the Best Seller Badge Present.
+     * @param action to be parameterized as "savedCartViewForm" for SavedForLater items,
+     * and "activeCartViewForm" for cart.
+     */
+    public void verifyBestSellerBadgePresent(String action) {
+        BasePageElement bestSellerBdg = new BasePageElement(driver, activeCartAndSavedForLaterBestSellerBadge.getName(),
+                String.format(activeCartAndSavedForLaterBestSellerBadge.getXPath(), action));
+        bestSellerBdg.waitForElementToBeEnabled();
+        status.addIsDisplayed(bestSellerBdg);
+        status.processStatus();
+    }
+
+    /**
+     * Sets the quantity of the item in the cart.
+     * @param qtyValue Quantity value to enter
+     */
+    public void setQuantityOfItem(String qtyValue) {
+        quantityTextBox.sendKey(qtyValue);
+    }
+
+    /**
+     * Method to Enter Quantity and update the Quantity entered.
+     * @param qtyValue quantity value to enter
+     */
+    public void enterAndSaveQuantity(String qtyValue) {
+        quantityTextBox.sendKey(qtyValue);
+        quantityUpdateButton.click();
+        quantityUpdateButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Method to select Qty from the Qty Drop down list.
+     * @param value Quantity value to select from the drop down list
+     */
+    public void selectQtyFromQuantityDropDownList(String value) {
+        quantityDropdownList.setSelectedOption(value);
+    }
+
+    /**
+     * Method helps to verify the Quantity Alert Limit present.
+     *
+     */
+    public void verifyCartQuantityLimitAlertPresent() {
+        cartQuantityLimitAlertMessage.waitForElementToBeEnabled();
+        status.addIsDisplayed(cartQuantityLimitAlertMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Method to Click on Product Details Linkt on Quantity Limit alert.
+     * @param asin to be parameterized
+     */
+    public void clickProductDetailsLinkOnQuantityLimitAlert(String asin) {
+        BasePageElement productDetailsLink = new BasePageElement(driver,
+                productDetailsLinkInsideQtyLimitAlertMessage.getName(),
+                String.format(productDetailsLinkInsideQtyLimitAlertMessage.getXPath(), asin));
+        productDetailsLink.click();
+        proceedToCheckoutButton.waitForElementToDisappear();
+    }
+
+    /**
+     * Method helps to verify the Empty Cart Message and Heading.
+     *
+     */
+    public void verifyShoppingCartEmptyHeadingAndMessage() {
+        shoppingCartEmptyHeading.waitForElementToBeEnabled();
+        status.addIsDisplayed(shoppingCartEmptyHeading);
+        status.addIsDisplayed(cartEmptyMessage);
+        status.processStatus();
+    }
+
+    /**
+     * Verify status of Gift Option checkbox in Cart gutter.
+     * @return True if the check box is enabled
+     */
+    public boolean isOrderContainsGiftCheckboxInCartGutterEnabled() {
+        return orderContainsGiftCheckbox.isEnabled();
+    }
+
+    /**
+     * Verify Gift Option checkbox in Item Level is checked.
+     * @return True if the check box is selected
+     */
+    public boolean isItemLevelGiftCheckboxSelected() {
+        SleepUtil.sleep(2000);
+        return giftOptionCheckbox.isSelected();
+    }
+
+    /**
+     * Verify status of Gift Option checkbox in Order Level is checked..
+     * @return True if the check box is selected
+     */
+    public boolean isOrderContainsGiftCheckboxInCartGutterSelected() {
+        SleepUtil.sleep(2000);
+        return orderContainsGiftCheckbox.isSelected();
+    }
+
+    /**
+     * Is given asin/product availability color expected or not.
+     * @param asin item asin string.
+     * @param colorTypeByCss expected color css.
+     * @return is the product availability color expected or not.
+     */
+    public boolean isSFLProductAvailabilityByExpectedColor(final String asin, final String colorTypeByCss) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", productAvailabilityColorOfSFLItem.getName(), asin),
+                String.format(productAvailabilityColorOfSFLItem.getXPath(), asin))
+                .getElement().getAttribute("class").contains(colorTypeByCss);
+    }
+
+    /**
+     * Get Quantity for all the items in Active Cart.
+     * @return Quantity Drop Down list of an item in active Cart
+     */
+    public List<String> getQuantityDropDownList() {
+        Select selectQuantityDropdownList = new Select(quantityDropdownList.getElement());
+        List<WebElement> quantityDropdownLists = selectQuantityDropdownList.getOptions();
+        List<String> itemQuantityList = new ArrayList<String>();
+        for (int i = 0; i < quantityDropdownLists.size(); i++) {
+            itemQuantityList.add(quantityDropdownLists.get(i).getText().trim());
+        }
+        return itemQuantityList;
+    }
+
+    /**
+     * Method helps to find whether the quantity drop down of the active cart item is visible and clickable.
+     * @return false if the item is not visible and not clickable
+     */
+    public boolean getStatusOfQuantityDropDown() {
+        return (quantityDropdownList.isEnabled());
+    }
+
+    /**
+     * Method helps to verify the unrecognized user Empty Cart Heading and buttons.
+     */
+    public void testUnrognizedUserEmptyCartContent() {
+        emptyCartHeadingForUnrecognized.waitForElementToBeEnabled();
+        status.addIsDisplayed(emptyCartHeadingForUnrecognized);
+        status.addIsDisplayed(emptyCartShopTodaysDealsLink);
+        status.addIsDisplayed(emptyCartSignInButton);
+        status.addIsDisplayed(emptyCartSignUpButton);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to click the Shop Todays Deals link in unrecognized user Empty Cart.
+     */
+    public void clickEmptyCartShopTodaysDealsLink() {
+        emptyCartShopTodaysDealsLink.click();
+    }
+
+    /**
+     * Method helps to click the Learn More Link in Cart besides Gift option not available text.
+     */
+    public void clickAndVerifyGiftOptionNotAvailableLearnMoreLinkInCart() {
+        giftOptionNotAvailableLearnMoreLinkInCart.click();
+        status.addIsDisplayed(giftOptionNotAvailableLearnMoreLinkInCart);
+        status.processStatus();
+    }
+
+    /**
+     * Method helps to click the Learn More Link in IFD popover in Cart.
+     */
+    public void clickLearnMoreLinkImportFeesDepositPopOverInCart() {
+        learnMoreLinkImportFeesDepositPopOverInCart.click();
+    }
+
+    /**
+     * Method helps to click the Amazon Global Store XXX Link in Cart.
+     */
+    public void clickAmazonGlobalStoreLinkInCart() {
+        amazonGlobalStoreLinkInCart.click();
+    }
+
+    /**
+     * Method helps to get the Legal Text in IFD Popover.
+     * @return Legal Text
+     */
+    public String getLegalTextInIFDPopover() {
+        return legalTextInIFDPopover.getText();
+    }
+
+    /**
+     * Method helps to click the Amazon Global Store XXX Link in Save For Later
+     */
+    public void clickAmazonGlobalStoreLinkInSaveForLater() {
+        amazonGlobalStoreLinkInSaveForLater.click();
+    }
+
+    /**
+     * Method helps to Verify IFD text is displayed in Save For Later page
+     * @param asin to Parameterized for xpath.
+     * @return boolean of IFD text is displayed or not.
+     */
+    public boolean isImportFeesDepositTextDisplayedInSaveForLater(String asin) {
+        return new BasePageElement(driver, saveForLaterImportFeesDepositPopover.getName(),
+        String.format(saveForLaterImportFeesDepositPopover.getXPath(), asin)).isPresent();
+    }
+
+    /**
+     * Method helps to verify price and availability warning message in saved for later.
+     * @return price and availability warning message present or not
+     */
+    public String getPriceWarningMessagePresent() {
+        priceAndAvailabilityWarningMessage.waitIsPresent();
+        return priceAndAvailabilityWarningMessage.getText();
+    }
+
+    /**
+     * Method helps to verify redeem gift card or promo code message in saved for later.
+     * @return redeem gift card or promo code message present or not
+     */
+    public String getGiftCardOrPromoCodeMessagePresent() {
+        redeemGiftCardOrPromoCodeMessage.waitIsPresent();
+        return redeemGiftCardOrPromoCodeMessage.getText();
+    }
+
+    /**
+     * Is price warning learn more link in saved for later present.
+     * @return Learn more link present or not
+     */
+    public boolean isPriceWarningLearnMoreLinkPresent() {
+        return priceWarningLearnMoreLinkInSavedForLater.isPresent();
+    }
+
+    /**
+     * Method helps to click the price warning learn more link in saved for later.
+     */
+    public void clickPriceWarningLearnMoreLinkInSavedForLater() {
+        priceWarningLearnMoreLinkInSavedForLater.click();
+    }
+
+    /**
+     * Method helps to verify if default wish list present from saved for later.
+     * @return Default Wish List present or not
+     */
+    public boolean isDefaultWishListPresent() {
+        return defaultWishListInSavedForLater.isPresent();
+    }
+
+    /**
+     * Method helps to verify wish list present in saved for later.
+     * @return Default Wish List present or not
+     */
+    public boolean isSaveForLaterMoveToWishlistLink() {
+        return savedForLaterMoveToWishlistLink.isPresent();
+    }
+
+    /**
+     * Method helps to click wish list present in saved for later.
+     */
+    public void clickSaveForLaterMoveToWishlistLink() {
+        savedForLaterMoveToWishlistLink.waitIsPresent();
+        savedForLaterMoveToWishlistLink.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method helps to click and move item to default wish list in saved for later.
+     */
+    public void clickAndMoveItemToDefaultWishlist() {
+        savedForLaterMoveToWishlistLink.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method helps to click and move item to new wish list in saved for later.
+     */
+    public void clickAndMoveItemToNewWishlist() {
+        createNewWishlistAndMoveItem.waitForElementToBeEnabled();
+        createNewWishlistAndMoveItem.click();
+        createNewWishlistAndMoveItem.waitForElementToDisappear();
+    }
+
+    /**
+     * Get the number of P13N widgets displayed.
+     * @return an integer- as count of P13N widgets displayed in cart page.
+     */
+    public int getP13NWidgetsCountInCart() {
+        status.addIsDisplayed(p13NWidgetsInCart);
+        status.processStatus();
+        return p13NWidgetsInCart.countElements();
+    }
+
+    /**
+     * Check if P13N widget displayed in cart page.
+     * @param index starting from 0.
+     * @return true if present, else return false
+     */
+    public boolean isP13NWidgetPresentInCart(int index) {
+        return p13NWidgetsInCart.getElements().get(index).isPresent();
+    }
+
+    /**
+     * Verify if P13N widget title displayed or not in cart page.
+     * @param index starting from 0
+     * @return true if present, else return false
+     */
+    public boolean isP13NWidgetTitlePresent(int index) {
+        return p13NWidgetsTitleInCart.getElements().get(index).isPresent();
+    }
+
+    /**
+     * Method helps to verify item moved to wishlist message present.
+     * @return item moved to wishlist message present or not
+     */
+    public String getItemMovedToWishListText() {
+        itemMovedToWishlistText.waitIsPresent();
+        return itemMovedToWishlistText.getText();
+    }
+
+    /**
+     * Navigate to Cart Page when ASINs added to SmartWagon page.
+     */
+    public void navigateToCartFromSmartWagonCart() {
+        smartWagonCartButton.waitForElementToBeEnabled();
+        smartWagonCartButton.click();
+    }
+
+    /**
+     * Delete items in Saved For Later.
+     */
+    public void deleteSingleItemInSavedForLater() {
+        deleteButtonInSavedForLater.click();
+        driver.navigate().refresh();
+    }
+
+    /**
+     * Method helps to check product price is present in active cart.
+     * @param asin to Parameterized for xpath.
+     * @return boolean of product price is displayed or not.
+     */
+    public boolean isProductPriceInActiveCartPresent(String asin) {
+        return new BasePageElement(driver, productPriceInActiveCart.getName(),
+        String.format(productPriceInActiveCart.getXPath(), asin)).isPresent();
+    }
+
+    /**
+     * Method helps to click move to cart link in save for later.
+     */
+    public void clickMoveToCart() {
+        savedForLaterMoveToCartLink.waitIsPresent();
+        savedForLaterMoveToCartLink.clickAndWaitForDisappear(savedForLaterMoveToCartLink);
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method helps to get the Item has moved from Save for Later Text.
+     * @param asin to Parameterized for xpath.
+     * @param action Action to perform delete.
+     * @return Item has moved from Save for Later Text.
+     */
+    public String getItemMovedFromSavedForLaterText(String asin, String action) {
+        itemsMovedFromSflText.isPresent(5);
+        return new BasePageElement(driver, itemsMovedFromSflText.getName(),
+        String.format(itemsMovedFromSflText.getXPath(), asin, action)).getText();
+    }
+
+    /**
+     * Method helps to verify the Only In Stock Order Now Message is present or not.
+     * @param asin to Parameterized for xpath.
+     */
+    public void verifyOnlyInStockOrderNowMessageDisplayedInSaveForLater(String asin) {
+        BasePageElement scarcityMessage = new BasePageElement(driver, onlyInStockOrderNow.getName(),
+        String.format(onlyInStockOrderNow.getXPath(), asin));
+        scarcityMessage.waitForElementToBeEnabled();
+        status.addIsDisplayed(scarcityMessage);
+        status.processStatus();
+   }
+
+    /**
+     * Is given asin/product scarcity message color expected or not.
+     * @param asin item asin string.
+     * @param colorTypeByCss expected color css.
+     * @return is the product scarcity color expected or not.
+     */
+    public String getFontColorOfProductScarcityMessageInSfl(final String asin, final String colorTypeByCss) {
+        return new BasePageElement(driver,
+                String.format("%s-%s", onlyInStockOrderNow.getName(), asin),
+                String.format(onlyInStockOrderNow.getXPath(), asin))
+                .getElement().getCssValue("color");
+    }
+
+    /**
+     * Get the quantity which is 9+ added to Cart.
+     * @return the asin's quantity added to Cart.
+     */
+    public String getItemQuantityFromTextBoxInCart() {
+        return quantityTextBox.getElement().getAttribute("value");
+    }
+
+    /**
+     * Method helps to verify if empty cart heading present in cart page.
+     * @return Empty cart heading present or not
+     */
+    public boolean isEmptyCartHeadingDisplayed() {
+        return shoppingCartEmptyHeading.isPresent();
+    }
+
+    /**
+     * Method helps to get Shipping Benefit text,"FREE Shipping" or "Flat Rate Delivery" in Save For Later section.
+     * @param eligibilityText "Free shipping/Flat rate shipping" eligibility text in SFL section
+     * @return Eligible Shipping text.
+     */
+    public String getShippingBenefitTextInSaveForLater(String eligibilityText) {
+        BasePageElement efsMessageInSFL = new BasePageElement(driver, eligibleForFreeShippingInSaveForLater.getName(),
+                String.format(eligibleForFreeShippingInSaveForLater.getXPath(), eligibilityText));
+        efsMessageInSFL.waitIsPresent();
+        return efsMessageInSFL.getText();
+    }
+
+    /**
+     * Method helps to get the Shipping Message text in Cart.
+     * @param asin to Parameterized for xpath.
+     * @param eligibilityText "Free shipping" eligibility text in cart.
+     * @return Shipping Message Text.
+     */
+    public String getShippingMessageTextInCartByASIN(String asin, String eligibilityText) {
+        return new BasePageElement(driver, shippingMessageInCartByAsin.getName(),
+        String.format(shippingMessageInCartByAsin.getXPath(), asin, eligibilityText)).getText();
+    }
+
+    /**
+     * Method helps to get the Shipping Message text in SFL.
+     * @param asin to Parameterized for xpath.
+     * @param eligibilityText "Free shipping" eligibility text in SFL.
+     * @return Shipping Message Text.
+     */
+    public String getShippingMessageTextInSFLByASIN(String asin, String eligibilityText) {
+        BasePageElement shipppingMessageInSFLByASIN = new BasePageElement(driver, shippingMessageInSflByAsin.getName(),
+                String.format(shippingMessageInSflByAsin.getXPath(), asin, eligibilityText));
+        shipppingMessageInSFLByASIN.waitIsPresent();
+        return shipppingMessageInSFLByASIN.getText();
+    }
+
+    /**
+     * Method helps to verify if Create list link present in cart page.
+     * @return Empty cart heading present or not
+     */
+    public boolean isCreateLinkListPresent() {
+        createListlink.waitIsPresent();
+        return createListlink.isPresent();
+    }
+
+    /**
+     * Method helps to create new wish list in SFL
+     */
+    public void clickCreateListLink() {
+        createListlink.click();
+        createListlink.waitForElementToBeEnabled();
+        createListSubmitButton.clickAndWait(cancelButtonInCreateNewList);
+        createListSubmitButton.isPresent(5);
+    }
+
+    /**
+     * Get ASIN Value for the item added to cart
+     * @return the asin Value.
+     */
+    public String getAsinValue() {
+        waitForPageToLoad();
+        return cartDataAsin.getValue("data-asin");
+    }
+
+    /**
+     * Method helps to get the total price in Save for Later.
+     * @param asin to Parameterized for xpath
+     * @param currencyDecimalSeparator - country specific decimal separator in item price
+     * @return save for later total price
+     */
+     public String getTotalPriceInSaveForLater(String asin, String currencyDecimalSeparator) {
+         return new BasePageElement(driver, productPriceInSaveForLater.getName(),
+         String.format(productPriceInSaveForLater.getXPath(), asin)).getText().
+         replaceAll("[\\r\\n]+", currencyDecimalSeparator);
+     }
+
+     /**
+      * Method helps to click move to cart link in save for later.
+      */
+     public void clickMoveToCartWithoutRefresh() {
+         savedForLaterMoveToCartLink.waitForElementToBeEnabled();
+         savedForLaterMoveToCartLink.click();
+         waitForPageToLoad();
+     }
+
+     /**
+      * Verify Amazon Rewards Visa promotion container is displayed in Cart page.
+      * @return boolean of Amazon Rewards Visa promotion container is displayed or not.
+      */
+     public boolean isAmazonRewardsVisaPromotionContainerPresent() {
+         waitForPageToLoad();
+         return amazonRewardsVisaPromotionCard.isPresent();
+     }
+
+     /**
+      * Get Shipping Benefit text, "FREE Shipping" or "Flat Rate Delivery" in Active FLC Cart.
+      * @param eligibilityText eligible shipping text in FLC Cart.
+      * @return Eligibility Shipping text.
+      */
+     public boolean isShippingBenefitTextInCartFLCPresent(String eligibilityText) {
+          verifyCurrentPage();
+          return new BasePageElement(driver, shippingMessageInCartFlc.getName() + "_" + eligibilityText,
+                  String.format(shippingMessageInCartFlc.getXPath(), eligibilityText)).isPresent();
+     }
+
+     /**
+     * Get price per unit text.
+     * @return price per unit block text.
+     */
+    public String getPricePerUnitStringInSaveForLater() {
+        return pricePerUnitInSaveForLater.getText();
+    }
+
+    /**
+     * Get the heading Text "Shopping Cart" in cart page.
+     * @return the heading Text "Shopping Cart"
+     */
+    public String getShoppingCartHeadingText() {
+        shoppingCartHeadingText.waitIsPresent();
+        return shoppingCartHeadingText.getText();
+    }
+
+    /**
+      * @return Verify Item Checkbox is displayed
+      */
+     public boolean verifyCartCheckbox() {
+         return cartItemCheckbox.isEnabled();
+     }
+
+     /**
+      * @return Verify Deselect all items link in cart is displayed
+      */
+     public String verifyDeselectAllItemsLink() {
+         return deselectAllItemsLink.getText();
+     }
+
+    /**
+     * Method helps to get the currency of the Products present in P13N widget in cart Page.
+     * @return currency of the Products present in P13N widget.
+     */
+    public String getCurrencyOfP13NWigetsAsins() {
+        return productPriceOfP13NWidgetsInCart.getText();
+    }
+
+    /**
+     * Get the Currency Of P13N Widget Asins Count.
+     * @return an integer- as count of P13N Widget Asins displayed with currency.
+     */
+    public int getCurrencyOfP13NWidgetsAsinsCount() {
+        status.addIsDisplayed(productPriceOfP13NWidgetsInCart);
+        status.processStatus();
+        return productPriceOfP13NWidgetsInCart.countElements();
+    }
+
+     /**
+      * Get price per unit text.
+      * @return price per unit block text.
+      */
+     public String getPricePerUnitTextInCart() {
+         pricePerUnitCart.waitForTextNotBlank(10);
+         return pricePerUnitCart.getText();
+         }
+
+     /**
+      * Get virtual bundle asin text in Cart.
+      * @return virtual bundle text
+      */
+     public String getvirtualBundleMessageInCart() {
+         virtualBundleMessageInCart.waitForTextNotBlank(5);
+         return virtualBundleMessageInCart.getText();
+     }
+
+     /**
+      * Get virtual bundle asin text in Save For Later.
+      * @return virtual bundle text
+      */
+     public String getvirtualBundleMessageInSFL() {
+         virtualBundleMessageInSaveForLater.waitForTextNotBlank(5);
+         return virtualBundleMessageInSaveForLater.getText();
+     }
+
+     /**
+      * Delete items in Saved For Later
+      * @return checking saveforlater items is displayed in grid view
+      */
+     public boolean isSFLGridViewDisplayed() {
+         saveForLaterGridView.waitForElementToBeEnabled();
+         return saveForLaterGridView.isEnabled();
+     }
+
+     /**
+      * @param asin to be parameterized to move and delete respective item to cart
+      * @param action Action to perform delete and move
+      */
+     public void clickDeleteAndMoveItemFromSFL(String asin, String action) {
+         new BasePageElement(driver, moveDeleteItemsFromSfl.getName(),
+                 String.format(moveDeleteItemsFromSfl.getXPath(), asin, action)).click();
+     }
+
+     /**
+      * Method to get eligible for free shipping text in cart
+      * @param sellerName of the global store under test.
+      * @return eligible for free shipping text
+      */
+     public String getEligibleForFreeShippingTextInCart(String sellerName) {
+         eligibleForFreeShippingTextInCart.waitIsPresent();
+         return new BasePageElement(driver, eligibleForFreeShippingTextInCart.getName(),
+                 String.format(eligibleForFreeShippingTextInCart.getXPath(), sellerName)).getText();
+     }
+
+     /**
+      * Method to get eligible for free shipping text in SFL
+      * @param sellerName of the global store under test.
+      * @return eligible for free shipping text
+      */
+     public String getEligibleForFreeShippingTextInSFL(String sellerName) {
+         eligibleForFreeShippingTextInSFL.waitIsPresent();
+         return new BasePageElement(driver, eligibleForFreeShippingTextInSFL.getName(),
+                 String.format(eligibleForFreeShippingTextInSFL.getXPath(), sellerName)).getText();
+     }
+}
