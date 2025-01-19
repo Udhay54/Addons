@@ -1,0 +1,311 @@
+package com.amazon.aeeqa.ui.pagemodels.smartwagonPage;
+
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.dtk.page.Locator;
+import com.amazon.dtk.page.PageName;
+import org.openqa.selenium.WebDriver;
+
+/**
+ * Smart Wagon Page Model. This is the page display after adding item from DP.
+ *
+ * @author vllaks
+ */
+@PageName("smartwagon")
+public class SmartWagonPage extends BasePageModel {
+
+    @Locator("GO_TO_CART_BUTTON")
+    private static BasePageElement goToCartButton;
+
+    @Locator("PROCEED_TO_CHECKOUT_BUTTON")
+    private static BasePageElement proceedToCheckoutButton;
+
+    @Locator("PROCEED_TO_CHECKOUT_BUTTON_TEXT")
+    private static BasePageElement proceedToCheckoutButtonText;
+
+    @Locator("SEE_MORE_LINK_IN_SMART_WAGON_PAGE")
+    private static BasePageElement seeMoreLinkInSmartWagonPage;
+
+    @Locator("QUANTITY_RESTRICTION_ERROR_MESSAGE")
+    private static BasePageElement quantityRestrictionErrorMessage;
+
+    @Locator("SUBTOTAL_CURRENCY_SYMBOL")
+    private static BasePageElement subtotalCurrencySymbol;
+
+    @Locator("SHOPPING_LIST_LINK")
+    private static BasePageElement shoppingListLink;
+
+    @Locator("FREE_SHIPPING_MESSAGE_IN_SMART_WAGON")
+    private static BasePageElement freeShippingMessageInSmartWagonPage;
+
+    @Locator("SMART_WAGON_ITEM_ID")
+    private static BasePageElement smartWagonItemID;
+
+    @Locator("SMART_WAGON_P13_WIDGET_CURRENCY_SYMBOL")
+    private static BasePageElement smartWagonP13NWidgetCurrencySymbol;
+
+    @Locator("SMART_WAGON_PAGE_FULL_VIEW")
+    private static BasePageElement smartWagonPageFullView;
+
+    @Locator("P13N_WIDGET_ATF")
+    private static BasePageElement p13nWidgetATF;
+
+    @Locator("P13N_WIDGET_BTF")
+    private static BasePageElement p13nWidgetBTF;
+
+    @Locator("SMART_WAGON_SUCCESS_MESSAGE")
+    private static BasePageElement smartWagonSuccessMessage;
+
+    @Locator("PRODUCT_VARIATION_LIST_ITEMS")
+    private static BasePageElement productVariationListItems;
+
+    @Locator("PRODUCT_VARIATION_LIST_VALUES")
+    private static BasePageElement productVariationListValues;
+
+    @Locator("SUBTOTAL_AMOUNT")
+    private static BasePageElement subtotalAmount;
+
+    @Locator("ADDED_TO_CART_ITEM_IMAGE")
+    private static BasePageElement addedToCartItemImage;
+
+    @Locator("P13N_ADD_TO_CART_BUTTON")
+    private static BasePageElement p13nAddToCartButton;
+
+    @Locator("FREE_SHIPPING_PROGRESS_BAR")
+    private static BasePageElement freeShippingProgressBar;
+
+    @Locator("FREE_SHIPPING_ELIGIBLE_MESSAGE")
+    private static BasePageElement freeShippingEligibleMessage;
+
+    @Locator("PROMOTION_MESSAGE_IN_SMART_WAGON_PAGE")
+    private static BasePageElement promotionMessageInSmartWagonPage;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public SmartWagonPage(WebDriver driver) {
+        super(driver);
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        status.addIsDisplayed(goToCartButton);
+        status.addIsDisplayed(proceedToCheckoutButton);
+        status.processStatus();
+    }
+
+    /**
+     * Go to cart from HUC page.
+     */
+    public void goToCart() {
+        verifyCurrentPage();
+        goToCartButton.click();
+    }
+
+    /**
+     * Proceed to checkout from HUC page.
+     */
+    public void goToCheckout() {
+        verifyCurrentPage();
+        proceedToCheckoutButton.click();
+    }
+
+    /**
+     * Clicks on see more popover in smart wagon page.
+     */
+    public void clickSeeMoreInSmartWagonPage() {
+        seeMoreLinkInSmartWagonPage.click();
+        waitForPageToLoad();
+    }
+
+    /**
+     * Method helps to get the Quantity Restriction Error Message.
+     * @return Quantity Restriction Error Message
+     */
+    public String getQuantityRestrictionErrorMessage() {
+        return quantityRestrictionErrorMessage.getText();
+    }
+
+    /**
+     * Get the 'Subtotal Currency Symbol' text.
+     * @return 'Subtotal Currency Symbol' Text
+     */
+    public String getSubtotalCurrencySymbolText() {
+        return subtotalCurrencySymbol.getText();
+    }
+
+    /**
+     * Verify the current page is 'Smart Wagon'.
+     * @return boolean of 'Smart wagon' page's presence
+     */
+    public boolean verifySmartWagonPage() {
+        return smartWagonPageFullView.isPresent();
+    }
+
+    /**
+     * Verify 'Free Shipping' eligible message is present.
+     * @return boolean of 'Free Shipping' eligible message's presence
+     */
+    public boolean isFreeShippingEligibleMessagePresent() {
+        return freeShippingMessageInSmartWagonPage.isPresent();
+    }
+
+    /**
+     * Get the Smart Wagon's Item ID of an ASIN value.
+     * @param asin - ASIN value to get the smart wagon ID
+     * @return Smart Wagon's Item ID
+     */
+    public String getSmartWagonItemID(String asin) {
+        driver.navigate().refresh();
+        return new BasePageElement(driver, smartWagonItemID.getName(),
+                String.format(smartWagonItemID.getXPath(), asin)).getValue("data-itemid");
+    }
+
+    /**
+     * Get the P13N widget's item price currency symbol
+     * @param index - Index of the item price Currency symbol
+     * @return Currency symbol of each item
+     */
+    public String getSmartWagonP13NItemPriceCurrencySymbol(int index) {
+        BasePageElement smartWagonP13NItemPriceCurrencySymbol = new BasePageElement(driver,
+                smartWagonP13NWidgetCurrencySymbol.getName() + "_BY_INDEX_" + index,
+                String.format("(%s)[%d]", smartWagonP13NWidgetCurrencySymbol.getXPath(), index));
+        return smartWagonP13NItemPriceCurrencySymbol.getText();
+    }
+
+    /**
+     * Get the P13N widget's item price currency symbol count
+     * @return Currency symbol Count
+     */
+    public int getSmartWagonCurrencySymbolCount() {
+        return smartWagonP13NWidgetCurrencySymbol.countElements();
+    }
+
+    /**
+     * Verify whether the P13N widgets are present in the Smart Wagon page
+     * @return boolean of P13N widget's presence
+     */
+    public boolean isP13NWidgetsPresent() {
+        return p13nWidgetATF.isPresent() && p13nWidgetBTF.isPresent();
+    }
+
+    /**
+     * Get the "Added to cart" success message displayed in the 'Smart Wagon' page.
+     * @return  "Added to cart" success message
+     */
+    public String getAddedToCartSuccessMessage() {
+        return smartWagonSuccessMessage.getText();
+    }
+
+    /**
+     * Get the Variation value added to the cart.
+     * @param variationKey - The localized variation key present in the smart wagon page. (For example: Size, Color)
+     * @return Variation value added to the cart (For example: Size value, Color value)
+     */
+    public String getVariationValueText(String variationKey) {
+        String productVariationValue = "";
+        for (int i = 1; i <= productVariationListItems.countElements(); i++) {
+            BasePageElement productVariationItem = new BasePageElement(driver,
+                    productVariationListItems.getName() + "_BY_INDEX_" + i,
+                    String.format("(%s)[%d]", productVariationListItems.getXPath(), i));
+            if (productVariationItem.getText().contains(variationKey)) {
+                productVariationValue = new BasePageElement(driver,
+                        productVariationListValues.getName() + "_BY_INDEX_" + i,
+                        String.format("(%s)[%d]", productVariationListValues.getXPath(), i)).getText();
+                break;
+            }
+        }
+        return productVariationValue;
+    }
+
+    /**
+     * Get the 'Subtotal Amount' value displayed in the 'Smart Wagon' page.
+     * @return 'Subtotal Amount' value
+     */
+    public String getSubtotalAmount() {
+        return subtotalAmount.getText();
+    }
+
+    /**
+     * Get the "Proceed To Checkout" button text displayed in the 'Smart Wagon' page.
+     * @return  "Proceed To Checkout" button text
+     */
+    public String getProceedToCheckoutButtonText() {
+        return proceedToCheckoutButtonText.getText();
+    }
+
+    /**
+     * Get the Image count from 'Added to cart' section
+     * @return Image count from 'Added to cart' section
+     */
+    public int getAddedToCartItemImageCount() {
+        return addedToCartItemImage.countElements();
+    }
+
+    /**
+     * Get the Image Source text from 'Added to cart' Items
+     * @param imageIndex - Image Index of 'Added to cart' items in smart wagon page
+     * @return Image Source text from 'Added to cart' Items
+     */
+    public String getAddedToCartImageSourceText(int imageIndex) {
+        BasePageElement imageSourceByIndex = new BasePageElement(driver,
+                addedToCartItemImage.getName() + "-" + imageIndex,
+                String.format("(%s)[%d]", addedToCartItemImage.getXPath(), imageIndex));
+        return imageSourceByIndex.getElement().getAttribute("src").split("I/")[1].split("\\._")[0];
+    }
+
+    /**
+     * Click 'P13N Add to Cart' button by index.
+     * @param itemIndex - Item Index of P13N widget
+     */
+    public void clickP13NAddToCartButtonByIndex(int itemIndex) {
+        verifyCurrentPage();
+        new BasePageElement(driver, p13nAddToCartButton.getName() + "-" + itemIndex,
+                String.format("(%s)[%d]", p13nAddToCartButton.getXPath(), itemIndex)).click();
+    }
+
+    /**
+     * Click Your shopping list link in the smartwagon page.
+     */
+    public void clickShoppingListLink() {
+        shoppingListLink.waitForElementToBeEnabled();
+        shoppingListLink.click();
+    }
+
+    /**
+     * Get the Free shipping progress bar presence in Smart wagon page
+     * @return is Free shipping Progress bar in Smart Wagon Page present or not.
+     */
+    public boolean isFreeShippingProgressBarPresent() {
+        return freeShippingProgressBar.isPresent();
+    }
+
+    /**
+     * Get the number of the percentage present in Free shipping progress in Smart Wagon Page
+     * @return % number present in Free shipping progress bar in Smart Wagon Page
+     */
+    public String getFreeShippingProgressBarPercentage() {
+        return freeShippingProgressBar.getElement().getAttribute("data-progress-percentage");
+    }
+
+    /**
+     * Get the Free shipping message present in Smart wagon page
+     * @return  Free shipping message present in Smart wagon page
+     */
+    public String getFreeShippingMessageText() {
+        return freeShippingEligibleMessage.getText();
+    }
+
+    /**
+     * Verify whether the promotion message present in the Smart Wagon page
+     * @return boolean of promotion message's presence
+     */
+    public boolean isPromotionMessagePresent() {
+        return promotionMessageInSmartWagonPage.isPresent();
+    }
+
+}
