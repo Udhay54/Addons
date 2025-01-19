@@ -1,0 +1,425 @@
+package com.amazon.aeeqa.ui.pagemodels.signin;
+
+import org.openqa.selenium.WebDriver;
+
+import com.amazon.dtk.page.Locator;
+import com.amazon.aeeqa.ui.pagemodels.BasePageModel;
+import com.amazon.aeeqa.utils.SleepUtil;
+import com.amazon.dtk.page.PageName;
+import com.amazon.aeeqa.ui.pagemodels.BasePageElement;
+
+/**
+ * It's better to have our own SignIn page as we can customize according to our needs.
+ *
+ * @author tingyong
+ *
+ */
+@PageName("sign_in")
+public class SignInPage extends BasePageModel {
+
+    @Locator("EMAIL_TEXTBOX")
+    private static BasePageElement emailTextBox;
+
+    @Locator("PASSWORD_TEXTBOX")
+    private static BasePageElement passwordTextBox;
+
+    @Locator("SIGNIN_BUTTON")
+    private static BasePageElement signInButton;
+
+    @Locator("SIGNIN_CONTINUE_BUTTON")
+    private static BasePageElement continueButton;
+
+    @Locator("LEGAL_AGREEMENT_CHECKBOX")
+    private static BasePageElement legalAgreementCheckbox;
+
+    @Locator ("SKIP_LINK")
+    private static BasePageElement skipLink;
+
+    @Locator ("AMAZON_LOGO")
+    private static BasePageElement amazonLogo;
+
+    @Locator ("CREATE_ACCOUNT_BUTTON")
+    private static BasePageElement createAccountButton;
+
+    @Locator ("CONDITIONS_OF_USE_UNDER_CONTINUE_BUTTON_LINK")
+    private static BasePageElement conditionsOfUseUnderContinueButtonLink;
+
+    @Locator ("PRIVACY_NOTICE_UNDER_CONTINUE_BUTTON_LINK")
+    private static BasePageElement privacyNoticeUnderContinueButtonLink;
+
+    @Locator ("FORGOT_PASSWORD_LINK")
+    private static BasePageElement forgotPasswordLink;
+
+    @Locator ("SIGN_IN_ISSUES_LINK")
+    private static BasePageElement signInIssuesLink;
+
+    @Locator ("NEED_HELP_LINK")
+    private static BasePageElement needHelpLink;
+
+    @Locator ("CHANGE_EMAIL_LINK")
+    private static BasePageElement changeEmailLink;
+
+    @Locator ("KEEP_ME_SIGNED_IN_CHECKBOX")
+    private static BasePageElement keepMeSignedInCheckbox;
+
+    @Locator ("KEEP_ME_SIGNED_IN_DETAILS_LINK")
+    private static BasePageElement keepMeSignedInDetailsLink;
+
+    @Locator ("SIGNED_IN_EMAIL_LABEL")
+    private static BasePageElement signedInEmailLabel;
+
+    @Locator ("CREATE_YOUR_ACCOUNT_SUBMIT_BUTTON")
+    private static BasePageElement createYourAccountSubmitButton;
+
+    @Locator ("ADD_ACCOUNT_LINK")
+    private static BasePageElement addAccountLink;
+
+    @Locator(value = "SWITCH_ACCOUNTS_HEADING_TEXT", stringId = "ap-account-switcher-heading-text")
+    private static BasePageElement switchAccountsHeadingText;
+
+    @Locator ("OTHER_ISSUES_WITH_SIGN_IN_LINK")
+    private static BasePageElement otherIssuesWithSignInLink;
+
+    @Locator ("PASSWORD_ASSISTANCE_SECTION")
+    private static BasePageElement passwordAssistanceSection;
+
+    /**
+     * Constructor with driver instance.
+     * @param driver the WebDriver instance.
+     */
+    public SignInPage(WebDriver driver) {
+        super(driver);
+        waitForPageToLoad();
+    }
+
+    @Override
+    public boolean isOnView() {
+        return emailTextBox.isPresent() || addAccountLink.isPresent();
+    }
+
+    /**
+     * Verify the page has all the expected fields.
+     */
+    @Override
+    public void verifyCurrentPage() {
+        emailTextBox.waitIsPresent();
+        status.addIsDisplayed(emailTextBox);
+        status.processStatus();
+    }
+
+    /**
+     * Verify E-mail Text Box.
+     */
+    public void verifyEmailTextBox() {
+        status.addIsDisplayed(emailTextBox);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Password Text Box.
+     */
+    public void verifyPasswordTextBox() {
+        status.addIsDisplayed(passwordTextBox);
+        status.processStatus();
+    }
+
+    /**
+     * Verify SignInButton.
+     */
+    public void verifySignInButton() {
+        status.addIsDisplayed(signInButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Continue Button.
+     */
+    public void verifyContinueButton() {
+        status.addIsDisplayed(continueButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Skip Link.
+     */
+    public void verifySkipLink() {
+        status.addIsDisplayed(skipLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Amazon Logo.
+     */
+    public void verifyAmazonLogo() {
+        status.addIsDisplayed(amazonLogo);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Create Account Button.
+     */
+    public void verifyCreateAccountButton() {
+        status.addIsDisplayed(createAccountButton);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Conditions Of Use Link Under Continue Button.
+     */
+    public void verifyConditionsOfUseLinkUnderContinueButton() {
+        status.addIsDisplayed(conditionsOfUseUnderContinueButtonLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify privacy Notice Link Under Continue Button.
+     */
+    public void verifyPrivacyNoticeLinkUnderContinueButton() {
+        status.addIsDisplayed(privacyNoticeUnderContinueButtonLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Forgot Password Link.
+     */
+    public void verifyForgotPasswordLink() {
+        status.addIsDisplayed(forgotPasswordLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Sign In Issues Link.
+     */
+    public void verifySignInIssuesLink() {
+        status.addIsDisplayed(signInIssuesLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Need Help Link.
+     */
+    public void verifyNeedHelpLink() {
+        status.addIsDisplayed(needHelpLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Change E-mail Link.
+     */
+    public void verifyChangeEmailLink() {
+        status.addIsDisplayed(changeEmailLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Keep Me Signed In Checkbox.
+     */
+    public void verifyKeepMeSignedInCheckbox() {
+        status.addIsDisplayed(keepMeSignedInCheckbox);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Keep Me Signed In Details Link.
+     */
+    public void verifyKeepMeSignedInDetailsLink() {
+        status.addIsDisplayed(keepMeSignedInDetailsLink);
+        status.processStatus();
+    }
+
+    /**
+     * Verify Signed In E-mail Label on Password Entry Page.
+     * @return value of Signed In E-mail Label
+     */
+    public String verifySignedInEmailLabel() {
+        status.addIsDisplayed(signedInEmailLabel);
+        status.processStatus();
+        if (signedInEmailLabel.isPresent()) {
+            return signedInEmailLabel.getText();
+        }
+        return null;
+    }
+
+    /**
+     * Verify Need Help Link and Sub Links.
+     */
+    public void verifyNeedHelpLinkAndSubLinks() {
+        /*
+         * The if statement below checks if the need help link is present and is collapsed (child links hidden).
+         * If true, click on the link to expand for the two child links to be visible.
+         * If false, it means that either the link is not present or it is already expanded.
+         */
+        verifyNeedHelpLink();
+        if (needHelpLink.isPresent()) {
+            if (isNeedHelpLinkCollapsed()) {
+                needHelpLink.click();
+            }
+
+            if (isNeedHelpLinkExpanded()) {
+                verifyForgotPasswordLink();
+                verifySignInIssuesLink();
+            }
+        }
+    }
+
+    /**
+     * Verify All Elements In Sign In Page Step 1 (E-mail Entry Page).
+     */
+    public void verifyAllElementsInSignInEmailEntryPage() {
+        verifyAmazonLogo();
+        verifyEmailTextBox();
+        verifyContinueButton();
+        verifyConditionsOfUseLinkUnderContinueButton();
+        verifyPrivacyNoticeLinkUnderContinueButton();
+        verifyNeedHelpLinkAndSubLinks();
+        verifyCreateAccountButton();
+    }
+
+    /**
+     * Verify All Elements In Sign In Page Step 2 (Password Entry Page).
+     */
+    public void verifyAllElementsInSignInPasswordEntryPage() {
+        verifyAmazonLogo();
+        verifySignedInEmailLabel();
+        verifyChangeEmailLink();
+        verifyForgotPasswordLink();
+        verifyPasswordTextBox();
+        verifySignInButton();
+        verifyKeepMeSignedInCheckbox();
+        verifyKeepMeSignedInDetailsLink();
+    }
+
+    /**
+     * This method checks if the Need Help? Link is Collapsed. if collapsed,
+     * the "Forgot Password?" and "Other Issues with Sign-In" links
+     * Won't be visible until expanded.
+     *
+     * @return true if the Need Help? link on the sign in page is Collapsed.
+     */
+    public boolean isNeedHelpLinkCollapsed() {
+        return needHelpLink.getValue("class").contains("expand");
+    }
+
+    /**
+     * This method checks if the Need Help? Link is Collapsed. When expanded,
+     * the "Forgot Password?" and "Other Issues with Sign-In" links
+     * are visible until collapsed.
+     *
+     * @return true if the Need Help? link on the sign in page is Expanded.
+     */
+    public boolean isNeedHelpLinkExpanded() {
+        return needHelpLink.getValue("class").contains("collapse");
+    }
+
+    /**
+     * Enter E-mail and navigate to Password Entry Sign-in Page.
+     * @param email    is buyer/payer account email address.
+     */
+    public void enterEmailAndNavigateToPasswordEntryPage(final String email) {
+        verifyCurrentPage();
+        /*
+         * Sign in - Page 2 Elements
+         */
+        emailTextBox.setText(email);
+        // Sometimes email field and continue button are displayed instead of email and password fields
+        if (continueButton.isPresent()) {
+            continueButton.click();
+        }
+    }
+
+    /**
+     * Perform Amazon Sign-in.
+     *
+     * @param email    buyer/payer account email address
+     * @param password buyer/payer account password
+     */
+    public void doSignIn(final String email, final String password) {
+        verifyCurrentPage();
+        emailTextBox.setText(email);
+        // Click 'legal agreement checkbox' on sign-in page. Handles CN sign-in page.
+        if (legalAgreementCheckbox.isPresent()) {
+            legalAgreementCheckbox.click();
+        }
+        // Sometimes email field and continue button are displayed instead of email and password fields
+        if (continueButton.isPresent()) {
+            continueButton.click();
+        }
+        passwordTextBox.waitIsPresent();
+        passwordTextBox.setText(password);
+        signInButton.click();
+
+        // Click 'skip link' on mobile number verification Page. Handles UK sign-in page.
+        if (skipLink.isPresent()) {
+            skipLink.click();
+        }
+    }
+
+    /**
+     * Verify Create your account submit  Button Present.
+     */
+    public void verifyCreateYourAccountSubmitButtonPresent() {
+        status.addIsEnabled(createYourAccountSubmitButton);
+        status.processStatus();
+    }
+
+    /**
+     * Click On Create Account Button.
+     */
+    public void clickOnCreateAccountButton() {
+        verifyCreateAccountButton();
+        createAccountButton.click();
+    }
+
+    /**
+     * Verify Switch Accounts Heading Text Present.
+     */
+    public void verifySwitchAccountHeadingText() {
+        SleepUtil.sleep(1000);
+        status.addIsDisplayed(switchAccountsHeadingText);
+        status.processStatus();
+    }
+
+    /**
+     * Click On Condition of use link.
+     */
+    public void clickConditionOfUseLink() {
+        conditionsOfUseUnderContinueButtonLink.click();
+    }
+
+    /**
+     * Click On Privacy Notice link.
+     */
+    public void clickPrivacyNoticeLink() {
+        privacyNoticeUnderContinueButtonLink.click();
+    }
+
+    /**
+     * Click Need Help link.
+     */
+    public void clickNeedHelpLink() {
+        needHelpLink.click();
+    }
+
+    /**
+     * Click Other issues with Sign-in link.
+     */
+    public void clickOtherIssuesWithSignInLink() {
+        otherIssuesWithSignInLink.waitIsPresent();
+        otherIssuesWithSignInLink.click();
+    }
+
+    /**
+     * Click Forgot password link.
+     */
+    public void clickForgotPasswordLink() {
+        forgotPasswordLink.click();
+    }
+
+    /**
+     * Verify if Forgot Password Assistance Section is present.
+     * @return is Password Assistance section present.
+     */
+    public boolean isPasswordAssistanceSectionPresent() {
+        return passwordAssistanceSection.isPresent();
+    }
+}
